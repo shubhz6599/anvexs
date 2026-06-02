@@ -1,0 +1,51 @@
+<main class="blog-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow">Latest Insights</span>
+        <h1 class="display-2">Tech Stories &<br><span class="gradient-text">Insights</span></h1>
+        <p class="hero-desc">Stay updated with the latest trends, tips, and best practices in technology and software development.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Posts Grid -->
+  <section class="section blog-section">
+    <div class="container">
+      <div class="blog-grid">
+        @for (post of posts; track post.id) {
+          <article class="blog-card card">
+            <div class="blog-image">{{ post.image }}</div>
+            <div class="blog-content">
+              <span class="blog-category">{{ post.category }}</span>
+              <h3 class="blog-title">{{ post.title }}</h3>
+              <p class="blog-excerpt">{{ post.excerpt }}</p>
+              <div class="blog-footer">
+                <div class="blog-meta">
+                  <span class="blog-author">{{ post.author }}</span>
+                  <span class="blog-date">{{ post.date }}</span>
+                </div>
+                <a href="#" class="blog-link">Read More →</a>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="section newsletter-section">
+    <div class="container">
+      <div class="newsletter-card card">
+        <h3>Subscribe to Our Newsletter</h3>
+        <p>Get the latest articles and insights delivered to your inbox every week.</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Enter your email" class="form-input" />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,50 @@
+<main class="portfolio-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow">Our Work</span>
+        <h1 class="display-2">Projects That<br><span class="gradient-text">Transform</span></h1>
+        <p class="hero-desc">Explore our portfolio of successful projects delivering real business impact.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Grid -->
+  <section class="section portfolio-section">
+    <div class="container">
+      <div class="portfolio-grid">
+        @for (project of projects; track project.id) {
+          <div class="portfolio-card card">
+            <div class="project-image">{{ project.image }}</div>
+            <div class="project-content">
+              <span class="project-category">{{ project.category }}</span>
+              <h3 class="project-title">{{ project.title }}</h3>
+              <p class="project-desc">{{ project.description }}</p>
+              <div class="project-tags">
+                @for (tag of project.tags; track tag) {
+                  <span class="project-tag">{{ tag }}</span>
+                }
+              </div>
+              <div class="project-result">
+                <span class="result-icon">✓</span>
+                <span>{{ project.result }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-card card">
+        <h3>Ready to Build Your Next Project?</h3>
+        <p>Let's create something amazing together.</p>
+        <a routerLink="/contact" class="btn btn-primary btn-lg">Start a Project</a>
+      </div>
+    </div>
+  </section>
+</main>

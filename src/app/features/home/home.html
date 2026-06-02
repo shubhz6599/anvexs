@@ -1,0 +1,164 @@
+ <!-- ═══ HERO SECTION ═══════════════════ -->
+    <section class="hero" #heroSection>
+      <div class="hero-bg">
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-grid"></div>
+      </div>
+ 
+      <div class="container hero-content">
+        <div class="hero-eyebrow reveal">
+          <span class="badge badge-primary">
+            <span class="pulse-dot"></span>
+            Now hiring — 5 open positions
+          </span>
+        </div>
+ 
+        <h1 class="display-2 hero-title">
+          <span class="hero-title-line reveal">Enterprise</span>
+          <span class="hero-title-line gradient-text reveal reveal-delay-1">Technology.</span>
+          <span class="hero-title-line reveal reveal-delay-2">Reimagined.</span>
+        </h1>
+ 
+        <p class="hero-desc reveal reveal-delay-3">
+          Anvexs builds high-performance digital ecosystems — from intelligent web platforms and
+          AI-powered tools to immersive mobile experiences that redefine what your business can achieve.
+        </p>
+ 
+        <div class="hero-actions reveal reveal-delay-4">
+          <a routerLink="/services" class="btn btn-primary btn-lg">
+            Explore Services
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a routerLink="/contact" class="btn btn-ghost btn-lg">Start a Project</a>
+        </div>
+ 
+        <!-- Trusted by banner -->
+        <div class="trust-strip reveal">
+          <span class="trust-label">Trusted by teams at</span>
+          <div class="trust-logos">
+            @for (logo of trustLogos; track logo) {
+              <span class="trust-logo-item">{{ logo }}</span>
+            }
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        <span class="scroll-text">Scroll</span>
+      </div>
+    </section>
+ 
+    <!-- ═══ STATS SECTION ══════════════════ -->
+    <section class="stats-section section">
+      <div class="container">
+        <div class="stats-grid">
+          @for (stat of stats; track stat.label) {
+            <div class="stat-card reveal">
+              <div class="stat-value">
+                <span class="stat-number">{{ stat.value }}</span>
+                <span class="stat-suffix gradient-text">{{ stat.suffix }}</span>
+              </div>
+              <div class="stat-label">{{ stat.label }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ═══ SERVICES OVERVIEW ═══════════════ -->
+    <section class="services-overview section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">What we do</span>
+          <h2 class="heading-1">End-to-end digital<br>transformation</h2>
+          <p class="section-desc">
+            We operate at the intersection of design, engineering, and intelligence — 
+            delivering production-grade solutions that scale.
+          </p>
+        </div>
+ 
+        <div class="services-grid">
+          @for (service of services; track service.title; let i = $index) {
+            <div class="service-card card reveal" [class]="'reveal-delay-' + (i % 4 + 1)"
+                 [style.--service-color]="service.color">
+              <div class="service-icon-wrap">
+                <span class="service-icon">{{ service.icon }}</span>
+              </div>
+              <h3 class="service-title">{{ service.title }}</h3>
+              <p class="service-desc">{{ service.desc }}</p>
+              <div class="service-tags">
+                @for (tag of service.tags; track tag) {
+                  <span class="badge">{{ tag }}</span>
+                }
+              </div>
+              <a [routerLink]="service.link" class="service-cta">
+                Learn more
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          }
+        </div>
+ 
+        <div class="services-cta reveal">
+          <a routerLink="/services" class="btn btn-outline btn-lg">View All Services</a>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ═══ WHY ANVEXS ════════════════════════ -->
+    <section class="why-section section">
+      <div class="container">
+        <div class="why-grid">
+          <div class="why-left reveal">
+            <span class="section-eyebrow">Why Anvexs</span>
+            <h2 class="heading-1">Where precision<br>meets purpose</h2>
+            <p class="why-desc">
+              We're not just developers — we're architects of digital value. 
+              Every line of code, every pixel, every data model is crafted with 
+              enterprise-grade intent and startup-speed execution.
+            </p>
+            <a routerLink="/about" class="btn btn-primary">Our Story</a>
+          </div>
+ 
+          <div class="why-pillars">
+            @for (pillar of pillars; track pillar.title; let i = $index) {
+              <div class="pillar-item reveal" [class]="'reveal-delay-' + (i + 1)">
+                <div class="pillar-num">0{{ i + 1 }}</div>
+                <div class="pillar-content">
+                  <h4 class="pillar-title">{{ pillar.title }}</h4>
+                  <p class="pillar-desc">{{ pillar.desc }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ═══ CTA SECTION ════════════════════ -->
+    <section class="cta-section section">
+      <div class="container">
+        <div class="cta-card reveal">
+          <div class="cta-glow"></div>
+          <div class="cta-content">
+            <span class="label-mono">Ready to build?</span>
+            <h2 class="heading-1">Let's create something<br><span class="gradient-text">extraordinary</span> together.</h2>
+            <p class="cta-desc">
+              Share your vision and we'll engineer it into reality — 
+              on schedule, on budget, beyond expectation.
+            </p>
+            <div class="cta-actions">
+              <a routerLink="/contact" class="btn btn-primary btn-lg">Start a Conversation</a>
+              <a routerLink="/careers" class="btn btn-ghost btn-lg">Join the Team</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

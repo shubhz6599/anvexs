@@ -1,0 +1,47 @@
+<div class="loader-wrap" [class.fade-out]="isFadingOut">
+      <div class="loader-bg"></div>
+      <div class="loader-grid"></div>
+ 
+      <div class="loader-content">
+        <!-- Brand mark animation -->
+        <div class="brand-mark" [class.animate]="startAnimation">
+          <svg width="80" height="72" viewBox="0 0 80 72" fill="none">
+            <!-- Left arm of A -->
+            <path class="svg-path path-1" d="M4 68 L32 8 L40 24 L16 68Z" fill="url(#grad1)"/>
+            <!-- Right arm: silver diagonal -->
+            <path class="svg-path path-2" d="M76 8 L48 68 L60 68 L80 20Z" fill="url(#grad2)"/>
+            <!-- Apex cap (inverted triangle) -->
+            <path class="svg-path path-3" d="M36 8 L44 8 L40 18Z" fill="rgba(255,255,255,0.7)"/>
+            <defs>
+              <linearGradient id="grad1" x1="4" y1="8" x2="40" y2="68" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#4a9eff"/>
+                <stop offset="100%" stop-color="#7b6bff"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="80" y1="8" x2="48" y2="68" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#e0e8f0"/>
+                <stop offset="100%" stop-color="#7090a8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+ 
+        <!-- Brand name kinetic reveal -->
+        <div class="brand-name" [class.animate]="startAnimation">
+          <span class="char" *ngFor="let char of 'ANVEXS'.split(''); let i = index"
+                [style.animation-delay]="(i * 80) + 'ms'">{{ char }}</span>
+        </div>
+ 
+        <div class="brand-tagline" [class.animate]="startAnimation">
+          <span class="tagline-text">ENTERPRISE IT HUB</span>
+        </div>
+ 
+        <!-- Progress bar -->
+        <div class="progress-wrap" [class.animate]="startAnimation">
+          <div class="progress-bar" [style.width]="progress + '%'"></div>
+          <span class="progress-label">{{ progress }}%</span>
+        </div>
+      </div>
+ 
+      <!-- Decorative scan line -->
+      <div class="scan-line"></div>
+    </div>

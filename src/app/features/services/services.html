@@ -1,0 +1,95 @@
+<main class="services-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow">Our Expertise</span>
+        <h1 class="display-2">Services Built on<br><span class="gradient-text">Excellence</span></h1>
+        <p class="hero-desc">From concept to deployment, we deliver comprehensive solutions that drive real business value.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="section services-section">
+    <div class="container">
+      <div class="services-grid">
+        @for (service of services; track service.title) {
+          <div class="service-card card">
+            <div class="service-icon" [style.color]="service.color">{{ service.icon }}</div>
+            <h3 class="service-title">{{ service.title }}</h3>
+            <p class="service-desc">{{ service.description }}</p>
+            <div class="service-features">
+              @for (feature of service.features; track feature) {
+                <span class="feature-tag">{{ feature }}</span>
+              }
+            </div>
+            <a href="#contact" class="service-link">Learn More →</a>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="section benefits-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Why Choose Us</span>
+        <h2 class="heading-2">The Anvexs Advantage</h2>
+      </div>
+      <div class="benefits-grid">
+        @for (benefit of benefits; track benefit.title) {
+          <div class="benefit-card">
+            <div class="benefit-icon">{{ benefit.icon }}</div>
+            <h4>{{ benefit.title }}</h4>
+            <p>{{ benefit.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="section process-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Our Process</span>
+        <h2 class="heading-2">How We Work</h2>
+      </div>
+      <div class="process-timeline">
+        <div class="process-step">
+          <div class="step-number">01</div>
+          <h4>Discovery</h4>
+          <p>We understand your vision, goals, and challenges through collaborative workshops.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">02</div>
+          <h4>Strategy</h4>
+          <p>We develop a comprehensive roadmap tailored to your specific needs.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">03</div>
+          <h4>Development</h4>
+          <p>Our expert team builds with agile methodology and continuous delivery.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">04</div>
+          <h4>Deployment</h4>
+          <p>We ensure smooth launch with monitoring and ongoing optimization.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-card card">
+        <h3>Ready to Transform Your Business?</h3>
+        <p>Let's discuss which services are perfect for your needs.</p>
+        <a routerLink="/contact" class="btn btn-primary btn-lg">Schedule Consultation</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,170 @@
+.loader-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-loader, 1000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+ 
+      &.fade-out {
+        opacity: 0;
+        transform: scale(1.05);
+        pointer-events: none;
+      }
+    }
+ 
+    .loader-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, #0d0d1a 0%, #060608 70%);
+    }
+ 
+    .loader-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,158,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,158,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridPulse 3s ease-in-out infinite;
+    }
+ 
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+ 
+    .loader-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+ 
+    .brand-mark {
+      opacity: 0;
+      transform: scale(0.5) rotate(-10deg);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 0 30px rgba(74, 158, 255, 0.5));
+ 
+      &.animate {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+ 
+    .svg-path {
+      opacity: 0;
+      transform-origin: center;
+      animation: none;
+    }
+ 
+    .brand-mark.animate .path-1 {
+      animation: pathReveal 0.6s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .brand-mark.animate .path-2 {
+      animation: pathReveal 0.6s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .brand-mark.animate .path-3 {
+      animation: pathReveal 0.4s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+ 
+    @keyframes pathReveal {
+      from { opacity: 0; transform: translateY(8px) scale(0.9); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+ 
+    .brand-name {
+      display: flex;
+      gap: 4px;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: #f0f0f8;
+ 
+      .char {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(24px);
+        transition: none;
+      }
+ 
+      &.animate .char {
+        animation: charReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+    }
+ 
+    @keyframes charReveal {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    .brand-tagline {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.6s 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+ 
+      &.animate {
+        opacity: 1;
+        transform: translateY(0);
+      }
+ 
+      .tagline-text {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: #4a9eff;
+      }
+    }
+ 
+    .progress-wrap {
+      width: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.5s 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+ 
+      &.animate {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+ 
+    .progress-bar {
+      height: 2px;
+      background: linear-gradient(90deg, #4a9eff, #7b6bff);
+      border-radius: 999px;
+      transition: width 0.08s linear;
+      box-shadow: 0 0 8px rgba(74,158,255,0.6);
+    }
+ 
+    .progress-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(74, 158, 255, 0.6);
+      letter-spacing: 0.1em;
+      align-self: flex-end;
+    }
+ 
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(74,158,255,0.4), transparent);
+      animation: scan 2s linear infinite;
+      pointer-events: none;
+    }
+ 
+    @keyframes scan {
+      0%   { top: -2px; }
+      100% { top: 100%; }
+    }

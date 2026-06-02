@@ -1,0 +1,80 @@
+<main class="pricing-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow">Transparent Pricing</span>
+        <h1 class="display-2">Plans Built for<br><span class="gradient-text">Growth</span></h1>
+        <p class="hero-desc">Choose the plan that fits your needs. Flexible, scalable pricing with no hidden fees.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Plans -->
+  <section class="section pricing-section">
+    <div class="container">
+      <div class="pricing-grid">
+        @for (plan of plans; track plan.name) {
+          <div class="pricing-card card" [class.highlighted]="plan.highlighted">
+            <div class="plan-header">
+              <h3 class="plan-name">{{ plan.name }}</h3>
+              <p class="plan-desc">{{ plan.description }}</p>
+            </div>
+            <div class="plan-price">
+              <span class="price-amount">{{ plan.price }}</span>
+              <span class="price-period">{{ plan.period }}</span>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block">{{ plan.cta }}</button>
+            <div class="plan-features">
+              @for (feature of plan.features; track feature) {
+                <div class="feature">
+                  <span class="feature-icon">✓</span>
+                  <span>{{ feature }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Common Questions</span>
+        <h2 class="heading-2">Pricing FAQ</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item card">
+          <h4>Can I change my plan later?</h4>
+          <p>Yes, you can upgrade or downgrade your plan at any time. Changes take effect on your next billing cycle.</p>
+        </div>
+        <div class="faq-item card">
+          <h4>Do you offer discounts for long-term contracts?</h4>
+          <p>Absolutely! Contact our sales team for volume discounts and custom pricing for annual agreements.</p>
+        </div>
+        <div class="faq-item card">
+          <h4>What about additional resources?</h4>
+          <p>All plans can be customized. Need more developers or hours? We offer flexible add-ons.</p>
+        </div>
+        <div class="faq-item card">
+          <h4>Is there a setup fee?</h4>
+          <p>No hidden fees. We charge straightforward monthly fees based on your selected plan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-card card">
+        <h3>Ready to get started?</h3>
+        <p>Choose a plan and begin building your next project today.</p>
+        <a routerLink="/contact" class="btn btn-primary btn-lg">Get Started Now</a>
+      </div>
+    </div>
+  </section>
+</main>

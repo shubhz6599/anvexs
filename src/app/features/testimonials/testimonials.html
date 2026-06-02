@@ -1,0 +1,72 @@
+<main class="testimonials-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow">Client Feedback</span>
+        <h1 class="display-2">Loved by<br><span class="gradient-text">Our Clients</span></h1>
+        <p class="hero-desc">Don't just take our word for it. Hear from the teams we have had the privilege to work with.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Grid -->
+  <section class="section testimonials-section">
+    <div class="container">
+      <div class="testimonials-grid">
+        @for (testimonial of testimonials; track testimonial.name) {
+          <div class="testimonial-card card">
+            <div class="rating">
+              @for (i of [1,2,3,4,5]; track i) {
+                <span class="star">★</span>
+              }
+            </div>
+            <p class="testimonial-content">"{{ testimonial.content }}"</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">{{ testimonial.image }}</div>
+              <div class="author-info">
+                <h4 class="author-name">{{ testimonial.name }}</h4>
+                <p class="author-role">{{ testimonial.role }}, {{ testimonial.company }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="section stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-number">200+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">98%</div>
+          <div class="stat-label">Satisfaction Rate</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">4.9</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">500M+</div>
+          <div class="stat-label">Users Impacted</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-card card">
+        <h3>Ready to join our success stories?</h3>
+        <p>Let's partner together to build something remarkable.</p>
+        <a routerLink="/contact" class="btn btn-primary btn-lg">Start Conversation</a>
+      </div>
+    </div>
+  </section>
+</main>

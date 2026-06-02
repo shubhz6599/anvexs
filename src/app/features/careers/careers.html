@@ -1,0 +1,100 @@
+<main class="careers-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow">Join Our Team</span>
+        <h1 class="display-2">Build the Future<br><span class="gradient-text">With Us</span></h1>
+        <p class="hero-desc">We're looking for talented individuals passionate about technology and innovation. Help us deliver exceptional solutions to clients worldwide.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Positions -->
+  <section class="section positions-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Open Positions</span>
+        <h2 class="heading-2">We're Hiring</h2>
+      </div>
+      <div class="jobs-grid">
+        @for (job of jobs; track job.id) {
+          <div class="job-card card">
+            <div class="job-header">
+              <h3>{{ job.title }}</h3>
+              <div class="job-meta">
+                <span class="badge">{{ job.department }}</span>
+                <span class="badge">{{ job.level }}</span>
+              </div>
+            </div>
+            <p class="job-desc">{{ job.description }}</p>
+            <div class="job-details">
+              <div class="detail-item">
+                <span class="detail-label">Location</span>
+                <span class="detail-value">{{ job.location }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Type</span>
+                <span class="detail-value">{{ job.type }}</span>
+              </div>
+            </div>
+            <a href="#" class="btn btn-outline">Apply Now</a>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Perks Section -->
+  <section class="section perks-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Why Join Anvexs</span>
+        <h2 class="heading-2">Amazing Perks & Benefits</h2>
+      </div>
+      <div class="perks-grid">
+        @for (perk of perks; track perk.title) {
+          <div class="perk-card">
+            <div class="perk-icon">{{ perk.icon }}</div>
+            <h4>{{ perk.title }}</h4>
+            <p>{{ perk.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Culture Section -->
+  <section class="section culture-section">
+    <div class="container">
+      <div class="culture-content">
+        <div class="culture-text">
+          <span class="section-eyebrow">Our Culture</span>
+          <h2 class="heading-2">Work in an Innovative Environment</h2>
+          <p>We believe in fostering a culture of innovation, collaboration, and continuous learning. Our team is diverse, driven, and passionate about creating impactful solutions.</p>
+          <ul class="culture-list">
+            <li>Collaborative and supportive team environment</li>
+            <li>Opportunities for professional growth and mentorship</li>
+            <li>Latest tools and technologies</li>
+            <li>Flexible work arrangements</li>
+            <li>Regular team activities and social events</li>
+          </ul>
+        </div>
+        <div class="culture-visual">
+          <div class="visual-card"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-card card">
+        <h3>Don't see your role?</h3>
+        <p>Send us your resume and let's talk about how you can contribute to Anvexs.</p>
+        <a href="mailto:careers@anvexs.com" class="btn btn-primary btn-lg">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+</main>
