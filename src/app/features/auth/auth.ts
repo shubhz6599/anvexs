@@ -1,57 +1,51 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
+import { OtpService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
 })
 export class Auth {
-  isLogin = signal(true);
-  loginForm: FormGroup;
-  signupForm: FormGroup;
-  submitted = signal(false);
+  private auth = inject(AuthService);
+  private otp = inject(OtpService);
+  private router = inject(Router);
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      remember: [false],
+  tab = signal<'login' | 'register'>('login');
+  authLoading = signal(false);
+  error = signal('');
+
+  loginForm = { email: '', password: '' };
+  registerForm = { firstName: '', lastName: '', email: '', password: '', phone: '' };
+
+  setTab(t: 'login' | 'register') { this.tab.set(t); this.error.set(''); }
+
+  login() {
+    this.authLoading.set(true);
+    this.error.set('');
+    this.auth.login(this.loginForm.email, this.loginForm.password).subscribe({
+      next: () => { this.router.navigate(['/']); this.authLoading.set(false); },
+      error: (err) => { this.error.set(err.error?.message || 'Login failed'); this.authLoading.set(false); },
     });
+  }
 
-    this.signupForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm: ['', Validators.required],
-      terms: [false, Validators.requiredTrue],
+  register() {
+    this.authLoading.set(true);
+    this.error.set('');
+    this.auth.register(this.registerForm).subscribe({
+      next: () => {
+        alert('Account created! Please verify your email.');
+        this.otp.sendOTP(this.registerForm.email, 'email_verification').subscribe();
+        this.tab.set('login');
+        this.authLoading.set(false);
+      },
+      error: (err) => { this.error.set(err.error?.message || 'Registration failed'); this.authLoading.set(false); },
     });
-  }
-
-  toggleMode(): void {
-    this.isLogin.update(v => !v);
-    this.submitted.set(false);
-  }
-
-  onLoginSubmit(): void {
-    this.submitted.set(true);
-    if (this.loginForm.valid) {
-      // In a real app, you would authenticate with a backend
-      console.log('Login:', this.loginForm.value);
-      // Simulate successful login
-      setTimeout(() => this.router.navigate(['/']), 500);
-    }
-  }
-
-  onSignupSubmit(): void {
-    this.submitted.set(true);
-    if (this.signupForm.valid && this.signupForm.get('password')?.value === this.signupForm.get('confirm')?.value) {
-         console.log('Signup:', this.signupForm.value);
-      setTimeout(() => this.router.navigate(['/']), 500);
-    }
   }
 }

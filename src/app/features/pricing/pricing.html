@@ -1,80 +1,89 @@
-<main class="pricing-page">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="section-eyebrow">Transparent Pricing</span>
-        <h1 class="display-2">Plans Built for<br><span class="gradient-text">Growth</span></h1>
-        <p class="hero-desc">Choose the plan that fits your needs. Flexible, scalable pricing with no hidden fees.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing Plans -->
-  <section class="section pricing-section">
-    <div class="container">
-      <div class="pricing-grid">
-        @for (plan of plans; track plan.name) {
-          <div class="pricing-card card" [class.highlighted]="plan.highlighted">
-            <div class="plan-header">
-              <h3 class="plan-name">{{ plan.name }}</h3>
-              <p class="plan-desc">{{ plan.description }}</p>
+<section class="pricing-hero section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Transparent pricing</p>
+        <h1 class="display-xl reveal d1" style="max-width:700px;margin-bottom:16px">
+          CLEAR COSTS.<br><span class="g-text">ZERO SURPRISES.</span>
+        </h1>
+        <p class="body-lg reveal d2" style="max-width:520px;margin-bottom:44px">
+          Fixed-price packages for predictable projects. Custom quotes for complex builds.
+          All plans include dedicated Slack access and weekly standups.
+        </p>
+ 
+        <!-- Toggle -->
+        <div class="billing-toggle reveal d3">
+          <button class="toggle-btn" [class.active]="billing() === 'monthly'" (click)="setBilling('monthly')">
+            Monthly
+          </button>
+          <button class="toggle-btn" [class.active]="billing() === 'annual'" (click)="setBilling('annual')" style="position:relative">
+            Annual
+            <span class="save-pill">-20%</span>
+          </button>
+        </div>
+ 
+        <!-- Plans -->
+        <div class="pricing-grid">
+          @for (plan of plans; track plan.tier; let i = $index) {
+            <div class="price-card reveal" [class.price-card--featured]="plan.featured" [class]="'d' + (i + 1)">
+              @if (plan.featured) { <div class="featured-badge">MOST POPULAR</div> }
+              <div class="price-tier" [style.color]="plan.featured ? 'var(--primary)' : 'var(--text-2)'">{{ plan.tier }}</div>
+              <div class="price-amount">
+                <span class="price-curr">{{ plan.currency }}</span>
+                <span class="price-num">{{ billing() === 'annual' ? plan.priceAnnual : plan.price }}</span>
+                @if (plan.period) { <span class="price-period">{{ plan.period }}</span> }
+              </div>
+              <p class="price-desc">{{ plan.desc }}</p>
+              <ul class="price-features">
+                @for (f of plan.features; track f.text) {
+                  <li [class.pf-no]="!f.included">
+                    <span class="pf-icon" [style.color]="f.included ? (plan.featured ? 'var(--acid)' : 'var(--primary)') : 'var(--text-3)'">
+                      {{ f.included ? '✓' : '✗' }}
+                    </span>
+                    <span [style.color]="f.included ? 'var(--text-2)' : 'var(--text-3)'">{{ f.text }}</span>
+                  </li>
+                }
+              </ul>
+              <a routerLink="/contact" class="btn btn-plan" [class]="plan.btnClass">{{ plan.btnLabel }}</a>
             </div>
-            <div class="plan-price">
-              <span class="price-amount">{{ plan.price }}</span>
-              <span class="price-period">{{ plan.period }}</span>
+          }
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ═══ FAQ ═══════════════════════════════ -->
+    <section class="faq-section section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+      <div class="wrap">
+        <div class="section-header-center">
+          <p class="eyebrow">Common questions</p>
+          <h2 class="display-lg reveal">BEFORE YOU ASK,<br><span class="g-text">WE ANSWERED</span></h2>
+        </div>
+        <div class="faq-grid">
+          @for (q of faqs; track q.q; let i = $index) {
+            <div class="faq-item reveal" [class]="'d' + ((i % 4) + 1)"
+                 [class.faq-item--open]="openFaq() === i"
+                 (click)="toggleFaq(i)">
+              <div class="faq-q">
+                <span>{{ q.q }}</span>
+                <div class="faq-icon">{{ openFaq() === i ? '−' : '+' }}</div>
+              </div>
+              <div class="faq-a" [style.max-height]="openFaq() === i ? '200px' : '0'">
+                <div class="faq-a-inner">{{ q.a }}</div>
+              </div>
             </div>
-            <button class="btn btn-primary btn-lg btn-block">{{ plan.cta }}</button>
-            <div class="plan-features">
-              @for (feature of plan.features; track feature) {
-                <div class="feature">
-                  <span class="feature-icon">✓</span>
-                  <span>{{ feature }}</span>
-                </div>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="section faq-section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Common Questions</span>
-        <h2 class="heading-2">Pricing FAQ</h2>
-      </div>
-      <div class="faq-grid">
-        <div class="faq-item card">
-          <h4>Can I change my plan later?</h4>
-          <p>Yes, you can upgrade or downgrade your plan at any time. Changes take effect on your next billing cycle.</p>
-        </div>
-        <div class="faq-item card">
-          <h4>Do you offer discounts for long-term contracts?</h4>
-          <p>Absolutely! Contact our sales team for volume discounts and custom pricing for annual agreements.</p>
-        </div>
-        <div class="faq-item card">
-          <h4>What about additional resources?</h4>
-          <p>All plans can be customized. Need more developers or hours? We offer flexible add-ons.</p>
-        </div>
-        <div class="faq-item card">
-          <h4>Is there a setup fee?</h4>
-          <p>No hidden fees. We charge straightforward monthly fees based on your selected plan.</p>
+          }
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section cta-section">
-    <div class="container">
-      <div class="cta-card card">
-        <h3>Ready to get started?</h3>
-        <p>Choose a plan and begin building your next project today.</p>
-        <a routerLink="/contact" class="btn btn-primary btn-lg">Get Started Now</a>
+    </section>
+ 
+    <!-- ═══ TRUST ══════════════════════════════ -->
+    <section class="trust-section section">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow reveal" style="justify-content:center">Still deciding?</p>
+        <h2 class="display-lg reveal d1" style="margin-bottom:36px">
+          JOIN 230+ TEAMS<br>WHO <span class="g-text">CHOSE ANVEXS</span>
+        </h2>
+        <div class="trust-actions reveal d2">
+          <a routerLink="/contact" class="btn btn-primary btn-lg">Book a Free Discovery Call</a>
+          <a routerLink="/testimonials" class="btn btn-ghost btn-lg">Read Client Stories</a>
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>

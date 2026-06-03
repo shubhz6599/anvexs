@@ -1,16 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-interface Testimonial {
-  name: string;
-  role: string;
-  company: string;
-  content: string;
-  rating: number;
-  image: string;
-}
-
+import { RevealService } from '../../core/services/reveal.service';
+ 
 @Component({
   selector: 'app-testimonials',
   standalone: true,
@@ -18,55 +10,21 @@ interface Testimonial {
   templateUrl: './testimonials.html',
   styleUrl: './testimonials.scss',
 })
-export class Testimonials {
-  testimonials: Testimonial[] = [
-    {
-      name: 'Sarah Johnson',
-      role: 'CEO',
-      company: 'TechStart Inc',
-      content: 'Anvexs transformed our entire development pipeline. The quality of work and professionalism is unmatched. Highly recommended!',
-      rating: 5,
-      image: 'S',
-    },
-    {
-      name: 'Michael Chen',
-      role: 'CTO',
-      company: 'CloudSoft Solutions',
-      content: 'Working with Anvexs was a game-changer. They delivered our project on time and exceeded expectations in every way.',
-      rating: 5,
-      image: 'M',
-    },
-    {
-      name: 'Emma Davis',
-      role: 'Product Manager',
-      company: 'InnovateLabs',
-      content: 'The team is incredibly responsive, skilled, and understands our business goals. They have become an extension of our team.',
-      rating: 5,
-      image: 'E',
-    },
-    {
-      name: 'David Wilson',
-      role: 'Founder',
-      company: 'StartupHub',
-      content: 'Outstanding service from start to finish. The level of attention to detail and commitment to excellence is remarkable.',
-      rating: 5,
-      image: 'D',
-    },
-    {
-      name: 'Lisa Anderson',
-      role: 'VP Engineering',
-      company: 'TechVentures',
-      content: 'Anvexs delivered a world-class solution. Their expertise in modern tech stacks and scalability is exceptional.',
-      rating: 5,
-      image: 'L',
-    },
-    {
-      name: 'James Martinez',
-      role: 'Business Development',
-      company: 'Global Tech Corp',
-      content: 'The professionalism, communication, and technical expertise demonstrated by Anvexs is outstanding. Kudos to the team!',
-      rating: 5,
-      image: 'J',
-    },
+export class Testimonials implements AfterViewInit, OnDestroy {
+  private reveal = inject(RevealService);
+ 
+  testimonials = [
+    { quote: 'Anvexs rebuilt our entire data platform in 10 weeks. Handles 2M events/day without breaking a sweat. Genuinely the best engineering team we\'ve worked with.', author: 'Rohan Sharma', role: 'CTO · QuantEx Analytics', initials: 'RS', grad: 'linear-gradient(135deg,#0af,#8b5cf6)' },
+    { quote: 'The AI chatbot they built cut our support volume by 68% in the first month. RAG pipeline is remarkably accurate. Worth every rupee.', author: 'Aisha Patel', role: 'VP Product · Finova Bank', initials: 'AP', grad: 'linear-gradient(135deg,#b8ff00,#0af)' },
+    { quote: 'We shipped a React Native app to 50K users with Anvexs. Zero crashes on launch day. Their QA process is unmatched.', author: 'Karan Luthra', role: 'Founder · MoveSmart', initials: 'KL', grad: 'linear-gradient(135deg,#8b5cf6,#0af)' },
+    { quote: 'Anvexs helped 3 of my students build award-winning final year projects. Mentorship quality rivals any bootcamp in the country.', author: 'Dr. Radhika Nair', role: 'Professor · NIT Warangal', initials: 'DR', grad: 'linear-gradient(135deg,#ff3c5a,#ff9e6b)' },
+    { quote: 'Google Ads ROAS went from 1.8x to 6.2x in 3 months. Marketing team at Anvexs are data scientists disguised as marketers.', author: 'Meera Joshi', role: 'CMO · DriftBrands', initials: 'MJ', grad: 'linear-gradient(135deg,#b8ff00,#ff3c5a)' },
+    { quote: 'The Unity game they shipped for corporate training increased engagement by 340%. Never thought gamification would work this well.', author: 'Siddharth Tiwari', role: 'L&D Head · Cognito Corp', initials: 'ST', grad: 'linear-gradient(135deg,#0af,#8b5cf6)' },
   ];
-}
+ 
+  companies = ['QUANTEX', 'FINOVA', 'MOVESMART', 'DRIFTBRANDS', 'EDUREACH', 'ORBISOFT'];
+ 
+  ngAfterViewInit() { this.reveal.init(); }
+  ngOnDestroy()     { this.reveal.destroy(); 
+  }
+  }

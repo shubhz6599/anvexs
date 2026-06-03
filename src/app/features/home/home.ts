@@ -3,13 +3,13 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
- 
+
 interface Stat {
   value: string;
   label: string;
   suffix?: string;
 }
- 
+
 interface ServiceCard {
   icon: string;
   title: string;
@@ -18,7 +18,7 @@ interface ServiceCard {
   link: string;
   color: string;
 }
- 
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -27,6 +27,7 @@ interface ServiceCard {
   styleUrl: './home.scss',
 })
 export class HomeComponent implements AfterViewInit {
+  showScrollIndicator = signal(true);
   stats: Stat[] = [
     { value: '200', suffix: '+', label: 'Projects Delivered' },
     { value: '98', suffix: '%', label: 'Client Satisfaction' },
@@ -80,11 +81,22 @@ export class HomeComponent implements AfterViewInit {
  
   ngAfterViewInit(): void {
     this.initScrollReveal();
+    this.initScrollListener();
+  }
+
+  private initScrollListener(): void {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        this.showScrollIndicator.set(false);
+      } else {
+        this.showScrollIndicator.set(true);
+      }
+    });
   }
  
   private initScrollReveal(): void {
     const observer = new IntersectionObserver(
-      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('revealed')),
+      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('up')),
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));

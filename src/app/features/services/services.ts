@@ -1,21 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-interface Service {
-  icon: string;
-  title: string;
-  description: string;
-  features: string[];
-  color: string;
-}
-
-interface Benefit {
-  icon: string;
-  title: string;
-  description: string;
-}
-
+import { RevealService } from '../../core/services/reveal.service';
+ 
 @Component({
   selector: 'app-services',
   standalone: true,
@@ -23,72 +10,34 @@ interface Benefit {
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })
-export class Services {
-  services: Service[] = [
-    {
-      icon: '⚡',
-      title: 'Web Development',
-      description: 'Full-stack web applications built with modern frameworks for performance and scale.',
-      features: ['Angular', 'React', 'Vue.js', 'Node.js', 'TypeScript', 'Progressive Web Apps'],
-      color: '#4a9eff',
-    },
-    {
-      icon: '📱',
-      title: 'Mobile Apps',
-      description: 'Native and cross-platform mobile solutions for iOS and Android.',
-      features: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'App Store Optimization', 'User Analytics'],
-      color: '#7b6bff',
-    },
-    {
-      icon: '🤖',
-      title: 'AI & Machine Learning',
-      description: 'Intelligent solutions powered by AI for automation and insights.',
-      features: ['LLM Integration', 'Computer Vision', 'NLP', 'Predictive Analytics', 'Chatbots', 'Data Science'],
-      color: '#00e5c3',
-    },
-    {
-      icon: '☁️',
-      title: 'Cloud Solutions',
-      description: 'Scalable cloud infrastructure and DevOps for modern applications.',
-      features: ['AWS', 'Google Cloud', 'Azure', 'Docker', 'Kubernetes', 'CI/CD'],
-      color: '#ff9e7b',
-    },
-    {
-      icon: '🎨',
-      title: 'UI/UX Design',
-      description: 'Beautiful, intuitive interfaces that delight users.',
-      features: ['Design Systems', 'Wireframing', 'Prototyping', 'User Research', 'Accessibility', 'Animation'],
-      color: '#4a9eff',
-    },
-    {
-      icon: '📊',
-      title: 'Digital Marketing',
-      description: 'Comprehensive digital marketing to drive growth and engagement.',
-      features: ['SEO', 'SEM', 'Social Media', 'Content Marketing', 'Analytics', 'Conversion Optimization'],
-      color: '#7b6bff',
-    },
+export class Services implements AfterViewInit, OnDestroy {
+  private reveal = inject(RevealService);
+ 
+  services = [
+    { icon: '⚡', title: 'WEB DEVELOPMENT', badge: 'MOST POPULAR', body: 'Full-stack web platforms from architecture to deployment. Angular 18, React 19, Node.js ecosystems with MongoDB and PostgreSQL.', features: ['Custom SaaS platform development', 'E-commerce & marketplace builds', 'Real-time dashboards & analytics', 'API design & microservices architecture', 'DevOps, CI/CD & cloud deployment (AWS/GCP)'], },
+    { icon: '📱', title: 'APP DEVELOPMENT', badge: '', body: 'Cross-platform mobile apps that perform like native — built in React Native and Flutter with full backend integration.', features: ['iOS & Android dual deployment', 'Offline-first architecture', 'Push notifications & real-time sync', 'App Store & Play Store submission', 'Ongoing maintenance & versioning'], },
+    { icon: '🤖', title: 'AI INTEGRATION', badge: 'TRENDING', body: 'Production-grade AI systems — LLM chatbots to computer vision pipelines. We build what\'s actually useful, not demos.', features: ['RAG & knowledge-base chatbots', 'LLM fine-tuning & prompt engineering', 'Computer vision & image analysis', 'Predictive analytics & forecasting', 'AI workflow automation'], },
+    { icon: '🎮', title: 'GAME DEVELOPMENT', badge: '', body: 'From mobile hyper-casual games to enterprise gamification. Immersive experiences that drive engagement.', features: ['Unity & Unreal Engine 5 games', 'WebGL & Three.js browser games', 'Multiplayer networking & backend', 'Gamified training & HR platforms', 'AR/VR prototyping'], },
+    { icon: '🎓', title: 'COLLEGE PROJECTS', badge: '', body: 'Mentored, production-grade final-year projects and live internships. Build something you\'re actually proud of.', features: ['Full-stack project mentorship', 'AI/ML project specialisation', '3-month paid internships', 'Industry-standard code reviews', 'Placement referrals & certificates'], },
+    { icon: '📈', title: 'DIGITAL MARKETING', badge: '', body: 'Growth that compounds. SEO, performance ads, and brand architecture into a unified acquisition machine.', features: ['Technical SEO & content strategy', 'Google Ads & Meta performance campaigns', 'Conversion rate optimisation', 'Brand identity & visual systems', 'Monthly analytics reporting'], },
   ];
-
-  benefits: Benefit[] = [
-    {
-      icon: '⚡',
-      title: 'Fast Delivery',
-      description: 'Agile methodology ensures rapid iterations and quick time-to-market',
-    },
-    {
-      icon: '🎯',
-      title: 'Proven Results',
-      description: 'Data-driven approach with measurable outcomes and ROI',
-    },
-    {
-      icon: '🔒',
-      title: 'Security First',
-      description: 'Enterprise-grade security and compliance standards',
-    },
-    {
-      icon: '👥',
-      title: 'Dedicated Team',
-      description: 'Your own team of experts fully focused on your success',
-    },
+ 
+  process = [
+    { num: '01', title: 'DISCOVERY',     body: 'Deep-dive into requirements, tech landscape, and success metrics. We don\'t guess.' },
+    { num: '02', title: 'ARCHITECTURE',  body: 'System design, tech stack selection, and sprint planning before a line of code.' },
+    { num: '03', title: 'BUILD',         body: 'Agile 2-week sprints with real-time demos. You see progress every fortnight.' },
+    { num: '04', title: 'LAUNCH',        body: 'Staged deployment, performance hardening, load testing, and go-live support.' },
   ];
+ 
+  techStack = [
+    { label: 'Frontend',   techs: ['Angular 18', 'React 19', 'Vue 3', 'Next.js', 'Three.js', 'WebGL'] },
+    { label: 'Backend',    techs: ['Node.js', 'Express', 'NestJS', 'Python', 'FastAPI', 'GraphQL'] },
+    { label: 'Mobile',     techs: ['React Native', 'Flutter', 'Expo', 'Capacitor'] },
+    { label: 'Database',   techs: ['MongoDB', 'PostgreSQL', 'Redis', 'Supabase', 'Firebase'] },
+    { label: 'AI / ML',    techs: ['LangChain', 'OpenAI', 'TensorFlow', 'PyTorch', 'HuggingFace'] },
+    { label: 'Cloud',      techs: ['AWS', 'GCP', 'Azure', 'Docker', 'Kubernetes', 'Terraform'] },
+  ];
+ 
+  ngAfterViewInit() { this.reveal.init(); }
+  ngOnDestroy()     { this.reveal.destroy(); }
 }

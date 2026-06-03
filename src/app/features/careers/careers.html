@@ -1,100 +1,119 @@
-<main class="careers-page">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="section-eyebrow">Join Our Team</span>
-        <h1 class="display-2">Build the Future<br><span class="gradient-text">With Us</span></h1>
-        <p class="hero-desc">We're looking for talented individuals passionate about technology and innovation. Help us deliver exceptional solutions to clients worldwide.</p>
+ <section class="careers-hero section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Join us</p>
+        <h1 class="display-xl reveal d1" style="max-width:760px;margin-bottom:20px">
+          BUILD EXTRAORDINARY<br><span class="g-text">WITH US</span>
+        </h1>
+        <p class="body-lg reveal d2" style="max-width:540px;margin-bottom:56px">
+          We're hiring passionate engineers, designers, and strategists to reshape enterprise technology.
+          Remote or Hyderabad. Competitive equity. Unlimited learning.
+        </p>
       </div>
-    </div>
-  </section>
 
-  <!-- Open Positions -->
-  <section class="section positions-section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Open Positions</span>
-        <h2 class="heading-2">We're Hiring</h2>
-      </div>
-      <div class="jobs-grid">
-        @for (job of jobs; track job.id) {
-          <div class="job-card card">
-            <div class="job-header">
-              <h3>{{ job.title }}</h3>
-              <div class="job-meta">
-                <span class="badge">{{ job.department }}</span>
-                <span class="badge">{{ job.level }}</span>
-              </div>
-            </div>
-            <p class="job-desc">{{ job.description }}</p>
-            <div class="job-details">
-              <div class="detail-item">
-                <span class="detail-label">Location</span>
-                <span class="detail-value">{{ job.location }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Type</span>
-                <span class="detail-value">{{ job.type }}</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-outline">Apply Now</a>
+      <!-- Job listings -->
+      <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+        <div class="wrap">
+          <div class="section-header-center">
+            <p class="eyebrow">Open positions</p>
+            <h2 class="display-lg reveal">WE'RE HIRING</h2>
           </div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Perks Section -->
-  <section class="section perks-section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Why Join Anvexs</span>
-        <h2 class="heading-2">Amazing Perks & Benefits</h2>
-      </div>
-      <div class="perks-grid">
-        @for (perk of perks; track perk.title) {
-          <div class="perk-card">
-            <div class="perk-icon">{{ perk.icon }}</div>
-            <h4>{{ perk.title }}</h4>
-            <p>{{ perk.description }}</p>
+          <div class="jobs-grid">
+            @for (job of jobs; track job.title; let i = $index) {
+              <div class="job-card card reveal" [class]="'d' + ((i % 3) + 1)">
+                <div class="job-header">
+                  <h3 class="job-title">{{ job.title }}</h3>
+                  <span class="job-type" [class]="'job-type--' + job.type">{{ job.type }}</span>
+                </div>
+                <p class="job-desc">{{ job.description }}</p>
+                <div class="job-details">
+                  <div><strong>Department:</strong> {{ job.department }}</div>
+                  <div><strong>Location:</strong> {{ job.location }}</div>
+                  <div><strong>Experience:</strong> {{ job.experience }}</div>
+                </div>
+                <div class="job-stack">
+                  @for (s of job.skills; track s) {
+                    <span class="tag">{{ s }}</span>
+                  }
+                </div>
+                <a routerLink="/careers" (click)="scrollToApply()" class="btn btn-primary" style="width:100%;justify-content:center">Apply Now</a>
+              </div>
+            }
           </div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Culture Section -->
-  <section class="section culture-section">
-    <div class="container">
-      <div class="culture-content">
-        <div class="culture-text">
-          <span class="section-eyebrow">Our Culture</span>
-          <h2 class="heading-2">Work in an Innovative Environment</h2>
-          <p>We believe in fostering a culture of innovation, collaboration, and continuous learning. Our team is diverse, driven, and passionate about creating impactful solutions.</p>
-          <ul class="culture-list">
-            <li>Collaborative and supportive team environment</li>
-            <li>Opportunities for professional growth and mentorship</li>
-            <li>Latest tools and technologies</li>
-            <li>Flexible work arrangements</li>
-            <li>Regular team activities and social events</li>
-          </ul>
         </div>
-        <div class="culture-visual">
-          <div class="visual-card"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- CTA Section -->
-  <section class="section cta-section">
-    <div class="container">
-      <div class="cta-card card">
-        <h3>Don't see your role?</h3>
-        <p>Send us your resume and let's talk about how you can contribute to Anvexs.</p>
-        <a href="mailto:careers@anvexs.com" class="btn btn-primary btn-lg">Get In Touch</a>
-      </div>
-    </div>
-  </section>
-</main>
+      <!-- Internships -->
+      <section class="section">
+        <div class="wrap">
+          <div class="section-header-center">
+            <p class="eyebrow">Grow with us</p>
+            <h2 class="display-lg reveal">INTERNSHIP PROGRAM</h2>
+            <p class="body-md reveal d1" style="max-width:520px;margin:16px auto 0">
+              3-month paid internships for students. Real projects, real mentorship, real impact.
+              ₹20,000/month + placement referrals + certificate.
+            </p>
+          </div>
+          <div class="internship-benefits">
+            @for (b of internshipBenefits; track b; let i = $index) {
+              <div class="benefit-card card reveal" [class]="'d' + ((i % 3) + 1)">
+                <div class="benefit-icon">{{ b.icon }}</div>
+                <h4 class="benefit-title">{{ b.title }}</h4>
+                <p class="benefit-desc">{{ b.desc }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Apply form -->
+      <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)" #applySection>
+        <div class="wrap">
+          <div class="section-header-center">
+            <p class="eyebrow">Apply now</p>
+            <h2 class="display-lg reveal">LET'S GET TO KNOW<br><span class="g-text">YOU</span></h2>
+          </div>
+          <div class="apply-form-wrap reveal d1" style="max-width:620px;margin:0 auto">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input class="form-input" [(ngModel)]="formData.name" placeholder="Your name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input class="form-input" type="email" [(ngModel)]="formData.email" placeholder="your@email.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input class="form-input" [(ngModel)]="formData.phone" placeholder="+91 98765 43210" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Position *</label>
+              <select class="form-select" [(ngModel)]="formData.position">
+                <option value="">Select a position</option>
+                @for (job of jobs; track job.title) {
+                  <option [value]="job.title">{{ job.title }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Experience (years)</label>
+              <input class="form-input" type="number" [(ngModel)]="formData.experience" placeholder="3" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">LinkedIn URL</label>
+              <input class="form-input" [(ngModel)]="formData.linkedin" placeholder="https://linkedin.com/in/..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Portfolio / GitHub</label>
+              <input class="form-input" [(ngModel)]="formData.portfolio" placeholder="https://github.com/..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cover Letter</label>
+              <textarea class="form-textarea" [(ngModel)]="formData.coverLetter" placeholder="Tell us why you'd be a great fit..."></textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" (click)="submitApplication()" style="width:100%;justify-content:center">
+              {{ submitted() ? '✓ Application Sent' : 'Submit Application' }}
+            </button>
+          </div>
+        </div>
+      </section>
+    </section>

@@ -25,20 +25,20 @@ export const routes: Routes = [
     loadComponent: () => import('./features/portfolio/portfolio').then(m => m.Portfolio),
     title: 'Portfolio - Our Projects',
   },
+   {
+    path: 'pricing',
+    loadComponent: () => import('./features/pricing/pricing').then(m => m.Pricing),
+    title: 'Pricing — Anvexs IT Hub',
+  },
   {
     path: 'blog',
     loadComponent: () => import('./features/blog/blog').then(m => m.Blog),
     title: 'Blog - Tech Insights & Articles',
   },
   {
-    path: 'pricing',
-    loadComponent: () => import('./features/pricing/pricing').then(m => m.Pricing),
-    title: 'Pricing - Flexible Plans',
-  },
-  {
     path: 'testimonials',
     loadComponent: () => import('./features/testimonials/testimonials').then(m => m.Testimonials),
-    title: 'Testimonials - Client Success Stories',
+    title: 'Clients - Client Success Stories',
   },
   {
     path: 'careers',

@@ -1,161 +1,103 @@
-<main class="contact-page">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="section-eyebrow">Get In Touch</span>
-        <h1 class="display-2">Let's Talk About<br><span class="gradient-text">Your Project</span></h1>
-        <p class="hero-desc">Have a question or ready to start your next project? We'd love to hear from you.</p>
-      </div>
-    </div>
-  </section>
+  <section class="contact-hero section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Get in touch</p>
+        <h1 class="display-xl reveal d1" style="max-width:660px;margin-bottom:52px">
+          LET'S BUILD<br>SOMETHING <span class="g-text">GREAT</span>
+        </h1>
 
-  <!-- Contact Section -->
-  <section class="section contact-section">
-    <div class="container">
-      <div class="contact-grid">
-        <!-- Contact Info -->
-        <div class="contact-info">
-          <h2 class="heading-2">Contact Information</h2>
-          <p>Reach out to us through any of these channels. We respond within 24 hours.</p>
-          <div class="info-items">
-            @for (info of contactInfo; track info.title) {
-              <div class="info-item">
-                <div class="info-icon">{{ info.icon }}</div>
-                <div class="info-content">
-                  <h4>{{ info.title }}</h4>
-                  @if (info.link) {
-                    <a [href]="info.link" class="info-link">{{ info.content }}</a>
-                  } @else {
-                    <p>{{ info.content }}</p>
-                  }
-                </div>
-              </div>
-            }
-          </div>
-          <div class="social-links">
-            <a href="#" class="social-link" title="Twitter">𝕏</a>
-            <a href="#" class="social-link" title="LinkedIn">in</a>
-            <a href="#" class="social-link" title="GitHub">gh</a>
-            <a href="#" class="social-link" title="Discord">💬</a>
-          </div>
-        </div>
-
-        <!-- Contact Form -->
-        <div class="contact-form-wrapper">
-          <h2 class="heading-2">Send us a Message</h2>
-          @if (success()) {
-            <div class="success-message">
-              ✓ Message sent successfully! We'll get back to you soon.
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div>
+              <h3 class="display-lg" style="margin-bottom:18px">Start a Conversation</h3>
+              <p class="body-md">Whether you have a brief ready or just an idea — we'd love to hear it. Response within 4 business hours guaranteed.</p>
             </div>
-          }
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+            <div class="contact-item reveal d2">
+              <div class="contact-label">Email</div>
+              <div class="contact-value">hello@anvexs.com</div>
+              <div class="contact-sub">For all enquiries & partnerships</div>
+            </div>
+            <div class="contact-item reveal d3">
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">+91 99999 99999</div>
+              <div class="contact-sub">Mon–Sat · 9am–7pm IST</div>
+            </div>
+            <div class="contact-item reveal d4">
+              <div class="contact-label">Location</div>
+              <div class="contact-value">HITEC City, Hyderabad</div>
+              <div class="contact-sub">Telangana, India — 500081</div>
+            </div>
+            <div class="contact-social reveal d5">
+              <a href="https://linkedin.com/company/anvexs" target="_blank" class="social-link">
+                <span>💼</span> LinkedIn
+              </a>
+              <a href="https://instagram.com/anvexs" target="_blank" class="social-link">
+                <span>📸</span> Instagram
+              </a>
+              <a href="https://wa.me/919999999999" target="_blank" class="social-link">
+                <span>💬</span> WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap reveal reveal-right d1" style="max-width:580px">
+            <p class="eyebrow">Send an Enquiry</p>
             <div class="form-group">
-              <label for="name" class="form-label">Full Name</label>
-              <input
-                type="text"
-                id="name"
-                class="form-input"
-                formControlName="name"
-                placeholder="Your name"
-                [class.error]="submitted() && name?.invalid"
-              />
-              @if (submitted() && name?.invalid) {
-                <span class="form-error">Name is required</span>
-              }
+              <label class="form-label">Full Name *</label>
+              <input class="form-input" [(ngModel)]="form.name" placeholder="Your name" />
             </div>
-
             <div class="form-row">
               <div class="form-group">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  class="form-input"
-                  formControlName="email"
-                  placeholder="your@email.com"
-                  [class.error]="submitted() && email?.invalid"
-                />
-                @if (submitted() && email?.invalid) {
-                  <span class="form-error">Valid email is required</span>
-                }
+                <label class="form-label">Email *</label>
+                <input class="form-input" type="email" [(ngModel)]="form.email" placeholder="you@company.com" />
               </div>
               <div class="form-group">
-                <label for="company" class="form-label">Company</label>
-                <input
-                  type="text"
-                  id="company"
-                  class="form-input"
-                  formControlName="company"
-                  placeholder="Your company"
-                  [class.error]="submitted() && company?.invalid"
-                />
-                @if (submitted() && company?.invalid) {
-                  <span class="form-error">Company is required</span>
-                }
+                <label class="form-label">Phone</label>
+                <input class="form-input" [(ngModel)]="form.phone" placeholder="+91 98765 43210" />
               </div>
             </div>
-
             <div class="form-group">
-              <label for="subject" class="form-label">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                class="form-input"
-                formControlName="subject"
-                placeholder="What is this about?"
-                [class.error]="submitted() && subject?.invalid"
-              />
-              @if (submitted() && subject?.invalid) {
-                <span class="form-error">Subject is required</span>
-              }
+              <label class="form-label">Company</label>
+              <input class="form-input" [(ngModel)]="form.company" placeholder="Your Company" />
             </div>
-
             <div class="form-group">
-              <label for="message" class="form-label">Message</label>
-              <textarea
-                id="message"
-                class="form-textarea"
-                formControlName="message"
-                placeholder="Tell us about your project..."
-                [class.error]="submitted() && message?.invalid"
-              ></textarea>
-              @if (submitted() && message?.invalid) {
-                <span class="form-error">Message is required</span>
-              }
+              <label class="form-label">Service Needed *</label>
+              <select class="form-select" [(ngModel)]="form.service">
+                <option value="">Select a service</option>
+                <option value="web_development">Web Development</option>
+                <option value="app_development">App Development</option>
+                <option value="game_development">Game Development</option>
+                <option value="ai_tools_integration">AI Tools Integration</option>
+                <option value="college_projects">College Projects / Internship</option>
+                <option value="digital_marketing">Digital Marketing</option>
+              </select>
             </div>
-
-            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
-          </form>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Budget Range</label>
+                <select class="form-select" [(ngModel)]="form.budget">
+                  <option value="">Select budget</option>
+                  <option value="under_50k">Under ₹50,000</option>
+                  <option value="50k_2l">₹50K – ₹2L</option>
+                  <option value="2l_5l">₹2L – ₹5L</option>
+                  <option value="5l_plus">₹5L+</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Timeline</label>
+                <input class="form-input" [(ngModel)]="form.timeline" placeholder="e.g. 3 months" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Project Brief *</label>
+              <textarea class="form-textarea" [(ngModel)]="form.message" placeholder="Tell us about your project..."></textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" (click)="submitEnquiry()" 
+                    style="width:100%;justify-content:center"
+                    [disabled]="submitting()">
+              {{ submitting() ? 'Sending...' : submitted() ? '✓ Sent Successfully' : 'Send Enquiry →' }}
+            </button>
+            <p class="form-note">SECURED WITH AES-256 ENCRYPTION · RESPONSE IN &lt;4 HRS</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="section faq-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="heading-2">Frequently Asked Questions</h2>
-      </div>
-      <div class="faq-grid">
-        <div class="faq-item card">
-          <h4>What's your typical project timeline?</h4>
-          <p>Most projects range from 2-6 months depending on scope and complexity. We'll provide a detailed timeline during the discovery phase.</p>
-        </div>
-        <div class="faq-item card">
-          <h4>Do you offer support after launch?</h4>
-          <p>Yes! We provide ongoing support, maintenance, and optimization services to ensure your project continues to succeed.</p>
-        </div>
-        <div class="faq-item card">
-          <h4>What technologies do you work with?</h4>
-          <p>We specialize in modern tech stacks including Angular, React, Node.js, Python, AWS, and more. We adapt to your needs.</p>
-        </div>
-        <div class="faq-item card">
-          <h4>How much does a project cost?</h4>
-          <p>Pricing depends on project scope. We offer flexible engagement models: fixed price, time & materials, or retainer-based.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+    </section>

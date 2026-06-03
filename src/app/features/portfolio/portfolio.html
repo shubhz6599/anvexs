@@ -1,50 +1,68 @@
-<main class="portfolio-page">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="section-eyebrow">Our Work</span>
-        <h1 class="display-2">Projects That<br><span class="gradient-text">Transform</span></h1>
-        <p class="hero-desc">Explore our portfolio of successful projects delivering real business impact.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Portfolio Grid -->
-  <section class="section portfolio-section">
-    <div class="container">
-      <div class="portfolio-grid">
-        @for (project of projects; track project.id) {
-          <div class="portfolio-card card">
-            <div class="project-image">{{ project.image }}</div>
-            <div class="project-content">
-              <span class="project-category">{{ project.category }}</span>
-              <h3 class="project-title">{{ project.title }}</h3>
-              <p class="project-desc">{{ project.description }}</p>
-              <div class="project-tags">
-                @for (tag of project.tags; track tag) {
-                  <span class="project-tag">{{ tag }}</span>
-                }
+   <section class="port-hero section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Our work</p>
+        <h1 class="display-xl reveal d1" style="max-width:820px;margin-bottom:20px">
+          230+ PROJECTS.<br><span class="g-text">ZERO COMPROMISES.</span>
+        </h1>
+        <p class="body-lg reveal d2" style="max-width:540px;margin-bottom:52px">
+          A curated look at the platforms, products, and systems we've architected —
+          from early-stage MVPs to enterprise-wide transformations.
+        </p>
+ 
+        <!-- Filters -->
+        <div class="filter-bar reveal d3">
+          @for (f of filters; track f.key) {
+            <button class="filter-btn"
+                    [class.active]="activeFilter() === f.key"
+                    (click)="setFilter(f.key)">
+              {{ f.label }}
+            </button>
+          }
+        </div>
+ 
+        <!-- Grid -->
+        <div class="port-grid">
+          @for (p of visibleProjects(); track p.title) {
+            <div class="p-card reveal" [class]="p.span" [class.p-card--tall]="p.tall">
+              <div class="p-card-bg" [style.background]="p.bg">
+                <span class="p-card-emoji">{{ p.emoji }}</span>
               </div>
-              <div class="project-result">
-                <span class="result-icon">✓</span>
-                <span>{{ project.result }}</span>
+              <div class="p-card-overlay"></div>
+              <div class="p-card-arrow">↗</div>
+              <div class="p-card-body">
+                <div class="p-card-cat">{{ p.cat }}</div>
+                <div class="p-card-title">{{ p.title }}</div>
+                <div class="p-card-sub">{{ p.sub }}</div>
               </div>
             </div>
-          </div>
-        }
+          }
+        </div>
+ 
+        <!-- Numbers -->
+        <div class="port-numbers">
+          @for (n of numbers; track n.label) {
+            <div class="pn-card reveal">
+              <div class="pn-val" [class]="n.cls">{{ n.val }}</div>
+              <div class="pn-lbl">{{ n.label }}</div>
+            </div>
+          }
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section cta-section">
-    <div class="container">
-      <div class="cta-card card">
-        <h3>Ready to Build Your Next Project?</h3>
-        <p>Let's create something amazing together.</p>
-        <a routerLink="/contact" class="btn btn-primary btn-lg">Start a Project</a>
+    </section>
+ 
+    <!-- ═══ CTA ═══════════════════════════════ -->
+    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow reveal" style="justify-content:center">Next case study</p>
+        <h2 class="display-lg reveal d1" style="margin-bottom:16px">
+          COULD BE<br><span class="g-text">YOURS.</span>
+        </h2>
+        <p class="body-md reveal d2" style="max-width:440px;margin:0 auto 36px">
+          Tell us about your project and let's build something remarkable together.
+        </p>
+        <div class="reveal d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a routerLink="/contact" class="btn btn-primary btn-lg">Start a Project</a>
+          <a routerLink="/services" class="btn btn-ghost btn-lg">See Services</a>
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>

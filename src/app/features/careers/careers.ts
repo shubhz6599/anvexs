@@ -1,118 +1,62 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-interface Job {
-  id: number;
-  title: string;
-  department: string;
-  location: string;
-  type: string;
-  level: string;
-  description: string;
-}
-
-interface Perk {
-  icon: string;
-  title: string;
-  description: string;
-}
+import { FormsModule } from '@angular/forms';
+import { RevealService } from '../../core/services/reveal.service';
+import { CareerService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-careers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './careers.html',
   styleUrl: './careers.scss',
 })
-export class Careers {
-  jobs: Job[] = [
-    {
-      id: 1,
-      title: 'Senior Full Stack Engineer',
-      department: 'Engineering',
-      location: 'Remote',
-      type: 'Full-time',
-      level: 'Senior',
-      description: 'Lead development of scalable web applications using modern frameworks.',
-    },
-    {
-      id: 2,
-      title: 'AI/ML Engineer',
-      department: 'Engineering',
-      location: 'Remote',
-      type: 'Full-time',
-      level: 'Mid-level',
-      description: 'Build intelligent solutions using machine learning and deep learning.',
-    },
-    {
-      id: 3,
-      title: 'Product Designer',
-      department: 'Design',
-      location: 'Remote',
-      type: 'Full-time',
-      level: 'Mid-level',
-      description: 'Design beautiful and intuitive user experiences for our clients.',
-    },
-    {
-      id: 4,
-      title: 'DevOps Engineer',
-      department: 'Infrastructure',
-      location: 'Remote',
-      type: 'Full-time',
-      level: 'Mid-level',
-      description: 'Build and maintain cloud infrastructure and deployment pipelines.',
-    },
-    {
-      id: 5,
-      title: 'QA Automation Engineer',
-      department: 'Quality',
-      location: 'Remote',
-      type: 'Full-time',
-      level: 'Mid-level',
-      description: 'Develop automated testing frameworks and ensure product quality.',
-    },
-    {
-      id: 6,
-      title: 'Business Development Lead',
-      department: 'Sales',
-      location: 'Remote',
-      type: 'Full-time',
-      level: 'Senior',
-      description: 'Build partnerships and drive revenue growth for Anvexs.',
-    },
+export class Careers implements AfterViewInit, OnDestroy {
+  private reveal = inject(RevealService);
+  careerSvc = inject(CareerService);
+  submitted = signal(false);
+
+  formData = {
+    name: '', email: '', phone: '', position: '', experience: 0,
+    linkedin: '', portfolio: '', coverLetter: ''
+  };
+
+  jobs = [
+    { title: 'Senior Full-Stack Developer', type: 'full_time', department: 'Engineering', location: 'Remote/Hyderabad', experience: '3-6 years', description: 'Lead architecture and development of high-performance web platforms.', skills: ['Angular', 'Node.js', 'MongoDB', 'AWS'] },
+    { title: 'AI/ML Engineer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '2-5 years', description: 'Build production AI systems and LLM-powered applications.', skills: ['Python', 'LangChain', 'TensorFlow', 'FastAPI'] },
+    { title: 'UI/UX Designer', type: 'full_time', department: 'Design', location: 'Hyderabad', experience: '2-4 years', description: 'Design delightful user experiences for enterprise products.', skills: ['Figma', 'Adobe XD', 'Motion Design'] },
+    { title: 'React Native Developer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '2-4 years', description: 'Build cross-platform mobile experiences.', skills: ['React Native', 'TypeScript', 'Firebase'] },
+    { title: 'DevOps / Cloud Engineer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '3-6 years', description: 'Architect and maintain scalable cloud infrastructure.', skills: ['Kubernetes', 'AWS', 'Terraform', 'Docker'] },
+    { title: 'Software Development Intern', type: 'internship', department: 'Engineering', location: 'Remote', experience: '0 years', description: '3-month paid internship to level up your skills.', skills: ['Any Stack', 'Eagerness to Learn'] },
   ];
 
-  perks: Perk[] = [
-    {
-      icon: '💰',
-      title: 'Competitive Salary',
-      description: 'Market-leading compensation with performance bonuses',
-    },
-    {
-      icon: '🏥',
-      title: 'Health Benefits',
-      description: 'Comprehensive health, dental, and vision coverage',
-    },
-    {
-      icon: '📚',
-      title: 'Learning Budget',
-      description: '$2000 annual budget for courses, certifications, and conferences',
-    },
-    {
-      icon: '🏠',
-      title: 'Remote-First',
-      description: 'Work from anywhere with flexible working hours',
-    },
-    {
-      icon: '🌴',
-      title: 'Unlimited PTO',
-      description: 'Work-life balance is crucial, take time off when you need it',
-    },
-    {
-      icon: '🎮',
-      title: 'Team Culture',
-      description: 'Collaborative team events and social activities',
-    },
+  internshipBenefits = [
+    { icon: '💰', title: '₹20K/month', desc: 'Competitive internship stipend + bonus on successful completion.' },
+    { icon: '👨‍💼', title: 'Real Mentorship', desc: 'Learn directly from senior engineers building production systems.' },
+    { icon: '🎓', title: 'Certificate', desc: 'Industry-recognized certificate of completion.' },
+    { icon: '🚀', title: 'Live Projects', desc: 'Work on real client projects with real deadlines.' },
+    { icon: '📊', title: 'Performance Review', desc: 'Detailed feedback to guide your engineering growth.' },
+    { icon: '🔗', title: 'Placement Referral', desc: 'Strong performers get permanent job offers.' },
   ];
+
+  submitApplication() {
+    if (!this.formData.name || !this.formData.email || !this.formData.position) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    this.careerSvc.apply(this.formData as any).subscribe({
+      next: () => { this.submitted.set(true); this.formData = { name: '', email: '', phone: '', position: '', experience: 0, linkedin: '', portfolio: '', coverLetter: '' }; },
+      error: (err) => alert('Error submitting application: ' + err.message),
+    });
+  }
+
+  scrollToApply() {
+    setTimeout(() => {
+      document.querySelector('[#applySection]')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }
+
+  ngAfterViewInit() { this.reveal.init(); }
+  ngOnDestroy()     { this.reveal.destroy(); }
 }

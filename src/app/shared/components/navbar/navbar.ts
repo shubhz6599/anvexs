@@ -1,51 +1,39 @@
 import {
-  Component, OnInit, OnDestroy, signal, HostListener, inject
+  Component, signal,
+  HostListener, inject, ChangeDetectionStrategy
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
 
-interface NavItem {
-  label: string;
-  path: string;
-}
-
 @Component({
   selector: 'app-navbar',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
-export class NavbarComponent implements OnInit, OnDestroy {
-  authService = inject(AuthService);
+export class NavbarComponent {
+   auth = inject(AuthService);
+  scrolled = signal(false);
+  menuOpen = signal(false);
 
-  isScrolled = signal(false);
-  mobileMenuOpen = signal(false);
-
-  navItems: NavItem[] = [
-    { label: 'Home', path: '/' },
-    { label: 'Services', path: '/services' },
+  navItems = [
+    { label: 'Home',      path: '/' },
+    { label: 'About',     path: '/about' },
+    { label: 'Services',  path: '/services' },
     { label: 'Portfolio', path: '/portfolio' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'Pricing', path: '/pricing' },
-    { label: 'Careers', path: '/careers' },
-    { label: 'Contact', path: '/contact' },
+    { label: 'Pricing',   path: '/pricing' },
+    { label: 'Blog',      path: '/blog' },
+    { label: 'Clients',   path: '/testimonials' },
+    { label: 'Careers',   path: '/careers' },
+    { label: 'Contact',   path: '/contact' },
   ];
 
   @HostListener('window:scroll')
-  onScroll(): void {
-    this.isScrolled.set(window.scrollY > 20);
-  }
+  onScroll() { this.scrolled.set(window.scrollY > 24); }
 
-  ngOnInit(): void { }
-  ngOnDestroy(): void { }
-
-  toggleMobileMenu(): void {
-    this.mobileMenuOpen.update(v => !v);
-  }
-
-  closeMobileMenu(): void {
-    this.mobileMenuOpen.set(false);
-  }
+  toggleMenu() { this.menuOpen.update(v => !v); }
+  closeMenu()  { this.menuOpen.set(false); }
 }

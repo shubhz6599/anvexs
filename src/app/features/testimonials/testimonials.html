@@ -1,72 +1,101 @@
-<main class="testimonials-page">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="section-eyebrow">Client Feedback</span>
-        <h1 class="display-2">Loved by<br><span class="gradient-text">Our Clients</span></h1>
-        <p class="hero-desc">Don't just take our word for it. Hear from the teams we have had the privilege to work with.</p>
+    <section class="testi-hero section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Client voices</p>
+        <h1 class="display-xl reveal d1" style="max-width:760px;margin-bottom:20px">
+          WHAT OUR <span class="g-text">CLIENTS</span><br>ACTUALLY SAY
+        </h1>
+        <p class="body-lg reveal d2" style="max-width:520px;margin-bottom:56px">
+          Unfiltered feedback from the teams who trusted us to build their most important products.
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- Testimonials Grid -->
-  <section class="section testimonials-section">
-    <div class="container">
-      <div class="testimonials-grid">
-        @for (testimonial of testimonials; track testimonial.name) {
-          <div class="testimonial-card card">
-            <div class="rating">
-              @for (i of [1,2,3,4,5]; track i) {
-                <span class="star">★</span>
-              }
-            </div>
-            <p class="testimonial-content">"{{ testimonial.content }}"</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">{{ testimonial.image }}</div>
-              <div class="author-info">
-                <h4 class="author-name">{{ testimonial.name }}</h4>
-                <p class="author-role">{{ testimonial.role }}, {{ testimonial.company }}</p>
+ 
+      <!-- Marquee 1 -->
+      <div class="marquee-wrap reveal-right d3">
+        <div class="marquee">
+          @for (t of testimonials; track t.author) {
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <div class="testi-quote">{{ t.quote }}</div>
+              <div class="testi-author">
+                <div class="testi-avatar" [style.background]="t.grad">{{ t.initials }}</div>
+                <div>
+                  <div class="testi-name">{{ t.author }}</div>
+                  <div class="testi-role">{{ t.role }}</div>
+                </div>
               </div>
             </div>
+          }
+          @for (t of testimonials; track t.author) {
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <div class="testi-quote">{{ t.quote }}</div>
+              <div class="testi-author">
+                <div class="testi-avatar" [style.background]="t.grad">{{ t.initials }}</div>
+                <div>
+                  <div class="testi-name">{{ t.author }}</div>
+                  <div class="testi-role">{{ t.role }}</div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+ 
+      <!-- Marquee 2 (reversed) -->
+      <div class="marquee-wrap reveal-left d4" style="margin-top:24px">
+        <div class="marquee marquee--reverse">
+          @for (t of testimonials | slice:0:3; track t.author) {
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <div class="testi-quote">{{ t.quote }}</div>
+              <div class="testi-author">
+                <div class="testi-avatar" [style.background]="t.grad">{{ t.initials }}</div>
+                <div>
+                  <div class="testi-name">{{ t.author }}</div>
+                  <div class="testi-role">{{ t.role }}</div>
+                </div>
+              </div>
+            </div>
+          }
+          @for (t of testimonials | slice:0:3; track t.author) {
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <div class="testi-quote">{{ t.quote }}</div>
+              <div class="testi-author">
+                <div class="testi-avatar" [style.background]="t.grad">{{ t.initials }}</div>
+                <div>
+                  <div class="testi-name">{{ t.author }}</div>
+                  <div class="testi-role">{{ t.role }}</div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+ 
+      <!-- Companies -->
+      <div class="companies-section section">
+        <div class="wrap">
+          <div class="companies-label reveal">Trusted by these companies</div>
+          <div class="companies-grid">
+            @for (c of companies; track c; let i = $index) {
+              <div class="company-cell reveal" [class]="'d' + ((i % 6) + 1)">{{ c }}</div>
+            }
           </div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="section stats-section">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="stat-number">200+</div>
-          <div class="stat-label">Happy Clients</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">98%</div>
-          <div class="stat-label">Satisfaction Rate</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">4.9</div>
-          <div class="stat-label">Average Rating</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">500M+</div>
-          <div class="stat-label">Users Impacted</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section cta-section">
-    <div class="container">
-      <div class="cta-card card">
-        <h3>Ready to join our success stories?</h3>
-        <p>Let's partner together to build something remarkable.</p>
-        <a routerLink="/contact" class="btn btn-primary btn-lg">Start Conversation</a>
+    </section>
+ 
+    <!-- ═══ CTA ═══════════════════════════════ -->
+    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow reveal" style="justify-content:center">Ready?</p>
+        <h2 class="display-lg reveal d1" style="margin-bottom:36px">
+          YOUR SUCCESS STORY<br>STARTS <span class="g-text">HERE</span>
+        </h2>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap" class="reveal d2">
+          <a routerLink="/contact" class="btn btn-primary btn-lg">Schedule Discovery</a>
+          <a routerLink="/pricing" class="btn btn-ghost btn-lg">View Pricing</a>
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>

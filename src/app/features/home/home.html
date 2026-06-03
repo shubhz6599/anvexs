@@ -1,12 +1,12 @@
  <!-- ═══ HERO SECTION ═══════════════════ -->
-    <section class="hero" #heroSection>
+    <section class="hero section" #heroSection>
       <div class="hero-bg">
         <div class="hero-orb hero-orb-1"></div>
         <div class="hero-orb hero-orb-2"></div>
         <div class="hero-grid"></div>
       </div>
  
-      <div class="container hero-content">
+      <div class="wrap hero-content">
         <div class="hero-eyebrow reveal">
           <span class="badge badge-primary">
             <span class="pulse-dot"></span>
@@ -14,9 +14,9 @@
           </span>
         </div>
  
-        <h1 class="display-2 hero-title">
+        <h1 class="display-hero hero-title">
           <span class="hero-title-line reveal">Enterprise</span>
-          <span class="hero-title-line gradient-text reveal reveal-delay-1">Technology.</span>
+          <span class="hero-title-line hero-title-highlight gradient-text reveal reveal-delay-1">Technology.</span>
           <span class="hero-title-line reveal reveal-delay-2">Reimagined.</span>
         </h1>
  
@@ -47,15 +47,17 @@
       </div>
  
       <!-- Scroll indicator -->
-      <div class="scroll-indicator">
-        <div class="scroll-line"></div>
-        <span class="scroll-text">Scroll</span>
-      </div>
+      @if (showScrollIndicator()) {
+        <div class="scroll-indicator">
+          <div class="scroll-line"></div>
+          <span class="scroll-text">Scroll</span>
+        </div>
+      }
     </section>
  
     <!-- ═══ STATS SECTION ══════════════════ -->
     <section class="stats-section section">
-      <div class="container">
+      <div class="wrap">
         <div class="stats-grid">
           @for (stat of stats; track stat.label) {
             <div class="stat-card reveal">
@@ -72,7 +74,7 @@
  
     <!-- ═══ SERVICES OVERVIEW ═══════════════ -->
     <section class="services-overview section">
-      <div class="container">
+      <div class="wrap">
         <div class="section-header reveal">
           <span class="section-eyebrow">What we do</span>
           <h2 class="heading-1">End-to-end digital<br>transformation</h2>
@@ -114,7 +116,7 @@
  
     <!-- ═══ WHY ANVEXS ════════════════════════ -->
     <section class="why-section section">
-      <div class="container">
+      <div class="wrap">
         <div class="why-grid">
           <div class="why-left reveal">
             <span class="section-eyebrow">Why Anvexs</span>
@@ -144,7 +146,7 @@
  
     <!-- ═══ CTA SECTION ════════════════════ -->
     <section class="cta-section section">
-      <div class="container">
+      <div class="wrap">
         <div class="cta-card reveal">
           <div class="cta-glow"></div>
           <div class="cta-content">

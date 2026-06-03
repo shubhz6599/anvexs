@@ -1,86 +1,36 @@
-import { Component, signal } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-interface ContactInfo {
-  icon: string;
-  title: string;
-  content: string;
-  link?: string;
-}
+import { FormsModule } from '@angular/forms';
+import { RevealService } from '../../core/services/reveal.service';
+import { EnquiryService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './contact.html',
   styleUrl: './contact.scss',
 })
-export class Contact {
-  contactForm: FormGroup;
+export class Contact implements AfterViewInit, OnDestroy {
+  private reveal = inject(RevealService);
+  private enquiry = inject(EnquiryService);
+  submitting = signal(false);
   submitted = signal(false);
-  success = signal(false);
 
-  contactInfo: ContactInfo[] = [
-    {
-      icon: '📧',
-      title: 'Email',
-      content: 'hello@anvexs.com',
-      link: 'mailto:hello@anvexs.com',
-    },
-    {
-      icon: '📱',
-      title: 'Phone',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
-    },
-    {
-      icon: '📍',
-      title: 'Office',
-      content: 'San Francisco, USA',
-    },
-    {
-      icon: '⏰',
-      title: 'Hours',
-      content: 'Mon - Fri, 9am - 6pm PST',
-    },
-  ];
+  form = { name: '', email: '', phone: '', company: '', service: '', budget: '', timeline: '', message: '' };
 
-  constructor(private fb: FormBuilder) {
-    this.contactForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      company: ['', Validators.required],
-      subject: ['', Validators.required],
-      message: ['', Validators.required],
+  submitEnquiry() {
+    if (!this.form.name || !this.form.email || !this.form.service || !this.form.message) {
+      alert('Please fill all required fields');
+      return;
+    }
+    this.submitting.set(true);
+    this.enquiry.submit(this.form as any).subscribe({
+      next: () => { this.submitted.set(true); this.form = { name: '', email: '', phone: '', company: '', service: '', budget: '', timeline: '', message: '' }; this.submitting.set(false); },
+      error: () => { alert('Error submitting. Please try again.'); this.submitting.set(false); },
     });
   }
 
-  onSubmit(): void {
-    this.submitted.set(true);
-    if (this.contactForm.valid) {
-      // In a real app, you would send this to your backend
-      console.log('Form submitted:', this.contactForm.value);
-      this.success.set(true);
-      this.contactForm.reset();
-      this.submitted.set(false);
-      setTimeout(() => this.success.set(false), 3000);
-    }
-  }
-
-  get name() {
-    return this.contactForm.get('name');
-  }
-  get email() {
-    return this.contactForm.get('email');
-  }
-  get company() {
-    return this.contactForm.get('company');
-  }
-  get subject() {
-    return this.contactForm.get('subject');
-  }
-  get message() {
-    return this.contactForm.get('message');
-  }
+  ngAfterViewInit() { this.reveal.init(); }
+  ngOnDestroy()     { this.reveal.destroy(); }
 }
