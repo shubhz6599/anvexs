@@ -33,11 +33,11 @@
     }
     .nav__logo-mark {
       width: 36px; height: 36px;
-      background: linear-gradient(135deg, #0af, #b8ff00);
+      // background: linear-gradient(135deg, #0af, #b8ff00);
       border-radius: 9px;
       display: flex; align-items: center; justify-content: center;
       font-family: var(--f-display); font-size: 1.3rem;
-      color: #000; font-weight: 900;
+      color: transparent !important; font-weight: 900;
       box-shadow: 0 0 18px rgba(0,170,255,.28);
       transition: box-shadow .3s, transform .3s;
     }
@@ -138,7 +138,7 @@
       text-decoration: none; display: flex; align-items: center; gap: 8px;
       span {
         width: 28px; height: 28px;
-        background: linear-gradient(135deg, #0af, #b8ff00);
+        // background: linear-gradient(135deg, #0af, #b8ff00);
         border-radius: 6px;
         display: flex; align-items: center; justify-content: center;
         font-weight: 900; color: #000; font-size: .9rem;

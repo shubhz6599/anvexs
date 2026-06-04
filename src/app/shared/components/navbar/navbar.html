@@ -1,8 +1,10 @@
- <header class="nav" [class.nav--stuck]="scrolled()" [class.nav--open]="menuOpen()">
+  <header class="nav" [class.nav--stuck]="scrolled()" [class.nav--open]="menuOpen()">
       <div class="nav__inner wrap">
         <!-- Logo -->
-        <a routerLink="/" class="nav__logo" (click)="closeMenu()">
-          <div class="nav__logo-mark">A</div>
+            <a routerLink="/" class="nav__logo" (click)="closeMenu()">
+          <div class="nav__logo-mark">
+            <img src="images/anvexs-logo.png" alt="Anvexs logo" />
+          </div>
           <div class="nav__logo-text">
             <span class="nav__logo-name">ANVEXS</span>
             <span class="nav__logo-sub">IT HUB</span>
@@ -42,14 +44,16 @@
         </button>
       </div>
 
-      <!-- Mobile Drawer (Full Screen Overlay) -->
+      <!-- Mobile Overlay -->
       @if (menuOpen()) {
         <div class="nav__overlay" (click)="closeMenu()"></div>
       }
+
+      <!-- Mobile Drawer -->
       <div class="nav__drawer" [class.nav__drawer--open]="menuOpen()">
         <div class="nav__drawer-header">
           <a routerLink="/" class="nav__drawer-logo" (click)="closeMenu()">
-            <span>A</span> ANVEXS
+            <span><img src="images/anvexs-logo.png" alt="Anvexs logo" /></span> 
           </a>
           <button class="nav__drawer-close" (click)="closeMenu()">✕</button>
         </div>
@@ -71,20 +75,20 @@
 
         <div class="nav__drawer-contact">
           <p class="drawer-label">Contact Us</p>
-          <a href="https://wa.me/7841868521" class="drawer-btn">
+          <a href="https://wa.me/7841868521" target="_blank" class="drawer-btn" (click)="closeMenu()">
             <span>💬</span> WhatsApp
           </a>
-          <a href="mailto:info@anvexs.com" class="drawer-btn">
+          <a href="mailto:info@anvexs.com" class="drawer-btn" (click)="closeMenu()">
             <span>📧</span> Email
           </a>
-          <a href="tel:+917841868521" class="drawer-btn">
+          <a href="tel:+917841868521" class="drawer-btn" (click)="closeMenu()">
             <span>📞</span> Call
           </a>
         </div>
 
         <div class="nav__drawer-socials">
-          <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="social-icon">in</a>
-          <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="social-icon">ig</a>
+          <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="social-icon" (click)="closeMenu()">in</a>
+          <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="social-icon" (click)="closeMenu()">ig</a>
         </div>
       </div>
     </header>
