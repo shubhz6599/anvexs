@@ -16,7 +16,7 @@ export class Careers implements AfterViewInit, OnDestroy {
   private reveal = inject(RevealService);
   careerSvc = inject(CareerService);
   submitted = signal(false);
-
+cvFile:any;
   formData = {
     name: '', email: '', phone: '', position: '', experience: 0,
     linkedin: '', portfolio: '', coverLetter: ''
@@ -32,7 +32,7 @@ export class Careers implements AfterViewInit, OnDestroy {
   ];
 
   internshipBenefits = [
-    { icon: '💰', title: '₹20K/month', desc: 'Competitive internship stipend + bonus on successful completion.' },
+    { icon: '💰', title: 'Free Internship', desc: 'Competitive internship stipend + bonus on successful completion.' },
     { icon: '👨‍💼', title: 'Real Mentorship', desc: 'Learn directly from senior engineers building production systems.' },
     { icon: '🎓', title: 'Certificate', desc: 'Industry-recognized certificate of completion.' },
     { icon: '🚀', title: 'Live Projects', desc: 'Work on real client projects with real deadlines.' },
@@ -41,14 +41,29 @@ export class Careers implements AfterViewInit, OnDestroy {
   ];
 
   submitApplication() {
-    if (!this.formData.name || !this.formData.email || !this.formData.position) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    this.careerSvc.apply(this.formData as any).subscribe({
+    this.validateCareerForm()
+    this.careerSvc.apply(this.formData as any, this.cvFile).subscribe({
       next: () => { this.submitted.set(true); this.formData = { name: '', email: '', phone: '', position: '', experience: 0, linkedin: '', portfolio: '', coverLetter: '' }; },
       error: (err) => alert('Error submitting application: ' + err.message),
     });
+  }
+
+  validateCareerForm() {
+    const errors = [];
+
+    if (!this.formData.name) errors.push('Name required');
+    if (!this.formData.email) errors.push('Email required');
+    if (!this.formData.position) errors.push('Position required');
+    if (!this.cvFile) errors.push('CV required');
+    if (!this.formData.phone) errors.push('Phone required');
+    if (!this.formData.email.includes('@')) errors.push('Invalid email');
+    if (this.formData.phone.length < 10) errors.push('Invalid phone');
+
+    return errors;
+  }
+
+  onCVSelected(eve: any) {
+
   }
 
   scrollToApply() {
@@ -58,5 +73,5 @@ export class Careers implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() { this.reveal.init(); }
-  ngOnDestroy()     { this.reveal.destroy(); }
+  ngOnDestroy() { this.reveal.destroy(); }
 }

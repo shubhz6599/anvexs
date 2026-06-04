@@ -1,4 +1,4 @@
-  <section class="contact-hero section">
+ <section class="contact-hero section">
       <div class="wrap">
         <p class="eyebrow reveal">Get in touch</p>
         <h1 class="display-xl reveal d1" style="max-width:660px;margin-bottom:52px">
@@ -6,26 +6,31 @@
         </h1>
 
         <div class="contact-grid">
+          <!-- Left Info -->
           <div class="contact-info">
             <div>
               <h3 class="display-lg" style="margin-bottom:18px">Start a Conversation</h3>
               <p class="body-md">Whether you have a brief ready or just an idea — we'd love to hear it. Response within 4 business hours guaranteed.</p>
             </div>
+
             <div class="contact-item reveal d2">
               <div class="contact-label">Email</div>
-              <div class="contact-value">hello@anvexs.com</div>
+              <div class="contact-value">info@anvexs.com</div>
               <div class="contact-sub">For all enquiries & partnerships</div>
             </div>
+
             <div class="contact-item reveal d3">
               <div class="contact-label">Phone</div>
-              <div class="contact-value">+91 99999 99999</div>
+              <div class="contact-value">+91 7841868521</div>
               <div class="contact-sub">Mon–Sat · 9am–7pm IST</div>
             </div>
+
             <div class="contact-item reveal d4">
               <div class="contact-label">Location</div>
-              <div class="contact-value">HITEC City, Hyderabad</div>
-              <div class="contact-sub">Telangana, India — 500081</div>
+              <div class="contact-value">Ahilyanagar, MH</div>
+              <div class="contact-sub">Ahilyanagr, India — 414001</div>
             </div>
+
             <div class="contact-social reveal d5">
               <a href="https://linkedin.com/company/anvexs" target="_blank" class="social-link">
                 <span>💼</span> LinkedIn
@@ -39,64 +44,75 @@
             </div>
           </div>
 
-          <div class="contact-form-wrap reveal reveal-right d1" style="max-width:580px">
+          <!-- Right Form -->
+          <div class="contact-form-wrap reveal reveal-right d1">
             <p class="eyebrow">Send an Enquiry</p>
-            <div class="form-group">
-              <label class="form-label">Full Name *</label>
-              <input class="form-input" [(ngModel)]="form.name" placeholder="Your name" />
-            </div>
-            <div class="form-row">
+
+            @if (submitted()) {
+              <div class="form-success">
+                <div class="success-icon">✓</div>
+                <h3>Thank You!</h3>
+                <p>We've received your enquiry and will contact you within 24 hours.</p>
+                <button class="btn btn-primary btn-sm" (click)="resetForm()">Send Another</button>
+              </div>
+            } @else {
               <div class="form-group">
-                <label class="form-label">Email *</label>
-                <input class="form-input" type="email" [(ngModel)]="form.email" placeholder="you@company.com" />
+                <label class="form-label">Full Name *</label>
+                <input class="form-input" [(ngModel)]="form.name" placeholder="Your name" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email *</label>
+                  <input class="form-input" type="email" [(ngModel)]="form.email" placeholder="you@company.com" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone</label>
+                  <input class="form-input" [(ngModel)]="form.phone" placeholder="+91 98765 43210" />
+                </div>
               </div>
               <div class="form-group">
-                <label class="form-label">Phone</label>
-                <input class="form-input" [(ngModel)]="form.phone" placeholder="+91 98765 43210" />
+                <label class="form-label">Company</label>
+                <input class="form-input" [(ngModel)]="form.company" placeholder="Your Company" />
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Company</label>
-              <input class="form-input" [(ngModel)]="form.company" placeholder="Your Company" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Service Needed *</label>
-              <select class="form-select" [(ngModel)]="form.service">
-                <option value="">Select a service</option>
-                <option value="web_development">Web Development</option>
-                <option value="app_development">App Development</option>
-                <option value="game_development">Game Development</option>
-                <option value="ai_tools_integration">AI Tools Integration</option>
-                <option value="college_projects">College Projects / Internship</option>
-                <option value="digital_marketing">Digital Marketing</option>
-              </select>
-            </div>
-            <div class="form-row">
               <div class="form-group">
-                <label class="form-label">Budget Range</label>
-                <select class="form-select" [(ngModel)]="form.budget">
-                  <option value="">Select budget</option>
-                  <option value="under_50k">Under ₹50,000</option>
-                  <option value="50k_2l">₹50K – ₹2L</option>
-                  <option value="2l_5l">₹2L – ₹5L</option>
-                  <option value="5l_plus">₹5L+</option>
+                <label class="form-label">Service Needed *</label>
+                <select class="form-select" [(ngModel)]="form.service">
+                  <option value="">Select a service</option>
+                  <option value="web_development">Web Development</option>
+                  <option value="app_development">App Development</option>
+                  <option value="game_development">Game Development</option>
+                  <option value="ai_tools_integration">AI Tools Integration</option>
+                  <option value="college_projects">College Projects / Internship</option>
+                  <option value="digital_marketing">Digital Marketing</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label class="form-label">Timeline</label>
-                <input class="form-input" [(ngModel)]="form.timeline" placeholder="e.g. 3 months" />
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Budget Range</label>
+                  <select class="form-select" [(ngModel)]="form.budget">
+                    <option value="">Select budget</option>
+                    <option value="under_50k">Under ₹50,000</option>
+                    <option value="50k_2l">₹50K – ₹2L</option>
+                    <option value="2l_5l">₹2L – ₹5L</option>
+                    <option value="5l_plus">₹5L+</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Timeline</label>
+                  <input class="form-input" [(ngModel)]="form.timeline" placeholder="e.g. 3 months" />
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Project Brief *</label>
-              <textarea class="form-textarea" [(ngModel)]="form.message" placeholder="Tell us about your project..."></textarea>
-            </div>
-            <button class="btn btn-primary btn-lg" (click)="submitEnquiry()" 
-                    style="width:100%;justify-content:center"
-                    [disabled]="submitting()">
-              {{ submitting() ? 'Sending...' : submitted() ? '✓ Sent Successfully' : 'Send Enquiry →' }}
-            </button>
-            <p class="form-note">SECURED WITH AES-256 ENCRYPTION · RESPONSE IN &lt;4 HRS</p>
+              <div class="form-group">
+                <label class="form-label">Project Brief *</label>
+                <textarea class="form-textarea" [(ngModel)]="form.message" placeholder="Tell us about your project..."></textarea>
+              </div>
+              <button class="btn btn-primary btn-lg" (click)="submitEnquiry()"
+                      style="width:100%;justify-content:center"
+                      [disabled]="submitting()">
+                {{ submitting() ? 'Sending...' : 'Send Enquiry →' }}
+              </button>
+              <p class="form-note">SECURED WITH AES-256 ENCRYPTION · RESPONSE IN &lt;4 HRS</p>
+            }
           </div>
         </div>
       </div>

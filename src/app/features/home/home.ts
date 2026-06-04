@@ -29,14 +29,15 @@ interface ServiceCard {
 export class HomeComponent implements AfterViewInit {
   showScrollIndicator = signal(true);
   stats: Stat[] = [
-    { value: '200', suffix: '+', label: 'Projects Delivered' },
-    { value: '98', suffix: '%', label: 'Client Satisfaction' },
-    { value: '50', suffix: '+', label: 'Tech Professionals' },
+    { value: '5', suffix: '+', label: 'Projects Delivered' },
+    { value: '100', suffix: '%', label: 'Client Satisfaction' },
+    { value: '10', suffix: '+', label: 'Tech Professionals' },
     { value: '5', suffix: 'yr', label: 'Industry Experience' },
   ];
- 
+
+
   trustLogos = ['TechCorp', 'InnovateLab', 'BuilderX', 'Startify', 'NovaSoft'];
- 
+
   services: ServiceCard[] = [
     {
       icon: '⚡',
@@ -71,14 +72,14 @@ export class HomeComponent implements AfterViewInit {
       color: '#ff6b6b',
     },
   ];
- 
+
   pillars = [
     { title: 'Production-first mindset', desc: 'Every deliverable is production-ready from day one. No prototypes shipped as products.' },
     { title: 'Security by design', desc: 'Encryption, auth flows, and threat modelling baked into the architecture — not bolted on.' },
     { title: 'Transparent delivery', desc: "Agile sprints with real-time dashboards. You always know exactly what's being built and when." },
     { title: 'Long-term partnership', desc: "We're not a one-project vendor. We become your extended engineering arm." },
   ];
- 
+
   ngAfterViewInit(): void {
     this.initScrollReveal();
     this.initScrollListener();
@@ -93,7 +94,7 @@ export class HomeComponent implements AfterViewInit {
       }
     });
   }
- 
+
   private initScrollReveal(): void {
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('up')),

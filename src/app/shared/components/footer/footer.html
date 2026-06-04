@@ -1,20 +1,36 @@
- <footer class="footer">
+  <footer class="footer">
       <div class="wrap">
         <div class="footer-grid">
+          <!-- Brand -->
           <div class="footer-brand">
             <a routerLink="/" class="footer-logo">
-              <div class="footer-logo-mark">
-                <img src="images/anvexs-logo.png" alt="Anvexs logo" />
+              <div class="footer-logo-mark">A</div>
+              <div class="footer-logo-text">
+                <div>ANVEXS</div>
+                <div class="footer-logo-sub">IT HUB</div>
               </div>
-              <div class="footer-logo-text">ANVEXS<span class="footer-logo-sub">IT HUB</span></div>
             </a>
-            <p class="footer-desc">Enterprise-grade technology solutions that transform businesses.</p>
+            <p class="footer-desc">Building enterprise-grade technology solutions for startups and businesses.</p>
+
+            <div class="footer-stats">
+              <div class="stat">
+                <div class="stat-num">5+</div>
+                <div class="stat-txt">Projects Delivered</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">10+</div>
+                <div class="stat-txt">Tech Professionals</div>
+              </div>
+            </div>
+
             <div class="footer-socials">
-              <a href="https://linkedin.com" target="_blank" class="footer-social-btn">💼</a>
-              <a href="https://instagram.com" target="_blank" class="footer-social-btn">📸</a>
-              <a href="https://wa.me/919999999999" target="_blank" class="footer-social-btn">💬</a>
+              <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="footer-social-btn" title="LinkedIn">💼</a>
+              <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="footer-social-btn" title="Instagram">📸</a>
+              <a href="https://wa.me/7841868521" target="_blank" class="footer-social-btn" title="WhatsApp">💬</a>
             </div>
           </div>
+
+          <!-- Services -->
           <div class="footer-col">
             <h4 class="footer-col-title">Services</h4>
             <ul class="footer-links">
@@ -25,6 +41,8 @@
               <li><a routerLink="/services">College Projects</a></li>
             </ul>
           </div>
+
+          <!-- Company -->
           <div class="footer-col">
             <h4 class="footer-col-title">Company</h4>
             <ul class="footer-links">
@@ -35,19 +53,32 @@
               <li><a routerLink="/pricing">Pricing</a></li>
             </ul>
           </div>
+
+          <!-- Contact -->
           <div class="footer-col">
-            <h4 class="footer-col-title">Contact</h4>
+            <h4 class="footer-col-title">Get In Touch</h4>
             <ul class="footer-contact">
-              <li><a href="mailto:hello@anvexs.com">hello@anvexs.com</a></li>
-              <li><a href="tel:+919999999999">+91 99999 99999</a></li>
-              <li>HITEC City, Hyderabad</li>
+              <li>
+                <a href="mailto:info@anvexs.com">📧 info@anvexs.com</a>
+              </li>
+              <li>
+                <a href="tel:+917841868521">📞 +91 7841868521</a>
+              </li>
+              <li>
+                <a href="https://wa.me/7841868521" target="_blank">💬 WhatsApp</a>
+              </li>
+              <li style="margin-top:12px;color:var(--text-3)">
+                📍 Ahilyanagar, Maharashtra
+              </li>
             </ul>
           </div>
         </div>
+
         <div class="footer-divider"></div>
+
         <div class="footer-bottom">
           <p class="footer-copy">© {{ currentYear }} Anvexs IT Hub. All rights reserved.</p>
-          <p class="footer-right">Built in India · For the world</p>
+          <p class="footer-credit">Built with ❤️ by Anvexs Team</p>
         </div>
       </div>
     </footer>

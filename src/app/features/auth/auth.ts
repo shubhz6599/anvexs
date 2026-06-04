@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { OtpService } from '../../core/services/api.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-auth',
@@ -12,10 +12,10 @@ import { OtpService } from '../../core/services/api.service';
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
 })
-export class Auth {
+export class Auth  {
   private auth = inject(AuthService);
-  private otp = inject(OtpService);
   private router = inject(Router);
+  private notify = inject(NotificationService);
 
   tab = signal<'login' | 'register'>('login');
   authLoading = signal(false);
@@ -24,28 +24,61 @@ export class Auth {
   loginForm = { email: '', password: '' };
   registerForm = { firstName: '', lastName: '', email: '', password: '', phone: '' };
 
-  setTab(t: 'login' | 'register') { this.tab.set(t); this.error.set(''); }
+  setTab(t: 'login' | 'register') {
+    this.tab.set(t);
+    this.error.set('');
+  }
 
   login() {
+    if (!this.loginForm.email || !this.loginForm.password) {
+      this.error.set('Please fill in all fields');
+      return;
+    }
+
     this.authLoading.set(true);
     this.error.set('');
+
     this.auth.login(this.loginForm.email, this.loginForm.password).subscribe({
-      next: () => { this.router.navigate(['/']); this.authLoading.set(false); },
-      error: (err) => { this.error.set(err.error?.message || 'Login failed'); this.authLoading.set(false); },
+      next: () => {
+        this.notify.success('Logged in successfully!');
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        const msg = err.error?.message || 'Login failed';
+        this.error.set(msg);
+        this.notify.error(msg);
+        this.authLoading.set(false);
+      }
     });
   }
 
   register() {
+    if (!this.registerForm.firstName || !this.registerForm.email || !this.registerForm.password) {
+      this.error.set('Please fill in required fields');
+      return;
+    }
+
+    if (this.registerForm.password.length < 8) {
+      this.error.set('Password must be at least 8 characters');
+      return;
+    }
+
     this.authLoading.set(true);
     this.error.set('');
+
     this.auth.register(this.registerForm).subscribe({
       next: () => {
-        alert('Account created! Please verify your email.');
-        this.otp.sendOTP(this.registerForm.email, 'email_verification').subscribe();
+        this.notify.success('Account created! Please log in');
         this.tab.set('login');
+        this.registerForm = { firstName: '', lastName: '', email: '', password: '', phone: '' };
         this.authLoading.set(false);
       },
-      error: (err) => { this.error.set(err.error?.message || 'Registration failed'); this.authLoading.set(false); },
+      error: (err) => {
+        const msg = err.error?.message || 'Registration failed';
+        this.error.set(msg);
+        this.notify.error(msg);
+        this.authLoading.set(false);
+      }
     });
   }
 }

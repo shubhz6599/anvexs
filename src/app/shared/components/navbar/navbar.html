@@ -1,16 +1,15 @@
-<header class="nav" [class.nav--stuck]="scrolled()" [class.nav--open]="menuOpen()">
+ <header class="nav" [class.nav--stuck]="scrolled()" [class.nav--open]="menuOpen()">
       <div class="nav__inner wrap">
-
+        <!-- Logo -->
         <a routerLink="/" class="nav__logo" (click)="closeMenu()">
-          <div class="nav__logo-mark">
-            <img src="images/anvexs-logo.png" alt="Anvexs logo" />
-          </div>
+          <div class="nav__logo-mark">A</div>
           <div class="nav__logo-text">
             <span class="nav__logo-name">ANVEXS</span>
             <span class="nav__logo-sub">IT HUB</span>
           </div>
         </a>
 
+        <!-- Desktop Links -->
         <nav class="nav__links" aria-label="Main navigation">
           @for (item of navItems; track item.path) {
             <a [routerLink]="item.path"
@@ -23,39 +22,69 @@
           }
         </nav>
 
+        <!-- Desktop Actions -->
         <div class="nav__actions">
           @if (auth.isAuthenticated()) {
             <div class="nav__user">
-              <div class="nav__avatar">{{ auth.user()?.firstName?.charAt(0) }}</div>
-              <span class="nav__user-name">{{ auth.user()?.firstName }}</span>
+              <div class="nav__avatar">{{ auth.user()?.firstName?.charAt(0) || 'U' }}</div>
               <button class="btn btn-ghost btn-sm" (click)="auth.logout()">Logout</button>
             </div>
           } @else {
             <a routerLink="/auth" class="btn btn-ghost btn-sm" (click)="closeMenu()">Log In</a>
-            <a routerLink="/contact" class="btn btn-primary btn-sm" (click)="closeMenu()">Get Started</a>
+            <a href="https://wa.me/7841868521" target="_blank" class="btn btn-primary btn-sm">WhatsApp</a>
           }
         </div>
 
+        <!-- Mobile Menu Button -->
         <button class="nav__burger" [class.nav__burger--open]="menuOpen()"
                 (click)="toggleMenu()" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
       </div>
 
-      <!-- Mobile drawer -->
+      <!-- Mobile Drawer (Full Screen Overlay) -->
+      @if (menuOpen()) {
+        <div class="nav__overlay" (click)="closeMenu()"></div>
+      }
       <div class="nav__drawer" [class.nav__drawer--open]="menuOpen()">
-        @for (item of navItems; track item.path) {
-          <a [routerLink]="item.path"
-             routerLinkActive="active"
-             [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-             class="nav__drawer-link"
-             (click)="closeMenu()">
-            {{ item.label }}
+        <div class="nav__drawer-header">
+          <a routerLink="/" class="nav__drawer-logo" (click)="closeMenu()">
+            <span>A</span> ANVEXS
           </a>
-        }
-        <div class="nav__drawer-actions">
-          <a routerLink="/auth" class="btn btn-ghost" (click)="closeMenu()">Log In</a>
-          <a routerLink="/contact" class="btn btn-primary" (click)="closeMenu()">Get Started</a>
+          <button class="nav__drawer-close" (click)="closeMenu()">✕</button>
+        </div>
+
+        <nav class="nav__drawer-nav">
+          @for (item of navItems; track item.path) {
+            <a [routerLink]="item.path"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+               class="nav__drawer-link"
+               (click)="closeMenu()">
+              {{ item.label }}
+              <span class="arrow">→</span>
+            </a>
+          }
+        </nav>
+
+        <div class="nav__drawer-divider"></div>
+
+        <div class="nav__drawer-contact">
+          <p class="drawer-label">Contact Us</p>
+          <a href="https://wa.me/7841868521" class="drawer-btn">
+            <span>💬</span> WhatsApp
+          </a>
+          <a href="mailto:info@anvexs.com" class="drawer-btn">
+            <span>📧</span> Email
+          </a>
+          <a href="tel:+917841868521" class="drawer-btn">
+            <span>📞</span> Call
+          </a>
+        </div>
+
+        <div class="nav__drawer-socials">
+          <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="social-icon">in</a>
+          <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="social-icon">ig</a>
         </div>
       </div>
     </header>

@@ -2,6 +2,8 @@ import { Component, AfterViewInit, OnDestroy, inject, signal } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { RevealService } from '../../core/services/reveal.service';
 import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../../core/services/notification.service';
+import { BlogService } from '../../core/services/api.service';
  
 @Component({
   selector: 'app-blog',
@@ -14,6 +16,8 @@ export class Blog implements AfterViewInit, OnDestroy {
   private reveal = inject(RevealService);
   nlEmail = '';
   nlSent = signal(false);
+   private notify = inject(NotificationService);
+   private blogSvc = inject(BlogService);
  
   subscribeNl() {
     if (this.nlEmail) this.nlSent.set(true);
@@ -32,6 +36,25 @@ export class Blog implements AfterViewInit, OnDestroy {
     { emoji: '📱', cat: 'MOBILE',       time: '9 min',  title: 'React Native vs Flutter in 2025', excerpt: 'Updated benchmarks after building 40+ cross-platform apps across both frameworks.', bg: 'linear-gradient(135deg,#150510,#051015)' },
     { emoji: '🔐', cat: 'SECURITY',     time: '8 min',  title: 'JWT + Refresh Token Strategy That Scales', excerpt: 'The auth architecture we use across all our production applications.', bg: 'linear-gradient(135deg,#101500,#001510)' },
   ];
+
+  subscribeNewsletter() {
+  if (!this.nlEmail || !this.nlEmail.includes('@')) {
+    this.notify.error('Valid email required');
+    return;
+  }
+  
+  this.blogSvc.subscribeNewsletter(this.nlEmail).subscribe({
+    next: () => {
+      this.nlSent.set(true);
+      this.notify.success('Subscribed! Check email for confirmation');
+    }
+  });
+}
+
+// Articles become clickable - open in modal or new page
+openArticle(article: any) {
+  window.open(`/blog/${article.slug}`, '_blank');
+}
  
   ngAfterViewInit() { this.reveal.init(); }
   ngOnDestroy()     { this.reveal.destroy(); }

@@ -28,6 +28,21 @@ export interface CareerPayload {
 }
 
 @Injectable({ providedIn: 'root' })
+export class InitialService {
+  private readonly apiUrl = `${environment.apiUrl1}`;
+
+  constructor(private http: HttpClient) {}
+
+  getRoot(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+
+  getHealth(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/health`);
+  }
+}
+
+@Injectable({ providedIn: 'root' })
 export class EnquiryService {
   private readonly apiUrl = `${environment.apiUrl}/enquiries`;
   constructor(private http: HttpClient) {}
@@ -60,7 +75,19 @@ export class CareerService {
     return this.http.get<any>(`${this.apiUrl}/openings`);
   }
 
-  apply(payload: CareerPayload): Observable<{ success: boolean; message: string }> {
+  apply(payload: CareerPayload,cv:any): Observable<{ success: boolean; message: string }> {
     return this.http.post<any>(`${this.apiUrl}/apply`, payload);
   }
+}
+
+  @Injectable({ providedIn: 'root' })
+export class BlogService {
+  private readonly apiUrl = `${environment.apiUrl}/blog`;
+  constructor(private http: HttpClient) {}
+
+  subscribeNewsletter(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/blog`, { email });
+  }
+
+
 }

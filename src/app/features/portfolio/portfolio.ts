@@ -45,8 +45,8 @@ export class Portfolio implements AfterViewInit, OnDestroy {
   visibleProjects = signal(this.projects);
  
   numbers = [
-    { val: '₹500Cr+', label: 'Client revenue generated through our platforms', cls: 'pn-val c-g' },
-    { val: '12M+',    label: 'End users actively using systems we\'ve built',    cls: 'pn-val c-plasma' },
+    { val: '₹ N/A', label: 'Client revenue generated through our platforms', cls: 'pn-val c-g' },
+    { val: '1M+',    label: 'End users actively using systems we\'ve built',    cls: 'pn-val c-plasma' },
     { val: '99.97%',  label: 'Average uptime across all production systems',     cls: 'pn-val c-acid' },
   ];
  

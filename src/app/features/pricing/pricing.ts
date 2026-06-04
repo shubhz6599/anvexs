@@ -20,7 +20,7 @@ export class Pricing implements AfterViewInit, OnDestroy {
  
   plans = [
     {
-      tier: 'STARTER', featured: false, currency: '₹', price: '49,999', priceAnnual: '39,999',
+      tier: 'STARTER', featured: false, currency: '₹', price: '24,999*', priceAnnual: '99,999*',
       period: '/project', btnLabel: 'Get Started', btnClass: 'btn-ghost',
       desc: 'Perfect for early-stage startups and college final-year projects needing production-quality execution.',
       features: [
@@ -34,7 +34,7 @@ export class Pricing implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      tier: 'GROWTH', featured: true, currency: '₹', price: '1,49,999', priceAnnual: '1,19,999',
+      tier: 'GROWTH', featured: true, currency: '₹', price: '84,999', priceAnnual: '1,99,999',
       period: '/project', btnLabel: 'Start Project', btnClass: 'btn-primary',
       desc: 'For scale-ups and businesses shipping production platforms with real users and real revenue.',
       features: [
