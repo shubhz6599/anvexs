@@ -25,7 +25,7 @@ stats = [
   { val: '5', sfx: '+', label: 'Projects Delivered' },
   { val: '10', sfx: '+', label: 'Tech Experts' },
   { val: '100', sfx: '%', label: 'Quality Focus' },
-  { val: '2024', sfx: '', label: 'Founded' },
+  { val: '2026', sfx: '', label: 'Founded' },
 ];
 
   timeline = [
