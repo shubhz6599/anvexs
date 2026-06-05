@@ -6,6 +6,8 @@ import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/ro
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
 import { filter } from 'rxjs';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +22,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   router = inject(Router);
   scrolled = signal(false);
   menuOpen = signal(false);
-
+  private platformId = inject(PLATFORM_ID);
   navItems = [
     { label: 'Home', path: '/' },
     { label: 'About', path: '/about' },
@@ -38,7 +40,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.closeMenu();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (isPlatformBrowser(this.platformId)) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
     });
   }
 
@@ -50,5 +58,5 @@ export class NavbarComponent implements OnInit, OnDestroy {
   toggleMenu() { this.menuOpen.update(v => !v); }
   closeMenu() { this.menuOpen.set(false); }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

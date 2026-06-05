@@ -1,8 +1,8 @@
 import {
-  Component, OnInit, OnDestroy, ElementRef, AfterViewInit, signal, viewChild
+  Component, OnInit, OnDestroy, ElementRef, AfterViewInit, signal, viewChild, PLATFORM_ID, inject
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser, DOCUMENT } from '@angular/common';
 
 interface Stat {
   value: string;
@@ -28,6 +28,8 @@ interface ServiceCard {
 })
 export class HomeComponent implements AfterViewInit {
   showScrollIndicator = signal(true);
+  private platformId = inject(PLATFORM_ID);
+  private document = inject(DOCUMENT);
   stats: Stat[] = [
     { value: '5', suffix: '+', label: 'Projects Delivered' },
     { value: '100', suffix: '%', label: 'Client Satisfaction' },
@@ -81,25 +83,40 @@ export class HomeComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.initScrollReveal();
     this.initScrollListener();
   }
 
   private initScrollListener(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        this.showScrollIndicator.set(false);
-      } else {
-        this.showScrollIndicator.set(true);
-      }
+      this.showScrollIndicator.set(window.scrollY <= 50);
     });
   }
 
   private initScrollReveal(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const observer = new IntersectionObserver(
-      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('up')),
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('up');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
     );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    this.document
+      .querySelectorAll('.reveal')
+      .forEach(el => observer.observe(el));
   }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "Anvexs IT Hub",
+  "short_name": "Anvexs",
+  "description": "Enterprise technology solutions — web, mobile, AI & games",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05050a",
+  "theme_color": "#0aaeff",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

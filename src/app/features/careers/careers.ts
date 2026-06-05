@@ -23,9 +23,9 @@ cvFile:any;
   };
 
   jobs = [
-    { title: 'Senior Full-Stack Developer', type: 'full_time', department: 'Engineering', location: 'Remote/Hyderabad', experience: '3-6 years', description: 'Lead architecture and development of high-performance web platforms.', skills: ['Angular', 'Node.js', 'MongoDB', 'AWS'] },
+    { title: 'Senior Full-Stack Developer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '3-6 years', description: 'Lead architecture and development of high-performance web platforms.', skills: ['Angular', 'Node.js', 'MongoDB', 'AWS'] },
     { title: 'AI/ML Engineer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '2-5 years', description: 'Build production AI systems and LLM-powered applications.', skills: ['Python', 'LangChain', 'TensorFlow', 'FastAPI'] },
-    { title: 'UI/UX Designer', type: 'full_time', department: 'Design', location: 'Hyderabad', experience: '2-4 years', description: 'Design delightful user experiences for enterprise products.', skills: ['Figma', 'Adobe XD', 'Motion Design'] },
+    { title: 'UI/UX Designer', type: 'full_time', department: 'Design', location: 'Remote', experience: '2-4 years', description: 'Design delightful user experiences for enterprise products.', skills: ['Figma', 'Adobe XD', 'Motion Design'] },
     { title: 'React Native Developer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '2-4 years', description: 'Build cross-platform mobile experiences.', skills: ['React Native', 'TypeScript', 'Firebase'] },
     { title: 'DevOps / Cloud Engineer', type: 'full_time', department: 'Engineering', location: 'Remote', experience: '3-6 years', description: 'Architect and maintain scalable cloud infrastructure.', skills: ['Kubernetes', 'AWS', 'Terraform', 'Docker'] },
     { title: 'Software Development Intern', type: 'internship', department: 'Engineering', location: 'Remote', experience: '0 years', description: '3-month paid internship to level up your skills.', skills: ['Any Stack', 'Eagerness to Learn'] },
@@ -42,7 +42,7 @@ cvFile:any;
 
   submitApplication() {
     this.validateCareerForm()
-    this.careerSvc.apply(this.formData as any, this.cvFile).subscribe({
+    this.careerSvc.apply(this.formData as any).subscribe({
       next: () => { this.submitted.set(true); this.formData = { name: '', email: '', phone: '', position: '', experience: 0, linkedin: '', portfolio: '', coverLetter: '' }; },
       error: (err) => alert('Error submitting application: ' + err.message),
     });

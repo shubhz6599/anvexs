@@ -1,0 +1,46 @@
+  .api-overlay {
+      position: fixed; inset: 0; z-index: 9900;
+      background: rgba(5,5,10,.72);
+      backdrop-filter: blur(6px) saturate(1.4);
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeIn .2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .api-loader-box {
+      position: relative;
+      width: 72px; height: 72px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .rings {
+      position: absolute; inset: 0;
+    }
+
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 2px solid transparent;
+    }
+    .ring-1 {
+      inset: 0;
+      border-top-color: #0af;
+      animation: spin 1s linear infinite;
+    }
+    .ring-2 {
+      inset: 10px;
+      border-right-color: #b8ff00;
+      animation: spin .75s linear infinite reverse;
+    }
+    .ring-3 {
+      inset: 20px;
+      border-bottom-color: #8b5cf6;
+      animation: spin 1.25s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; color: #fff; z-index: 1;
+      animation: pulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes pulse { from { opacity: .5; } to { opacity: 1; } }

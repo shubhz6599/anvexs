@@ -1,36 +1,40 @@
-// ============================================
-// ANVEXS - Route Guards
-// ============================================
-import { inject } from '@angular/core';
+
+import { Injectable, inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
+export const authGuard: CanActivateFn = (route, state) => {
+  const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  if (auth.isAuthenticated()) {
     return true;
   }
-  return router.createUrlTree(['/auth'], { queryParams: { returnUrl: window.location.pathname } });
+
+  router.navigate(['/auth']);
+  return false;
 };
 
-export const adminGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
+export const adminGuard: CanActivateFn = (route, state) => {
+  const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAdmin()) {
+  if (auth.isAdmin()) {
     return true;
   }
-  return router.createUrlTree(['/']);
+
+  router.navigate(['/']);
+  return false;
 };
 
-export const guestGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
+export const guestGuard: CanActivateFn = (route, state) => {
+  const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isAuthenticated()) {
+  if (!auth.isAuthenticated()) {
     return true;
   }
-  return router.createUrlTree(['/']);
+
+  router.navigate(['/']);
+  return false;
 };

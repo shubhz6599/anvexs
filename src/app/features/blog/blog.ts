@@ -1,62 +1,98 @@
 import { Component, AfterViewInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RevealService } from '../../core/services/reveal.service';
 import { FormsModule } from '@angular/forms';
-import { NotificationService } from '../../core/services/notification.service';
+import { RouterLink } from '@angular/router';
 import { BlogService } from '../../core/services/api.service';
- 
+import { NotificationService } from '../../core/services/notification.service';
+import { RevealService } from '../../core/services/reveal.service';
+
+interface Article {
+  _id: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  category: string;
+  readTime: number;
+  image?: string;
+  slug: string;
+}
+
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './blog.html',
   styleUrl: './blog.scss',
 })
 export class Blog implements AfterViewInit, OnDestroy {
+  private blog = inject(BlogService);
+  private notify = inject(NotificationService);
   private reveal = inject(RevealService);
-  nlEmail = '';
-  nlSent = signal(false);
-   private notify = inject(NotificationService);
-   private blogSvc = inject(BlogService);
- 
-  subscribeNl() {
-    if (this.nlEmail) this.nlSent.set(true);
-  }
- 
-  sideArticles = [
-    { emoji: '⚡', cat: 'ANGULAR', time: '8 min', title: 'Angular 18 Signals: The End of RxJS Hell?', bg: 'linear-gradient(135deg,#0a0f05,#050a15)' },
-    { emoji: '🔒', cat: 'SECURITY', time: '6 min', title: 'AES-256 API Encryption: A Production Pattern', bg: 'linear-gradient(135deg,#100510,#0a0515)' },
-  ];
- 
-  articles = [
-    { emoji: '🎮', cat: 'GAME DEV',     time: '10 min', title: 'Three.js vs Unity for Web Games', excerpt: 'Performance benchmarks, bundle size wars, and the WebGL rendering pipeline explained.', bg: 'linear-gradient(135deg,#0a1505,#050f1a)' },
-    { emoji: '📊', cat: 'ARCHITECTURE', time: '14 min', title: 'Microservices vs Monolith in 2025', excerpt: 'After 230 projects, here\'s when we choose each — the answer might surprise you.', bg: 'linear-gradient(135deg,#150a00,#05100a)' },
-    { emoji: '🚀', cat: 'GROWTH',       time: '7 min',  title: 'How We Hit ₹22Cr ARR in 9 Months', excerpt: 'Full playbook: paid media, conversion architecture, and retention engineering.', bg: 'linear-gradient(135deg,#0a0515,#15050a)' },
-    { emoji: '🤖', cat: 'AI/ML',        time: '11 min', title: 'Fine-tuning vs RAG: When to Use Which', excerpt: 'Practical decision framework from 30+ production AI deployments.', bg: 'linear-gradient(135deg,#050a15,#0a0520)' },
-    { emoji: '📱', cat: 'MOBILE',       time: '9 min',  title: 'React Native vs Flutter in 2025', excerpt: 'Updated benchmarks after building 40+ cross-platform apps across both frameworks.', bg: 'linear-gradient(135deg,#150510,#051015)' },
-    { emoji: '🔐', cat: 'SECURITY',     time: '8 min',  title: 'JWT + Refresh Token Strategy That Scales', excerpt: 'The auth architecture we use across all our production applications.', bg: 'linear-gradient(135deg,#101500,#001510)' },
-  ];
 
-  subscribeNewsletter() {
-  if (!this.nlEmail || !this.nlEmail.includes('@')) {
-    this.notify.error('Valid email required');
-    return;
-  }
-  
-  this.blogSvc.subscribeNewsletter(this.nlEmail).subscribe({
-    next: () => {
-      this.nlSent.set(true);
-      this.notify.success('Subscribed! Check email for confirmation');
+  articles = signal<Article[]>([
+    {
+      _id: '1',
+      title: 'Building Scalable Web Applications with Angular 18',
+      excerpt: 'Learn how to architect large-scale applications using the latest Angular features, signals, and standalone components.',
+      author: 'Anvexs Team',
+      date: '2024-06-03',
+      category: 'Angular',
+      readTime: 8,
+      image: '/assets/blog1.jpg',
+      slug: 'angular-scalable-apps'
+    },
+    {
+      _id: '2',
+      title: 'Node.js Best Practices for Enterprise APIs',
+      excerpt: 'Complete guide to building production-ready Node.js APIs with security, validation, and error handling.',
+      author: 'Anvexs Team',
+      date: '2024-06-02',
+      category: 'Node.js',
+      readTime: 10,
+      image: '/assets/blog2.jpg',
+      slug: 'nodejs-api-best-practices'
+    },
+    {
+      _id: '3',
+      title: 'AI Integration: ChatGPT in Your Web App',
+      excerpt: 'Step-by-step tutorial on integrating OpenAI\'s ChatGPT API into your Angular application.',
+      author: 'Anvexs Team',
+      date: '2024-06-01',
+      category: 'AI/ML',
+      readTime: 7,
+      image: '/assets/blog3.jpg',
+      slug: 'ai-chatgpt-integration'
     }
-  });
-}
+  ]);
 
-// Articles become clickable - open in modal or new page
-openArticle(article: any) {
-  window.open(`/blog/${article.slug}`, '_blank');
+  nlEmail = '';
+  nlLoading = signal(false);
+
+  ngAfterViewInit() {
+    this.reveal.init();
+  }
+
+  subscribe() {
+    if (!this.nlEmail || !this.nlEmail.includes('@')) {
+      this.notify.error('Valid email required');
+      return;
+    }
+
+    this.nlLoading.set(true);
+    this.blog.subscribe(this.nlEmail).subscribe({
+      next: () => {
+        this.notify.success('Subscribed! Check your email');
+        this.nlEmail = '';
+        this.nlLoading.set(false);
+      },
+      error: () => {
+        this.nlLoading.set(false);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.reveal.destroy();
+  }
 }
- 
-  ngAfterViewInit() { this.reveal.init(); }
-  ngOnDestroy()     { this.reveal.destroy(); }
-}
- 

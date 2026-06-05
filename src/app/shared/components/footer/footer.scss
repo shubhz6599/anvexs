@@ -38,23 +38,10 @@
       color: #000;
       font-weight: 900;
     }
-    .footer-logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-      font-family: var(--f-display);
-      font-size: 1rem;
-      letter-spacing: .08em;
-      color: var(--text-1);
-    }
-    .footer-logo-sub {
-      font-family: var(--f-mono);
-      font-size: .45rem;
-      letter-spacing: .2em;
-      color: var(--primary);
-      text-transform: uppercase;
-    }
 
+.footer_logo-mark1{
+  width:10%
+}
     .footer-desc {
       font-size: .85rem;
       color: var(--text-3);

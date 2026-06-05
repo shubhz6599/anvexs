@@ -1,19 +1,11 @@
-# Anvexs IT Hub - robots.txt
-
 User-agent: *
 Allow: /
 Disallow: /auth
 Disallow: /admin
 Disallow: /private
 
-# Specific rules for search engines
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 1
 
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-# Sitemap
 Sitemap: https://anvexs.com/sitemap.xml

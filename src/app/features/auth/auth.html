@@ -1,96 +1,129 @@
-<div class="auth-page">
-      <div class="auth-inner">
-        <div class="auth-logo reveal">
-          <div class="logo-mark">A</div>
-          <div class="logo-text">ANVEXS</div>
-        </div>
+  <div class="auth-page">
+      <!-- background orbs -->
+      <div class="auth-orb auth-orb-1"></div>
+      <div class="auth-orb auth-orb-2"></div>
 
-        <!-- Login Tab -->
-        @if (tab() === 'login') {
-          <div class="auth-form reveal">
-            <h2 style="margin-bottom:24px;font-size:1.8rem">Welcome Back</h2>
+      <div class="auth-card">
+        <!-- Logo -->
+      <div class="auth-logo">
+            <img src="images/anvexs-logo.png" alt="Anvexs logo" />
+          </div>
 
-            <div class="form-group">
-              <label class="form-label">Email</label>
-              <input class="form-input" type="email" [(ngModel)]="loginForm.email"
-                     placeholder="you@company.com" [disabled]="authLoading()" />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Password</label>
-              <input class="form-input" type="password" [(ngModel)]="loginForm.password"
-                     placeholder="••••••••" [disabled]="authLoading()" />
-            </div>
-
-            <button class="btn btn-primary btn-lg" (click)="login()" style="width:100%;justify-content:center"
-                    [disabled]="authLoading()">
-              {{ authLoading() ? 'Logging in...' : 'Log In' }}
-            </button>
-
-            <p class="auth-switch">
-              Don't have an account?
-              <a (click)="setTab('register')" style="color:var(--primary);cursor:pointer;font-weight:600">
-                Register here
-              </a>
-            </p>
+        <!-- Tab switcher (login/register) -->
+        @if (tab() !== 'otp') {
+          <div class="auth-tabs">
+            <button class="auth-tab" [class.active]="tab() === 'login'" (click)="setTab('login')">Login</button>
+            <button class="auth-tab" [class.active]="tab() === 'register'" (click)="setTab('register')">Register</button>
+            <div class="tab-indicator" [style.left]="tab() === 'login' ? '4px' : 'calc(50% + 4px)'"></div>
           </div>
         }
 
-        <!-- Register Tab -->
-        @if (tab() === 'register') {
-          <div class="auth-form reveal">
-            <h2 style="margin-bottom:24px;font-size:1.8rem">Create Account</h2>
+        <!-- Error banner -->
+        @if (error()) {
+          <div class="auth-error">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ error() }}
+          </div>
+        }
 
+        <!-- LOGIN FORM -->
+        @if (tab() === 'login') {
+          <form class="auth-form" (ngSubmit)="login()">
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input class="form-input" [class.form-input--error]="errs()['email']"
+                     type="email" [(ngModel)]="loginF.email" name="email"
+                     placeholder="you@company.com" autocomplete="email" />
+              @if (errs()['email']) { <span class="form-error">{{ errs()['email'] }}</span> }
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input class="form-input" [class.form-input--error]="errs()['password']"
+                     type="password" [(ngModel)]="loginF.password" name="password"
+                     placeholder="••••••••" autocomplete="current-password" />
+              @if (errs()['password']) { <span class="form-error">{{ errs()['password'] }}</span> }
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
+              @if (busy()) { <span class="btn-spinner"></span> }
+              {{ busy() ? 'Signing in…' : 'Sign In' }}
+            </button>
+          </form>
+        }
+
+        <!-- REGISTER FORM -->
+        @if (tab() === 'register') {
+          <form class="auth-form" (ngSubmit)="register()">
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">First Name</label>
-                <input class="form-input" [(ngModel)]="registerForm.firstName"
-                       placeholder="John" [disabled]="authLoading()" />
+                <input class="form-input" [class.form-input--error]="errs()['firstName']"
+                       [(ngModel)]="regF.firstName" name="firstName"
+                       placeholder="John" autocomplete="given-name" />
+                @if (errs()['firstName']) { <span class="form-error">{{ errs()['firstName'] }}</span> }
               </div>
               <div class="form-group">
                 <label class="form-label">Last Name</label>
-                <input class="form-input" [(ngModel)]="registerForm.lastName"
-                       placeholder="Doe" [disabled]="authLoading()" />
+                <input class="form-input"
+                       [(ngModel)]="regF.lastName" name="lastName"
+                       placeholder="Doe" autocomplete="family-name" />
               </div>
             </div>
-
             <div class="form-group">
               <label class="form-label">Email</label>
-              <input class="form-input" type="email" [(ngModel)]="registerForm.email"
-                     placeholder="you@company.com" [disabled]="authLoading()" />
+              <input class="form-input" [class.form-input--error]="errs()['email']"
+                     type="email" [(ngModel)]="regF.email" name="email"
+                     placeholder="you@company.com" autocomplete="email" />
+              @if (errs()['email']) { <span class="form-error">{{ errs()['email'] }}</span> }
             </div>
-
             <div class="form-group">
-              <label class="form-label">Password (min 8 chars)</label>
-              <input class="form-input" type="password" [(ngModel)]="registerForm.password"
-                     placeholder="••••••••" [disabled]="authLoading()" />
+              <label class="form-label">Password <span style="color:var(--text-3)">min 8 chars</span></label>
+              <input class="form-input" [class.form-input--error]="errs()['password']"
+                     type="password" [(ngModel)]="regF.password" name="password"
+                     placeholder="••••••••" autocomplete="new-password" />
+              @if (errs()['password']) { <span class="form-error">{{ errs()['password'] }}</span> }
             </div>
-
             <div class="form-group">
-              <label class="form-label">Phone (optional)</label>
-              <input class="form-input" [(ngModel)]="registerForm.phone"
-                     placeholder="+91 98765 43210" [disabled]="authLoading()" />
+              <label class="form-label">Phone <span style="color:var(--text-3)">(optional)</span></label>
+              <input class="form-input"
+                     [(ngModel)]="regF.phone" name="phone"
+                     placeholder="+91 98765 43210" autocomplete="tel" />
             </div>
-
-            <button class="btn btn-primary btn-lg" (click)="register()" style="width:100%;justify-content:center"
-                    [disabled]="authLoading()">
-              {{ authLoading() ? 'Creating Account...' : 'Create Account' }}
+            <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
+              @if (busy()) { <span class="btn-spinner"></span> }
+              {{ busy() ? 'Creating account…' : 'Create Account' }}
             </button>
+            <p class="auth-fine">By registering you agree to our Terms & Privacy Policy.</p>
+          </form>
+        }
 
-            <p class="auth-switch">
-              Already have an account?
-              <a (click)="setTab('login')" style="color:var(--primary);cursor:pointer;font-weight:600">
-                Log in here
-              </a>
+        <!-- OTP FORM -->
+        @if (tab() === 'otp') {
+          <div class="otp-screen">
+            <div class="otp-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <h2 class="otp-title">Verify your email</h2>
+            <p class="otp-desc">We sent a 6-digit code to<br><strong>{{ otpEmail }}</strong></p>
+            
+            <form class="auth-form" (ngSubmit)="verifyOTP()">
+              <div class="form-group">
+                <label class="form-label" style="text-align:center">Enter OTP</label>
+                <input class="form-input otp-input" [class.form-input--error]="errs()['otp']"
+                       [(ngModel)]="otpCode" name="otp"
+                       placeholder="000000" maxlength="6"
+                       inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" />
+                @if (errs()['otp']) { <span class="form-error" style="text-align:center">{{ errs()['otp'] }}</span> }
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
+                @if (busy()) { <span class="btn-spinner"></span> }
+                {{ busy() ? 'Verifying…' : 'Verify & Continue' }}
+              </button>
+            </form>
+            <p class="auth-fine">
+              Didn't receive it?
+              <button class="link-btn" (click)="resendOTP()" [disabled]="busy()">Resend code</button>
             </p>
           </div>
         }
-
-        @if (error()) {
-          <div class="auth-error reveal">⚠️ {{ error() }}</div>
-        }
       </div>
-
-      <!-- Background design -->
-      <div class="auth-bg"></div>
     </div>

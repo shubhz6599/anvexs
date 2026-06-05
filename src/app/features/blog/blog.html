@@ -1,104 +1,101 @@
-    <section class="blog-hero section">
+ <section class="blog-hero section">
       <div class="wrap">
-        <p class="eyebrow reveal">Insights & engineering</p>
-        <h1 class="display-xl reveal d1" style="max-width:760px;margin-bottom:20px">
-          THE <span class="g-text">ANVEXS</span><br>INTELLIGENCE FEED
-        </h1>
-        <p class="body-lg reveal d2" style="max-width:520px;margin-bottom:64px">
-          Deep dives, technical breakdowns, and strategic thinking from the engineers
-          building at the frontier.
+        <p class="eyebrow reveal">Our Latest Articles</p>
+        <h1 class="display-xl reveal d1">INSIGHTS &<br><span class="g-text">EXPERTISE</span></h1>
+        <p class="body-lg reveal d2" style="max-width:540px;margin-top:20px">
+          Stay updated with industry trends, technical deep-dives, and proven strategies for building scalable software.
         </p>
- 
-        <!-- Featured -->
-        <div class="blog-featured reveal d3">
-          <div class="blog-card blog-card--featured">
-            <div class="blog-art" style="background:linear-gradient(135deg,#050510,#0a1525)">
-              <span class="blog-art-emoji">🤖</span>
-            </div>
-            <div class="blog-body">
-              <div class="blog-meta">
-                <span class="blog-cat">AI/ML</span>
-                <span class="blog-sep">·</span>
-                <span>12 min read</span>
-                <span class="blog-sep">·</span>
-                <span>June 2025</span>
-              </div>
-              <h2 class="blog-title">RAG in 2025: Why 90% of Enterprise AI Deployments Still Fail</h2>
-              <p class="blog-excerpt">
-                We've built 30+ RAG systems. Here's the brutal truth about what breaks them
-                in production — and how we fixed it at a 40,000-employee scale deployment.
-              </p>
-              <div class="blog-read-more">Read the deep dive →</div>
-            </div>
-          </div>
-          <div class="blog-side">
-            @for (a of sideArticles; track a.title) {
-              <div class="blog-card blog-card--sm">
-                <div class="blog-art blog-art--sm" [style.background]="a.bg">
-                  <span class="blog-art-emoji" style="font-size:2.4rem">{{ a.emoji }}</span>
-                </div>
-                <div class="blog-body">
-                  <div class="blog-meta">
-                    <span class="blog-cat">{{ a.cat }}</span>
-                    <span class="blog-sep">·</span>
-                    <span>{{ a.time }}</span>
-                  </div>
-                  <h3 class="blog-title blog-title--sm">{{ a.title }}</h3>
-                  <div class="blog-read-more">Read →</div>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
       </div>
     </section>
- 
-    <!-- ═══ ARTICLES GRID ═════════════════════ -->
-    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+
+    <section class="blog-main section">
       <div class="wrap">
-        <p class="eyebrow reveal">Latest Articles</p>
         <div class="blog-grid">
-          @for (a of articles; track a.title; let i = $index) {
-            <div class="blog-card reveal" [class]="'d' + ((i % 3) + 1)">
-              <div class="blog-art blog-art--md" [style.background]="a.bg">
-                <span class="blog-art-emoji">{{ a.emoji }}</span>
+          <!-- Featured Article -->
+          @if (articles().length > 0) {
+            <div class="featured-article reveal d1">
+              <div class="featured-image">
+                <img [src]="articles()[0].image || '/assets/placeholder.jpg'" [alt]="articles()[0].title" />
+                <span class="featured-badge">Featured</span>
               </div>
-              <div class="blog-body">
-                <div class="blog-meta">
-                  <span class="blog-cat">{{ a.cat }}</span>
-                  <span class="blog-sep">·</span>
-                  <span>{{ a.time }}</span>
+              <div class="featured-content">
+                <span class="article-category">{{ articles()[0].category }}</span>
+                <h2 class="display-lg">{{ articles()[0].title }}</h2>
+                <p class="body-md">{{ articles()[0].excerpt }}</p>
+                <div class="article-meta">
+                  <span>By {{ articles()[0].author }}</span>
+                  <span>{{ articles()[0].date | date:'MMM dd, yyyy' }}</span>
+                  <span>{{ articles()[0].readTime }} min read</span>
                 </div>
-                <h3 class="blog-title blog-title--md">{{ a.title }}</h3>
-                <p class="blog-excerpt blog-excerpt--sm">{{ a.excerpt }}</p>
-                <div class="blog-read-more">Read →</div>
+                <a [routerLink]="'/blog/' + articles()[0].slug" class="btn btn-primary">
+                  Read Article →
+                </a>
               </div>
+            </div>
+
+            <!-- Recent Articles -->
+            <div class="articles-sidebar">
+              <h3 class="display-sm reveal d2">Recent Articles</h3>
+              @for (article of articles().slice(1, 4); track article._id) {
+                <article class="article-card reveal" [class]="'d' + ($index + 3)">
+                  <a [routerLink]="'/blog/' + article.slug" class="article-card-link">
+                    <div class="article-card-image">
+                      <img [src]="article.image || '/assets/placeholder.jpg'" [alt]="article.title" />
+                    </div>
+                    <div class="article-card-content">
+                      <span class="article-category">{{ article.category }}</span>
+                      <h4>{{ article.title }}</h4>
+                      <p>{{ article.readTime }} min read</p>
+                    </div>
+                  </a>
+                </article>
+              }
             </div>
           }
         </div>
-      </div>
-    </section>
- 
-    <!-- ═══ NEWSLETTER ════════════════════════ -->
-    <section class="nl-section section">
-      <div class="wrap">
-        <div class="nl-card reveal">
-          <div class="nl-left">
-            <p class="eyebrow">Stay sharp</p>
-            <h2 class="display-lg" style="margin-bottom:12px">THE ANVEXS<br><span class="g-text">INTELLIGENCE BRIEF</span></h2>
-            <p class="body-md">Weekly technical breakdowns and industry signal analysis. No fluff. Unsubscribe anytime.</p>
+
+        <!-- All Articles Grid -->
+        <div style="margin-top:72px">
+          <h2 class="display-lg reveal d1" style="margin-bottom:32px">All Articles</h2>
+
+          <div class="articles-grid">
+            @for (article of articles(); track article._id) {
+              <article class="article-grid-item reveal">
+                <a [routerLink]="'/blog/' + article.slug" class="article-link">
+                  <div class="article-image">
+                    <img [src]="article.image || '/assets/placeholder.jpg'" [alt]="article.title" />
+                  </div>
+                  <div class="article-info">
+                    <span class="article-cat">{{ article.category }}</span>
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.excerpt }}</p>
+                    <div class="article-footer">
+                      <span class="read-time">{{ article.readTime }} min</span>
+                      <span class="arrow">→</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            }
           </div>
-          <div class="nl-right reveal d2">
-            <div class="nl-form" [class.nl-form--sent]="nlSent()">
-              @if (!nlSent()) {
-                <input class="form-input nl-input" type="email" [(ngModel)]="nlEmail" placeholder="your@email.com" />
-                <button class="btn btn-primary" (click)="subscribeNl()">Subscribe</button>
-              } @else {
-                <div class="nl-thanks">🎉 You're subscribed — see you Tuesday!</div>
-              }
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="newsletter reveal d2" style="margin-top:112px">
+          <div class="newsletter-content">
+            <h2 class="display-lg">Subscribe to Our Newsletter</h2>
+            <p class="body-md">Get weekly updates on latest tech trends, tutorials, and industry insights.</p>
+          </div>
+
+          <form class="newsletter-form" (ngSubmit)="subscribe()">
+            <div class="form-group" style="flex:1">
+              <input class="form-input" type="email" [(ngModel)]="nlEmail" name="email"
+                     placeholder="you@company.com" [disabled]="nlLoading()" />
             </div>
-            <p class="nl-note">Every Tuesday · 3,200+ engineers subscribed</p>
-          </div>
+            <button class="btn btn-primary" [disabled]="nlLoading()">
+              {{ nlLoading() ? 'Subscribing...' : 'Subscribe →' }}
+            </button>
+          </form>
         </div>
       </div>
     </section>

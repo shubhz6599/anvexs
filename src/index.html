@@ -1,13 +1,87 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Client</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="utf-8" />
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- Primary SEO — will be updated per-page by SeoService -->
+  <title>Anvexs IT Hub — Enterprise Technology Solutions</title>
+  <meta name="description" content="We build high-performance web apps, mobile apps, AI tools & games. 5+ projects delivered, 10+ tech professionals. Starting ₹23,000. Based in Ahilyanagar, Maharashtra." />
+  <meta name="keywords" content="web development, app development, AI integration, game development, software company India, angular, nodejs, spring boot, python" />
+  <meta name="author" content="Anvexs IT Hub" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#05050a" />
+  <meta name="msapplication-TileColor" content="#05050a" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Anvexs IT Hub" />
+  <meta property="og:title"       content="Anvexs IT Hub — Enterprise Technology Solutions" />
+  <meta property="og:description" content="High-performance web, mobile, AI & game development. Starting ₹23,000." />
+  <meta property="og:url"         content="https://anvexs.com" />
+  <meta property="og:image"       content="https://anvexs.com/assets/og-default.jpg" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale"      content="en_IN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Anvexs IT Hub — Enterprise Technology Solutions" />
+  <meta name="twitter:description" content="High-performance web, mobile, AI & game development. Starting ₹23,000." />
+  <meta name="twitter:image"       content="https://anvexs.com/assets/og-default.jpg" />
+  <meta name="twitter:site"        content="@anvexstech" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://anvexs.com" />
+
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" href="images/anvexs-logo.png">
+  <link rel="icon"             type="image/png" sizes="32x32"   href="/favicon-32x32.png" />
+  <link rel="icon"             type="image/png" sizes="16x16"   href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180"        href="/apple-touch-icon.png" />
+  <link rel="manifest"         href="/site.webmanifest" />
+
+  <!-- Preconnect for Google Fonts (already in styles.scss) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Structured data (will be updated by SeoService) -->
+  <script id="json-ld" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Anvexs IT Hub",
+    "url": "https://anvexs.com",
+    "logo": "https://anvexs.com/assets/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-7841868521",
+      "contactType": "customer service",
+      "email": "info@anvexs.com",
+      "areaServed": "Worldwide"
+    },
+    "address": {
+      "@type": "414001",
+      "addressLocality": "Ahilyanagar",
+      "addressRegion": "Maharashtra",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/anvexstech/",
+      "https://www.instagram.com/anvexstech"
+    ]
+  }
+  </script>
+
+  <!-- Prevent flash of unstyled content -->
+  <style>
+    body { background: #05050a; }
+    app-root { display: block; min-height: 100vh; }
+  </style>
 </head>
 <body>
   <app-root></app-root>

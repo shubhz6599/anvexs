@@ -1,32 +1,64 @@
-import { Component, signal, OnInit, inject } from '@angular/core';
+import { Component, signal, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from './shared/components/navbar/navbar';
 import { FooterComponent } from './shared/components/footer/footer';
 import { LoaderComponent } from './shared/components/loader/loader';
-import { InitialService } from './core/services/api.service';
+import { ApiLoader } from './shared/components/api-loader/api-loader';
+import { Toast } from './shared/components/toast/toast';
+import { SeoService } from './core/services/seo.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent, LoaderComponent],
+  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent, LoaderComponent, ApiLoader, Toast],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
-  isLoading = signal(true);
-  private intlService = inject(InitialService);
-  constructor() {
-    this.intlService.getRoot().subscribe((res: any) => {
-      console.log(res)
-    })
-  }
+  private seo        = inject(SeoService);
+  private platformId = inject(PLATFORM_ID);
+
+  showLoader = signal(isPlatformBrowser(this.platformId));
 
   ngOnInit(): void {
-    setTimeout(() => this.isLoading.set(false), 2800);
+    // Init SEO auto-updates on route changes
+    this.seo.init();
+
+    // Set organisation structured data for Google
+    this.seo.setJsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Anvexs IT Hub',
+      url: 'https://anvexs.com',
+      logo: 'https://anvexs.com/assets/logo.png',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+91-7841868521',
+        contactType: 'customer service',
+        email: 'info@anvexs.com',
+        areaServed: 'IN',
+        availableLanguage: 'English',
+      },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Ahilyanagar',
+        addressRegion: 'Maharashtra',
+        addressCountry: 'IN',
+      },
+      sameAs: [
+        'https://www.linkedin.com/company/anvexstech/',
+        'https://www.instagram.com/anvexstech',
+      ],
+    });
+
+    // Skip loader on server
+    if (!isPlatformBrowser(this.platformId)) {
+      this.showLoader.set(false);
+    }
   }
 
   onLoadComplete(): void {
-    this.isLoading.set(false);
+    this.showLoader.set(false);
   }
 }

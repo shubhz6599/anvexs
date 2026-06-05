@@ -1,37 +1,17 @@
-// Updated src/app/core/services/api.service.ts - COMPLETE
-
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { LoadingService } from './loading.service';
+import { NotificationService } from './notification.service';
+import { tap, finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
-export interface EnquiryPayload {
-  name: string;
-  email: string;
-  phone?: string;
-  company?: string;
-  service: string;
-  budget?: string;
-  timeline?: string;
-  message: string;
-}
-
-export interface CareerPayload {
-  name: string;
-  email: string;
-  phone?: string;
-  position: string;
-  experience?: number;
-  linkedin?: string;
-  portfolio?: string;
-  coverLetter?: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class InitialService {
   private readonly apiUrl = `${environment.apiUrl1}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getRoot(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
@@ -42,52 +22,115 @@ export class InitialService {
   }
 }
 
-@Injectable({ providedIn: 'root' })
-export class EnquiryService {
-  private readonly apiUrl = `${environment.apiUrl}/enquiries`;
-  constructor(private http: HttpClient) {}
+  @Injectable({ providedIn: 'root' })
+  export class EnquiryService {
+  private http = inject(HttpClient);
+  private loading = inject(LoadingService);
+  private notify = inject(NotificationService);
 
-  submit(payload: EnquiryPayload): Observable<{ success: boolean; message: string; data: any }> {
-    return this.http.post<any>(this.apiUrl, payload);
+  submit(data: any) {
+    this.loading.show();
+    return this.http.post(`${environment.apiUrl}/enquiries`, data).pipe(
+      tap(res => {
+        this.notify.success('Enquiry submitted successfully!');
+      }),
+      finalize(() => this.loading.hide())
+    );
   }
 }
 
 @Injectable({ providedIn: 'root' })
 export class OtpService {
-  private readonly apiUrl = `${environment.apiUrl}/otp`;
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private loading = inject(LoadingService);
 
-  sendOTP(email: string, purpose: string): Observable<{ success: boolean; message: string }> {
-    return this.http.post<any>(`${this.apiUrl}/send`, { email, purpose });
+  sendOTP(email: string, purpose: string) {
+    this.loading.show();
+    return this.http.post(`${environment.apiUrl}/otp/send`, {
+      email, purpose
+    }).pipe(
+      finalize(() => this.loading.hide())
+    );
   }
 
-  verifyOTP(email: string, otp: string, purpose: string): Observable<{ success: boolean; message: string }> {
-    return this.http.post<any>(`${this.apiUrl}/verify`, { email, otp, purpose });
+  verifyOTP(email: string, otp: string, purpose: string) {
+    this.loading.show();
+    return this.http.post(`${environment.apiUrl}/otp/verify`, {
+      email, otp, purpose
+    }).pipe(
+      finalize(() => this.loading.hide())
+    );
   }
 }
 
 @Injectable({ providedIn: 'root' })
 export class CareerService {
-  private readonly apiUrl = `${environment.apiUrl}/careers`;
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private loading = inject(LoadingService);
+  private notify = inject(NotificationService);
 
-  getOpenings(): Observable<{ success: boolean; data: { openings: any[] } }> {
-    return this.http.get<any>(`${this.apiUrl}/openings`);
+  getOpenings() {
+    this.loading.show();
+    return this.http.get(`${environment.apiUrl}/careers/openings`).pipe(
+      finalize(() => this.loading.hide())
+    );
   }
 
-  apply(payload: CareerPayload,cv:any): Observable<{ success: boolean; message: string }> {
-    return this.http.post<any>(`${this.apiUrl}/apply`, payload);
+  apply(data: FormData) {
+    this.loading.show();
+    return this.http.post(`${environment.apiUrl}/careers/apply`, data).pipe(
+      tap(() => {
+        this.notify.success('Application submitted! We\'ll review within 5 days');
+      }),
+      finalize(() => this.loading.hide())
+    );
+  }
+
+  getApplications(page = 1, limit = 20) {
+    this.loading.show();
+    return this.http.get(`${environment.apiUrl}/careers?page=${page}&limit=${limit}`).pipe(
+      finalize(() => this.loading.hide())
+    );
+  }
+
+  updateStatus(id: string, status: string) {
+    this.loading.show();
+    return this.http.put(`${environment.apiUrl}/careers/${id}`, { status }).pipe(
+      tap(() => {
+        this.notify.success('Status updated');
+      }),
+      finalize(() => this.loading.hide())
+    );
   }
 }
 
-  @Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: 'root' })
 export class BlogService {
-  private readonly apiUrl = `${environment.apiUrl}/blog`;
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private loading = inject(LoadingService);
+  private notify = inject(NotificationService);
 
-  subscribeNewsletter(email: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/blog`, { email });
+  subscribe(email: string) {
+    this.loading.show();
+    return this.http.post(`${environment.apiUrl}/blog/subscribe`, { email }).pipe(
+      tap(() => {
+        this.notify.success('Subscribed! Check your email');
+      }),
+      finalize(() => this.loading.hide())
+    );
   }
 
+  getArticles(page = 1) {
+    this.loading.show();
+    return this.http.get(`${environment.apiUrl}/blog/articles?page=${page}`).pipe(
+      finalize(() => this.loading.hide())
+    );
+  }
 
+  getArticleById(id: string) {
+    this.loading.show();
+    return this.http.get(`${environment.apiUrl}/blog/articles/${id}`).pipe(
+      finalize(() => this.loading.hide())
+    );
+  }
 }

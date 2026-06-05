@@ -1,57 +1,40 @@
-// ============================================
-// ANVEXS - AES Encryption Service (Angular)
-// Mirrors the backend encryption middleware.
-// ============================================
+// File: core/services/encryption.service.ts
+
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class EncryptionService {
-  private readonly secretKey: string;
-  private readonly iv: string;
+  private key = environment.aesKey;
+  private iv = environment.aesIv;
 
-  constructor() {
-    this.secretKey = environment.aesKey;
-    this.iv = environment.aesIv;
+  encrypt(data: any): string {
+    const encrypted = CryptoJS.AES.encrypt(
+      JSON.stringify(data),
+      CryptoJS.enc.Utf8.parse(this.key),
+      { iv: CryptoJS.enc.Utf8.parse(this.iv) }
+    );
+    return encrypted.toString();
   }
 
-  private getKeyAndIV() {
-    const key = CryptoJS.enc.Utf8.parse(this.secretKey.padEnd(32, '0').slice(0, 32));
-    const iv  = CryptoJS.enc.Utf8.parse(this.iv.padEnd(16, '0').slice(0, 16));
-    return { key, iv };
+  decrypt<T>(encrypted: string): T {
+    const decrypted = CryptoJS.AES.decrypt(
+      encrypted,
+      CryptoJS.enc.Utf8.parse(this.key),
+      { iv: CryptoJS.enc.Utf8.parse(this.iv) }
+    );
+    return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
   }
 
-  encrypt(data: unknown): string {
-    const { key, iv } = this.getKeyAndIV();
-    const plainText = typeof data === 'string' ? data : JSON.stringify(data);
-    return CryptoJS.AES.encrypt(plainText, key, {
-      iv,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    }).toString();
+  wrapRequest(data: any): { encrypted: string } {
+    return { encrypted: this.encrypt(data) };
   }
 
-  decrypt(cipherText: string): unknown {
-    const { key, iv } = this.getKeyAndIV();
-    const bytes = CryptoJS.AES.decrypt(cipherText, key, {
-      iv,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    });
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    try {
-      return JSON.parse(decrypted);
-    } catch {
-      return decrypted;
+  unwrapResponse<T>(response: any): T {
+    if (response.encrypted) {
+      return this.decrypt<T>(response.encrypted);
     }
-  }
-
-  wrapRequest(body: unknown): { data: string } {
-    return { data: this.encrypt(body) };
-  }
-
-  unwrapResponse<T>(response: { data: string }): T {
-    return this.decrypt(response.data) as T;
+    return response;
   }
 }

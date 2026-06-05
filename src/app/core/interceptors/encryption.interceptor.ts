@@ -1,47 +1,27 @@
-// ============================================
-// ANVEXS - Encryption HTTP Interceptor
-// Encrypts outgoing request bodies and
-// decrypts incoming encrypted responses.
-// ============================================
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpResponse } from '@angular/common/http';
+// encryption.interceptor.ts
+
 import { inject } from '@angular/core';
-import { map } from 'rxjs/operators';
+import {
+  HttpInterceptorFn
+} from '@angular/common/http';
 import { EncryptionService } from '../services/encryption.service';
-import { environment } from '../../../environments/environment';
 
-export const encryptionInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
-) => {
-  // Only encrypt requests to our own API
-  if (!req.url.startsWith(environment.apiUrl)) {
-    return next(req);
-  }
+export const encryptionInterceptor: HttpInterceptorFn = (req, next) => {
+  const encryption = inject(EncryptionService);
 
-  const encryptionSvc = inject(EncryptionService);
+  if (
+    ['POST', 'PUT', 'PATCH'].includes(req.method) &&
+    req.body
+  ) {
+    const encrypted = encryption.wrapRequest(req.body);
 
-  // Encrypt request body (skip GET/DELETE and non-body requests)
-  let modifiedReq = req;
-  if (req.body && ['POST', 'PUT', 'PATCH'].includes(req.method)) {
-    const encryptedBody = encryptionSvc.wrapRequest(req.body);
-    modifiedReq = req.clone({
-      body: encryptedBody,
-      setHeaders: { 'X-Encrypted': 'true' },
-    });
-  } else {
-    modifiedReq = req.clone({
-      setHeaders: { 'X-Encrypted': 'true' },
-    });
-  }
-
-  // Decrypt response body
-  return next(modifiedReq).pipe(
-    map(event => {
-      if (event instanceof HttpResponse && event.body && (event.body as { data?: string }).data) {
-        const decrypted = encryptionSvc.unwrapResponse<unknown>(event.body as { data: string });
-        return event.clone({ body: decrypted });
+    req = req.clone({
+      body: encrypted,
+      setHeaders: {
+        'X-Encrypted': 'true'
       }
-      return event;
-    })
-  );
+    });
+  }
+
+  return next(req);
 };
