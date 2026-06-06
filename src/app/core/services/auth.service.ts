@@ -2,127 +2,102 @@ import { Injectable, signal, computed, inject, PLATFORM_ID } from '@angular/core
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, finalize, throwError, EMPTY } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  role: string;
+  _id: string; firstName: string; lastName: string;
+  email: string; phone?: string; role: string; isVerified: boolean;
 }
-
 export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    accessToken: string;
-    refreshToken: string;
-    user: User;
-  };
+  success: boolean; message: string;
+  data?: { accessToken: string; refreshToken: string; user: User; };
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private http       = inject(HttpClient);
+  private router     = inject(Router);
   private platformId = inject(PLATFORM_ID);
-
   private get isBrowser() { return isPlatformBrowser(this.platformId); }
 
-  private _accessToken  = signal<string | null>(this.read('anvexs_access_token'));
-  private _refreshToken = signal<string | null>(this.read('anvexs_refresh_token'));
-  private _user         = signal<User | null>(this.readUser());
+  private _token   = signal<string | null>(this.read('anvexs_access_token'));
+  private _refresh = signal<string | null>(this.read('anvexs_refresh_token'));
+  private _user    = signal<User | null>(this.readUser());
 
   readonly user            = this._user.asReadonly();
-  readonly isAuthenticated = computed(() => !!this._accessToken() && !!this._user());
+  readonly isAuthenticated = computed(() => !!this._token() && !!this._user());
   readonly isAdmin         = computed(() => this._user()?.role === 'admin');
 
-  // ─── storage helpers ─────────────────────
   private read(key: string): string | null {
     return this.isBrowser ? localStorage.getItem(key) : null;
   }
-
   private readUser(): User | null {
-    const raw = this.read('anvexs_user');
-    try { return raw ? JSON.parse(raw) : null; } catch { return null; }
+    try { const r = this.read('anvexs_user'); return r ? JSON.parse(r) : null; } catch { return null; }
   }
-
-  private save(at: string, rt: string, user: User): void {
+  private persist(at: string, rt: string, user: User) {
     if (!this.isBrowser) return;
     localStorage.setItem('anvexs_access_token', at);
     localStorage.setItem('anvexs_refresh_token', rt);
     localStorage.setItem('anvexs_user', JSON.stringify(user));
   }
-
-  private clear(): void {
+  private wipe() {
     if (!this.isBrowser) return;
-    ['anvexs_access_token', 'anvexs_refresh_token', 'anvexs_user'].forEach(k => localStorage.removeItem(k));
+    ['anvexs_access_token','anvexs_refresh_token','anvexs_user'].forEach(k => localStorage.removeItem(k));
   }
 
-  // ─── used by auth interceptor ─────────────
-  getAccessToken(): string | null { return this._accessToken(); }
+  getAccessToken(): string | null { return this._token(); }
 
   refreshAccessToken(): Observable<string> {
-    const rt = this._refreshToken();
+    const rt = this._refresh();
     if (!rt) return throwError(() => new Error('No refresh token'));
-
     return new Observable(obs => {
-      this.http.post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, { refreshToken: rt })
-        .subscribe({
-          next: res => {
-            if (res.data) {
-              this._accessToken.set(res.data.accessToken);
-              if (this.isBrowser) localStorage.setItem('anvexs_access_token', res.data.accessToken);
-              obs.next(res.data.accessToken);
-              obs.complete();
-            } else {
-              obs.error(new Error('Refresh failed'));
-            }
-          },
-          error: err => obs.error(err),
-        });
+      this.http.post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, { refreshToken: rt }).subscribe({
+        next: res => {
+          if (res.data) {
+            this._token.set(res.data.accessToken);
+            if (this.isBrowser) localStorage.setItem('anvexs_access_token', res.data.accessToken);
+            obs.next(res.data.accessToken); obs.complete();
+          } else { obs.error(new Error('Refresh failed')); }
+        },
+        error: e => obs.error(e),
+      });
     });
   }
 
-  // ─── public API ───────────────────────────
   register(data: { firstName: string; lastName: string; email: string; password: string; phone?: string }) {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, data);
+    return this.http.post<{ success: boolean; message: string }>(`${environment.apiUrl}/auth/register`, data);
   }
-
-  sendOTP(email: string) {
-    return this.http.post(`${environment.apiUrl}/otp/send`, { email, purpose: 'email_verification' });
+  sendOTP(email: string, purpose = 'email_verification') {
+    return this.http.post<{ success: boolean; message: string }>(`${environment.apiUrl}/otp/send`, { email, purpose });
   }
-
-  verifyOTP(email: string, otp: string) {
-    return this.http.post(`${environment.apiUrl}/otp/verify`, { email, otp, purpose: 'email_verification' });
+  verifyOTP(email: string, otp: string, purpose = 'email_verification') {
+    return this.http.post<{ success: boolean; message: string; data?: { verified: boolean; autoLogin?: boolean; user?: User; accessToken?: string; refreshToken?: string } }>(`${environment.apiUrl}/otp/verify`, { email, otp, purpose });
   }
-
   login(email: string, password: string) {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, { email, password });
   }
-
+  forgotPassword(email: string) {
+    return this.http.post<{ success: boolean; message: string }>(`${environment.apiUrl}/auth/forgot-password`, { email });
+  }
+  resetPassword(email: string, otp: string, newPassword: string) {
+    return this.http.post<{ success: boolean; message: string }>(`${environment.apiUrl}/auth/reset-password`, { email, otp, newPassword });
+  }
+  changePassword(currentPassword: string, newPassword: string) {
+    return this.http.post<{ success: boolean; message: string }>(`${environment.apiUrl}/auth/change-password`, { currentPassword, newPassword });
+  }
   setAuth(res: AuthResponse): void {
     if (!res.data) return;
     const { accessToken, refreshToken, user } = res.data;
-    this._accessToken.set(accessToken);
-    this._refreshToken.set(refreshToken);
-    this._user.set(user);
-    this.save(accessToken, refreshToken, user);
+    this._token.set(accessToken); this._refresh.set(refreshToken); this._user.set(user);
+    this.persist(accessToken, refreshToken, user);
   }
-
+  setAuthRaw(at: string, rt: string, user: User): void {
+    this._token.set(at); this._refresh.set(rt); this._user.set(user);
+    this.persist(at, rt, user);
+  }
   logout(): void {
-    this._accessToken.set(null);
-    this._refreshToken.set(null);
-    this._user.set(null);
-    this.clear();
-    this.router.navigate(['/']);
-  }
-
-  getMe() {
-    return this.http.get<AuthResponse>(`${environment.apiUrl}/auth/me`);
+    this._token.set(null); this._refresh.set(null); this._user.set(null);
+    this.wipe(); this.router.navigate(['/']);
   }
 }

@@ -35,8 +35,9 @@
             <span class="tag">{{ s }}</span>
             }
           </div>
-          <a routerLink="/careers" (click)="scrollToApply()" class="btn btn-primary"
-            style="width:100%;justify-content:center">Apply Now</a>
+          <a href="javascript:void(0)" (click)="scrollToApply()" class="btn btn-primary">
+            Apply Now
+          </a>
         </div>
         }
       </div>
@@ -114,7 +115,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Upload CV *</label>
-          <input class="form-input" type="file"  [(ngModel)]="cvFile" (change)="onCVSelected($event)" accept=".pdf,.doc,.docx" />
+          <input type="file" class="form-input" (change)="onCVSelected($event)" accept=".pdf,.doc,.docx" />
         </div>
         <button class="btn btn-primary btn-lg" (click)="submitApplication()" style="width:100%;justify-content:center">
           {{ submitted() ? '✓ Application Sent' : 'Submit Application' }}

@@ -1,101 +1,135 @@
- <section class="blog-hero section">
+  <section class="blog-hero section">
       <div class="wrap">
-        <p class="eyebrow reveal">Our Latest Articles</p>
-        <h1 class="display-xl reveal d1">INSIGHTS &<br><span class="g-text">EXPERTISE</span></h1>
-        <p class="body-lg reveal d2" style="max-width:540px;margin-top:20px">
-          Stay updated with industry trends, technical deep-dives, and proven strategies for building scalable software.
+        <p class="eyebrow reveal">Insights & Engineering</p>
+        <h1 class="display-xl reveal d1" style="max-width:760px">
+          THE <span class="g-text">ANVEXS</span><br>INTELLIGENCE FEED
+        </h1>
+        <p class="body-lg reveal d2" style="max-width:500px;margin-top:20px">
+          Deep dives, technical breakdowns, and strategic thinking from engineers building at the frontier.
         </p>
       </div>
     </section>
 
-    <section class="blog-main section">
+    <!-- FEATURED + SIDEBAR -->
+    <section class="section" style="padding-top:0">
       <div class="wrap">
-        <div class="blog-grid">
-          <!-- Featured Article -->
-          @if (articles().length > 0) {
-            <div class="featured-article reveal d1">
-              <div class="featured-image">
-                <img [src]="articles()[0].image || '/assets/placeholder.jpg'" [alt]="articles()[0].title" />
-                <span class="featured-badge">Featured</span>
+        <div class="blog-featured">
+          <!-- Featured card -->
+          <div class="bcard bcard--hero reveal d1">
+            <div class="bcard-art" style="background:linear-gradient(135deg,#040610,#080d20)">
+              <span class="bcard-emoji">🤖</span>
+              <div class="bcard-art-overlay"></div>
+            </div>
+            <div class="bcard-body">
+              <div class="bcard-meta">
+                <span class="bcat">AI/ML</span>
+                <span class="bdot">·</span>
+                <span>12 min read</span>
+                <span class="bdot">·</span>
+                <span>June 2025</span>
               </div>
-              <div class="featured-content">
-                <span class="article-category">{{ articles()[0].category }}</span>
-                <h2 class="display-lg">{{ articles()[0].title }}</h2>
-                <p class="body-md">{{ articles()[0].excerpt }}</p>
-                <div class="article-meta">
-                  <span>By {{ articles()[0].author }}</span>
-                  <span>{{ articles()[0].date | date:'MMM dd, yyyy' }}</span>
-                  <span>{{ articles()[0].readTime }} min read</span>
+              <h2 class="bcard-title" style="font-size:clamp(1.3rem,2.5vw,1.8rem)">
+                RAG in 2025: Why 90% of Enterprise AI Deployments Still Fail
+              </h2>
+              <p class="bcard-excerpt">
+                We've built 30+ RAG systems. Here's the brutal truth about what breaks them in production — and how we fixed it at a 40,000-employee scale deployment.
+              </p>
+              <div class="bcard-cta">Read the deep dive →</div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="blog-sidebar">
+            @for (a of sideArticles; track a.id) {
+              <div class="bcard bcard--sm reveal d2">
+                <div class="bcard-art bcard-art--sm" [style.background]="a.bg">
+                  <span class="bcard-emoji" style="font-size:2.2rem">{{ a.emoji }}</span>
+                  <div class="bcard-art-overlay"></div>
                 </div>
-                <a [routerLink]="'/blog/' + articles()[0].slug" class="btn btn-primary">
-                  Read Article →
-                </a>
+                <div class="bcard-body bcard-body--sm">
+                  <div class="bcard-meta">
+                    <span class="bcat">{{ a.cat }}</span>
+                    <span class="bdot">·</span>
+                    <span>{{ a.time }}</span>
+                  </div>
+                  <h3 class="bcard-title bcard-title--sm">{{ a.title }}</h3>
+                  <div class="bcard-cta bcard-cta--sm">Read →</div>
+                </div>
               </div>
-            </div>
-
-            <!-- Recent Articles -->
-            <div class="articles-sidebar">
-              <h3 class="display-sm reveal d2">Recent Articles</h3>
-              @for (article of articles().slice(1, 4); track article._id) {
-                <article class="article-card reveal" [class]="'d' + ($index + 3)">
-                  <a [routerLink]="'/blog/' + article.slug" class="article-card-link">
-                    <div class="article-card-image">
-                      <img [src]="article.image || '/assets/placeholder.jpg'" [alt]="article.title" />
-                    </div>
-                    <div class="article-card-content">
-                      <span class="article-category">{{ article.category }}</span>
-                      <h4>{{ article.title }}</h4>
-                      <p>{{ article.readTime }} min read</p>
-                    </div>
-                  </a>
-                </article>
-              }
-            </div>
-          }
-        </div>
-
-        <!-- All Articles Grid -->
-        <div style="margin-top:72px">
-          <h2 class="display-lg reveal d1" style="margin-bottom:32px">All Articles</h2>
-
-          <div class="articles-grid">
-            @for (article of articles(); track article._id) {
-              <article class="article-grid-item reveal">
-                <a [routerLink]="'/blog/' + article.slug" class="article-link">
-                  <div class="article-image">
-                    <img [src]="article.image || '/assets/placeholder.jpg'" [alt]="article.title" />
-                  </div>
-                  <div class="article-info">
-                    <span class="article-cat">{{ article.category }}</span>
-                    <h3>{{ article.title }}</h3>
-                    <p>{{ article.excerpt }}</p>
-                    <div class="article-footer">
-                      <span class="read-time">{{ article.readTime }} min</span>
-                      <span class="arrow">→</span>
-                    </div>
-                  </div>
-                </a>
-              </article>
             }
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Newsletter Section -->
-        <div class="newsletter reveal d2" style="margin-top:112px">
-          <div class="newsletter-content">
-            <h2 class="display-lg">Subscribe to Our Newsletter</h2>
-            <p class="body-md">Get weekly updates on latest tech trends, tutorials, and industry insights.</p>
-          </div>
-
-          <form class="newsletter-form" (ngSubmit)="subscribe()">
-            <div class="form-group" style="flex:1">
-              <input class="form-input" type="email" [(ngModel)]="nlEmail" name="email"
-                     placeholder="you@company.com" [disabled]="nlLoading()" />
+    <!-- ALL ARTICLES -->
+    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
+      <div class="wrap">
+        <p class="eyebrow reveal">Latest Articles</p>
+        <div class="blog-grid">
+          @for (a of articles; track a.id; let i = $index) {
+            <div class="bcard reveal" [class]="'d' + ((i % 3) + 1)">
+              <div class="bcard-art bcard-art--md" [style.background]="a.bg">
+                <span class="bcard-emoji">{{ a.emoji }}</span>
+                <div class="bcard-art-overlay"></div>
+              </div>
+              <div class="bcard-body">
+                <div class="bcard-meta">
+                  <span class="bcat">{{ a.cat }}</span>
+                  <span class="bdot">·</span>
+                  <span>{{ a.time }}</span>
+                  <span class="bdot">·</span>
+                  <span>{{ a.date }}</span>
+                </div>
+                <h3 class="bcard-title bcard-title--md">{{ a.title }}</h3>
+                <p class="bcard-excerpt bcard-excerpt--sm">{{ a.excerpt }}</p>
+                <div class="bcard-cta">Read →</div>
+              </div>
             </div>
-            <button class="btn btn-primary" [disabled]="nlLoading()">
-              {{ nlLoading() ? 'Subscribing...' : 'Subscribe →' }}
-            </button>
-          </form>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section">
+      <div class="wrap">
+        <div class="nl-card reveal">
+          <div class="nl-left">
+            <p class="eyebrow">Stay sharp</p>
+            <h2 class="display-lg" style="margin-bottom:12px">
+              THE ANVEXS<br><span class="g-text">INTELLIGENCE BRIEF</span>
+            </h2>
+            <p class="body-md">
+              Weekly technical breakdowns and industry insights. No fluff. No spam. Unsubscribe anytime.
+            </p>
+          </div>
+          <div class="nl-right">
+            @if (!nlSent()) {
+              <div class="nl-form">
+                <input class="form-input nl-input"
+                  [class.is-invalid]="nlError()"
+                  type="email" [(ngModel)]="nlEmail"
+                  placeholder="your@email.com"
+                  [disabled]="nlBusy()" />
+                <button class="btn btn-primary" (click)="subscribe()" [disabled]="nlBusy()">
+                  @if (nlBusy()) { <span class="nl-spin"></span> } Subscribe
+                </button>
+              </div>
+              @if (nlError()) {
+                <p class="nl-error">{{ nlError() }}</p>
+              }
+              <p class="nl-note">Every Tuesday · No spam ever · Unsubscribe anytime</p>
+            } @else {
+              <div class="nl-thanks">
+                <span class="nl-check">✓</span>
+                <div>
+                  <strong>You're subscribed!</strong>
+                  <p>First issue arrives this Tuesday. Keep an eye on {{ nlEmail }}</p>
+                </div>
+              </div>
+            }
+          </div>
         </div>
       </div>
     </section>

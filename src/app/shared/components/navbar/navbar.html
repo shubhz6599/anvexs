@@ -90,5 +90,26 @@
           <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="social-icon" (click)="closeMenu()">in</a>
           <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="social-icon" (click)="closeMenu()">ig</a>
         </div>
+        <div class="nav__drawer-contact">
+
+  @if (auth.isAuthenticated()) {
+    <div class="nav__user">
+      <div class="nav__avatar">
+        {{ auth.user()?.firstName?.charAt(0) || 'U' }}
+      </div>
+      <button class="drawer-btn" (click)="auth.logout(); closeMenu()">
+        Logout
+      </button>
+    </div>
+  } @else {
+    <a routerLink="/auth" class="drawer-btn" (click)="closeMenu()">
+      🔐 Login
+    </a>
+    <a href="https://wa.me/7841868521" target="_blank" class="drawer-btn">
+      💬 WhatsApp
+    </a>
+  }
+
+</div>
       </div>
     </header>

@@ -49,6 +49,7 @@ export class Contact implements AfterViewInit, OnDestroy {
     }
 
     this.submitting.set(true);
+    console.log(this.form)
     this.enquiry.submit(this.form as any).subscribe({
       next: (res) => {
         this.submitted.set(true);

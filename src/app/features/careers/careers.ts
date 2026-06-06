@@ -1,6 +1,6 @@
-import { Component, AfterViewInit, OnDestroy, inject, signal } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject, signal, ElementRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+// import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RevealService } from '../../core/services/reveal.service';
 import { CareerService } from '../../core/services/api.service';
@@ -8,7 +8,7 @@ import { CareerService } from '../../core/services/api.service';
 @Component({
   selector: 'app-careers',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './careers.html',
   styleUrl: './careers.scss',
 })
@@ -16,7 +16,7 @@ export class Careers implements AfterViewInit, OnDestroy {
   private reveal = inject(RevealService);
   careerSvc = inject(CareerService);
   submitted = signal(false);
-cvFile:any;
+  cvFile: File | null = null;
   formData = {
     name: '', email: '', phone: '', position: '', experience: 0,
     linkedin: '', portfolio: '', coverLetter: ''
@@ -39,12 +39,42 @@ cvFile:any;
     { icon: '📊', title: 'Performance Review', desc: 'Detailed feedback to guide your engineering growth.' },
     { icon: '🔗', title: 'Placement Referral', desc: 'Strong performers get permanent job offers.' },
   ];
+  private applySection = viewChild<ElementRef>('applySection');
+
 
   submitApplication() {
-    this.validateCareerForm()
-    this.careerSvc.apply(this.formData as any).subscribe({
-      next: () => { this.submitted.set(true); this.formData = { name: '', email: '', phone: '', position: '', experience: 0, linkedin: '', portfolio: '', coverLetter: '' }; },
-      error: (err) => alert('Error submitting application: ' + err.message),
+    const errors = this.validateCareerForm();
+    if (errors.length) {
+      alert(errors.join('\n'));
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('name', this.formData.name);
+    formData.append('email', this.formData.email);
+    formData.append('phone', this.formData.phone);
+    formData.append('position', this.formData.position);
+    formData.append('experience', String(this.formData.experience));
+    formData.append('linkedInUrl', this.formData.linkedin);
+    formData.append('portfolioUrl', this.formData.portfolio);
+    formData.append('coverLetter', this.formData.coverLetter);
+
+    // IMPORTANT: file must be appended like this
+    if (this.cvFile) {
+      formData.append('cv', this.cvFile);
+    }
+
+    this.careerSvc.apply(formData).subscribe({
+      next: () => {
+        this.submitted.set(true);
+        this.formData = {
+          name: '', email: '', phone: '', position: '',
+          experience: 0, linkedin: '', portfolio: '', coverLetter: ''
+        };
+        this.cvFile = null;
+      },
+      error: (err) => alert(err.error?.message || 'Error submitting application'),
     });
   }
 
@@ -62,16 +92,19 @@ cvFile:any;
     return errors;
   }
 
-  onCVSelected(eve: any) {
-
+  onCVSelected(event: any) {
+    const file = event.target.files?.[0];
+    if (file) this.cvFile = file;
   }
 
   scrollToApply() {
     setTimeout(() => {
-      document.querySelector('[#applySection]')?.scrollIntoView({ behavior: 'smooth' });
+      this.applySection()?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     }, 100);
   }
-
   ngAfterViewInit() { this.reveal.init(); }
   ngOnDestroy() { this.reveal.destroy(); }
 }
