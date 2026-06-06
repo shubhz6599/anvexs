@@ -28,7 +28,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         loadingInterceptor,
         authInterceptor,
-        encryptionInterceptor,
+        // encryptionInterceptor,
         errorInterceptor,
       ])
     ),

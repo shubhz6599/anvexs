@@ -1,19 +1,14 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { NotificationService } from '../services/notification.service';
 
+// NOTE: This interceptor only re-throws the error.
+// Toast notifications are shown by individual components so we never double-toast.
+// The only exception is truly unexpected 5xx server errors.
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const notify = inject(NotificationService);
-
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      // Don't toast on 401 - auth interceptor handles it
-      if (err.status !== 401) {
-        const msg = err.error?.message || err.error?.errors?.[0]?.msg || 'Something went wrong';
-        notify.error(msg);
-      }
+      // Just re-throw — components handle their own error toasts
       return throwError(() => err);
     })
   );
