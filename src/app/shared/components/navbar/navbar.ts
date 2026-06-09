@@ -11,6 +11,7 @@ import { filter } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,6 +23,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
+  notify = inject(NotificationService);
+
   router = inject(Router);
   scrolled = signal(false);
   menuOpen = signal(false);
@@ -120,11 +123,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.removeImage = false;
 
         localStorage.setItem('anvexs_user', JSON.stringify(res.data.user));
+        this.notify.success(`${res.message}`);
+
       },
       error: (err) => {
         // this.profileError.set(
         //   err?.error?.message || 'Failed to update profile'
         // );
+        this.notify.info(err?.error?.message || 'Failed to update profile');
+
       },
       complete: () => {
         this.profileSaving.set(false);
