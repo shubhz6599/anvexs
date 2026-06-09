@@ -34,7 +34,7 @@ export class App implements OnInit {
       logo: 'https://anvexs.com/assets/logo.png',
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+91-7841868521',
+        telephone: '+91-9359932573',
         contactType: 'customer service',
         email: 'info@anvexs.com',
         areaServed: 'IN',

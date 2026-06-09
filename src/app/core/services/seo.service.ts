@@ -60,7 +60,7 @@ const PAGE_SEO: Record<string, SeoData> = {
   },
   '/contact': {
     title: 'Contact — Start Your Project | Anvexs IT Hub',
-    description: 'Get in touch for web, mobile, AI or game development. Fast response, free consultation. Call +91 7841868521.',
+    description: 'Get in touch for web, mobile, AI or game development. Fast response, free consultation. Call +91 9359932573.',
     keywords: 'contact software company, hire developers India, web development quote',
   },
 };

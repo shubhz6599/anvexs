@@ -1,115 +1,217 @@
-  <header class="nav" [class.nav--stuck]="scrolled()" [class.nav--open]="menuOpen()">
-      <div class="nav__inner wrap">
-        <!-- Logo -->
-            <a routerLink="/" class="nav__logo" (click)="closeMenu()">
-          <div class="nav__logo-mark">
-            <img src="images/anvexs-logo.png" alt="Anvexs logo" />
-          </div>
-          <div class="nav__logo-text">
-            <span class="nav__logo-name">ANVEXS</span>
-            <span class="nav__logo-sub">IT HUB</span>
-          </div>
-        </a>
-
-        <!-- Desktop Links -->
-        <nav class="nav__links" aria-label="Main navigation">
-          @for (item of navItems; track item.path) {
-            <a [routerLink]="item.path"
-               routerLinkActive="nav__link--active"
-               [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-               class="nav__link"
-               (click)="closeMenu()">
-              {{ item.label }}
-            </a>
-          }
-        </nav>
-
-        <!-- Desktop Actions -->
-        <div class="nav__actions">
-          @if (auth.isAuthenticated()) {
-            <div class="nav__user">
-              <div class="nav__avatar">{{ auth.user()?.firstName?.charAt(0) || 'U' }}</div>
-              <button class="btn btn-ghost btn-sm" (click)="auth.logout()">Logout</button>
-            </div>
-          } @else {
-            <a routerLink="/auth" class="btn btn-ghost btn-sm" (click)="closeMenu()">Log In</a>
-            <a href="https://wa.me/7841868521" target="_blank" class="btn btn-primary btn-sm">WhatsApp</a>
-          }
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <button class="nav__burger" [class.nav__burger--open]="menuOpen()"
-                (click)="toggleMenu()" aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
+<header class="nav" [class.nav--stuck]="scrolled()" [class.nav--open]="menuOpen()">
+  <div class="nav__inner wrap">
+    <!-- Logo -->
+    <a routerLink="/" class="nav__logo" (click)="closeMenu()">
+      <div class="nav__logo-mark">
+        <img src="images/anvexs-logo.png" alt="Anvexs logo" />
       </div>
+      <div class="nav__logo-text">
+        <span class="nav__logo-name">ANVEXS</span>
+        <span class="nav__logo-sub">IT HUB</span>
+      </div>
+    </a>
 
-      <!-- Mobile Overlay -->
-      @if (menuOpen()) {
-        <div class="nav__overlay" (click)="closeMenu()"></div>
+    <!-- Desktop Links -->
+    <nav class="nav__links" aria-label="Main navigation">
+      @for (item of navItems; track item.path) {
+      <a [routerLink]="item.path" routerLinkActive="nav__link--active"
+        [routerLinkActiveOptions]="{ exact: item.path === '/' }" class="nav__link" (click)="closeMenu()">
+        {{ item.label }}
+      </a>
       }
+    </nav>
 
-      <!-- Mobile Drawer -->
-      <div class="nav__drawer" [class.nav__drawer--open]="menuOpen()">
-        <div class="nav__drawer-header">
-          <a routerLink="/" class="nav__drawer-logo" (click)="closeMenu()">
-            <span><img src="images/anvexs-logo.png" alt="Anvexs logo" /></span> 
-          </a>
-          <button class="nav__drawer-close" (click)="closeMenu()">✕</button>
-        </div>
+    <!-- Desktop Actions -->
+    <div class="nav__actions">
 
-        <nav class="nav__drawer-nav">
-          @for (item of navItems; track item.path) {
-            <a [routerLink]="item.path"
-               routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-               class="nav__drawer-link"
-               (click)="closeMenu()">
-              {{ item.label }}
-              <span class="arrow">→</span>
-            </a>
-          }
-        </nav>
+      @if (auth.isAuthenticated()) {
 
-        <div class="nav__drawer-divider"></div>
+      @if(auth.user()?.profilePicture){
+      <img class="avatar-profile" [src]="auth.user()?.profilePicture" alt="User Avatar" (click)="openProfile()">
 
-        <div class="nav__drawer-contact">
-          <p class="drawer-label">Contact Us</p>
-          <a href="https://wa.me/7841868521" target="_blank" class="drawer-btn" (click)="closeMenu()">
-            <span>💬</span> WhatsApp
-          </a>
-          <a href="mailto:info@anvexs.com" class="drawer-btn" (click)="closeMenu()">
-            <span>📧</span> Email
-          </a>
-          <a href="tel:+917841868521" class="drawer-btn" (click)="closeMenu()">
-            <span>📞</span> Call
-          </a>
-        </div>
+      }@else {
+      <div class="nav__avatar" (click)="openProfile()">
 
-        <div class="nav__drawer-socials">
-          <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="social-icon" (click)="closeMenu()">in</a>
-          <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="social-icon" (click)="closeMenu()">ig</a>
-        </div>
-        <div class="nav__drawer-contact">
-
-  @if (auth.isAuthenticated()) {
-    <div class="nav__user">
-      <div class="nav__avatar">
         {{ auth.user()?.firstName?.charAt(0) || 'U' }}
       </div>
-      <button class="drawer-btn" (click)="auth.logout(); closeMenu()">
-        Logout
-      </button>
+      }
+
+
+      <button class="btn btn-ghost btn-sm" (click)="auth.logout()">Logout</button>
+      }
+
+      @else {
+      <a routerLink="/auth" class="btn btn-ghost btn-sm">Log In</a>
+      <a href="https://wa.me/9359932573" target="_blank" class="btn btn-primary btn-sm">WhatsApp</a>
+      }
+
     </div>
-  } @else {
-    <a routerLink="/auth" class="drawer-btn" (click)="closeMenu()">
-      🔐 Login
-    </a>
-    <a href="https://wa.me/7841868521" target="_blank" class="drawer-btn">
-      💬 WhatsApp
-    </a>
+
+    <!-- Mobile Menu Button -->
+    <button class="nav__burger" [class.nav__burger--open]="menuOpen()" (click)="toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Overlay -->
+  @if (menuOpen()) {
+  <div class="nav__overlay" (click)="closeMenu()"></div>
   }
 
-</div>
+  <!-- Mobile Drawer -->
+  <div class="nav__drawer" [class.nav__drawer--open]="menuOpen()">
+    <div class="nav__drawer-header">
+      <a routerLink="/" class="nav__drawer-logo" (click)="closeMenu()">
+        <span><img src="images/anvexs-logo.png" alt="Anvexs logo" /></span>
+      </a>
+      <button class="nav__drawer-close" (click)="closeMenu()">✕</button>
+    </div>
+
+    <nav class="nav__drawer-nav">
+      @for (item of navItems; track item.path) {
+      <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+        class="nav__drawer-link" (click)="closeMenu()">
+        {{ item.label }}
+        <span class="arrow">→</span>
+      </a>
+      }
+    </nav>
+
+    <div class="nav__drawer-divider"></div>
+
+    <div class="nav__drawer-contact">
+      <p class="drawer-label">Contact Us</p>
+      <a href="https://wa.me/9359932573" target="_blank" class="drawer-btn" (click)="closeMenu()">
+        <span>💬</span> WhatsApp
+      </a>
+      <a href="mailto:info@anvexs.com" class="drawer-btn" (click)="closeMenu()">
+        <span>📧</span> Email
+      </a>
+      <a href="tel:+919359932573" class="drawer-btn" (click)="closeMenu()">
+        <span>📞</span> Call
+      </a>
+    </div>
+
+    <div class="nav__drawer-socials">
+      <a href="https://www.linkedin.com/company/anvexstech/" target="_blank" class="social-icon"
+        (click)="closeMenu()">in</a>
+      <a href="https://www.instagram.com/anvexstech?igsh=aXZwNDgybXh2Zmth" target="_blank" class="social-icon"
+        (click)="closeMenu()">ig</a>
+    </div>
+    <div class="nav__drawer-contact">
+
+      @if (auth.isAuthenticated()) {
+      <div class="nav__user-card">
+
+        <!-- Avatar -->
+        @if(auth.user()?.profilePicture){
+        <img class="avatar-profile" [src]="auth.user()?.profilePicture" alt="User Avatar">
+
+        }@else {
+        <div class="nav__avatar">
+
+          {{ auth.user()?.firstName?.charAt(0) || 'U' }}
+        </div>
+        }
+
+        <!-- User Info -->
+        <div class="nav__user-info">
+          <div class="nav__user-name">
+            {{ auth.user()?.firstName }} {{ auth.user()?.lastName }}
+          </div>
+
+          <div class="nav__user-email">
+            {{ auth.user()?.email }}
+          </div>
+
+          <!-- Edit Profile -->
+          <button class="nav__edit-link" (click)="openProfile()">
+            Edit Profile
+          </button>
+        </div>
+
+        <!-- Logout -->
+        <button class="nav__logout-btn" (click)="auth.logout(); closeMenu()">
+          Logout
+        </button>
+
       </div>
-    </header>
+      }@else {
+      <a routerLink="/auth" class="drawer-btn" (click)="closeMenu()">
+        🔐 Login
+      </a>
+      <a href="https://wa.me/9359932573" target="_blank" class="drawer-btn">
+        💬 WhatsApp
+      </a>
+      }
+
+    </div>
+  </div>
+</header>
+
+@if (profileOpen()) {
+<div class="pp-overlay" (click)="closeProfile()"></div>
+
+<div class="pp-modal" (click)="$event.stopPropagation()">
+
+  <div class="pp-card">
+
+    <!-- Header -->
+    <div class="pp-header">
+      <div class="pp-title">EDIT PROFILE</div>
+      <button class="pp-close" (click)="closeProfile()">✕</button>
+    </div>
+
+    <!-- Avatar -->
+    <div class="pp-avatar-section">
+      <div class="pp-avatar" (click)="triggerAvatarUpload()">
+        @if (previewUrl() || auth.user()?.profilePicture) {
+        <img [src]="previewUrl() || auth.user()?.profilePicture" />
+        } @else {
+        {{ auth.user()?.firstName?.charAt(0) || 'U' }}
+        }
+
+        <div class="pp-avatar-edit">📷</div>
+      </div>
+
+      <div class="pp-avatar-actions">
+        <button class="btn btn-ghost btn-sm" (click)="triggerAvatarUpload()">
+          Change
+        </button>
+
+        @if (auth.user()?.profilePicture || previewUrl()) {
+        <button class="btn btn-ghost btn-sm danger" (click)="removeAvatar()">
+          Remove
+        </button>
+        }
+
+        <input type="file" hidden #avatarInput (change)="onAvatarChange($event)" />
+      </div>
+
+      <input type="file" hidden #avatarInput (change)="onAvatarChange($event)" />
+    </div>
+
+    <!-- Form -->
+    <div class="pp-body">
+
+      <input class="pp-input" [(ngModel)]="pf.firstName" placeholder="First Name" />
+
+      <input class="pp-input" [(ngModel)]="pf.lastName" placeholder="Last Name" />
+
+      <input class="pp-input disabled" [value]="auth.user()?.email" disabled />
+
+      <input class="pp-input" [(ngModel)]="pf.phone" placeholder="Phone" />
+
+    </div>
+
+    <!-- Actions -->
+    <div class="pp-actions">
+      <button class="btn btn-ghost" (click)="closeProfile()">Cancel</button>
+      <button class="btn btn-primary" (click)="saveProfile()">
+        Save
+      </button>
+    </div>
+
+  </div>
+</div>
+}
