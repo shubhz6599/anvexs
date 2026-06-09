@@ -67,6 +67,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       }
     });
+    console.log(this.auth.user());
+    
   }
 
   @HostListener('window:scroll')
@@ -84,7 +86,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const user = this.auth.user();
 
     this.pf = {
-      profilePicture: user?.profilePicture || '',
+      profilePicture: user?.profilePicture?.url || '',
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
       phone: user?.phone || ''

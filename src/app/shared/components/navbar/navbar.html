@@ -27,7 +27,7 @@
       @if (auth.isAuthenticated()) {
 
       @if(auth.user()?.profilePicture){
-      <img class="avatar-profile" [src]="auth.user()?.profilePicture" alt="User Avatar" (click)="openProfile()">
+      <img class="avatar-profile" [src]="auth.user()?.profilePicture?.url" alt="User Avatar" (click)="openProfile()">
 
       }@else {
       <div class="nav__avatar" (click)="openProfile()">
@@ -105,7 +105,7 @@
 
         <!-- Avatar -->
         @if(auth.user()?.profilePicture){
-        <img class="avatar-profile" [src]="auth.user()?.profilePicture" alt="User Avatar">
+        <img class="avatar-profile" [src]="auth.user()?.profilePicture?.url" alt="User Avatar">
 
         }@else {
         <div class="nav__avatar">
@@ -166,7 +166,7 @@
     <div class="pp-avatar-section">
       <div class="pp-avatar" (click)="triggerAvatarUpload()">
         @if (previewUrl() || auth.user()?.profilePicture) {
-        <img [src]="previewUrl() || auth.user()?.profilePicture" />
+        <img [src]="previewUrl() || auth.user()?.profilePicture?.url" />
         } @else {
         {{ auth.user()?.firstName?.charAt(0) || 'U' }}
         }
