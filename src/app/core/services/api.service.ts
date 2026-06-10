@@ -134,3 +134,22 @@ export class BlogService {
     );
   }
 }
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NewsletterService {
+
+  private http = inject(HttpClient);
+
+  private api =
+    `${environment.apiUrl}/auth`;
+
+  createNewsletter(formData: FormData) {
+    return this.http.post(
+      `${this.api}/newsletters`,
+      formData
+    );
+  }
+}

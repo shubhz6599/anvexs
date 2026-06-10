@@ -707,4 +707,36 @@
     height: 40px;
     border-radius: 50%;
     border: 1px solid slategrey;
+    cursor: pointer;
+  }
+
+  .nav__link--admin,
+  .nav__drawer-link--admin {
+    position: relative;
+    color: #4a9eff; // stands out from regular links
+
+    &::after {
+      // content: 'ADMIN';
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: #4a9eff22;
+      border: 1px solid #4a9eff55;
+      color: #4a9eff;
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+  }
+
+  @media (max-width: 768px) {
+
+    .nav__link--admin,
+    .nav__drawer-link--admin {
+      &::after {
+        content: 'ADMIN';
+      vertical-align: middle;
+
+      }
+    }
   }

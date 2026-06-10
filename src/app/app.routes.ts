@@ -3,6 +3,7 @@
 // ============================================
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -54,6 +55,12 @@ export const routes: Routes = [
     path: 'auth',
     loadComponent: () => import('./features/auth/auth').then(m => m.Auth),
     title: 'Login / Register — Anvexs',
+  },
+   {
+    path: 'newsLetter',
+    loadComponent: () => import('./features/newsletter/newsletter').then(m => m.Newsletter),
+    title: 'NewsLetter Admin Panel — Anvexs',
+    canActivate: [authGuard, adminGuard],
   },
   {
     path: '**',

@@ -52,6 +52,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { label: 'Careers', path: '/careers' },
     { label: 'Contact', path: '/contact' },
   ];
+  adminNavItems = [
+  { label: 'News Letter', path: '/newsLetter' },
+];
   removeImage: boolean = false;
 
   ngOnInit() {
@@ -68,7 +71,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
     console.log(this.auth.user());
-    
+
   }
 
   @HostListener('window:scroll')

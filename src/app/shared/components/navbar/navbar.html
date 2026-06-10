@@ -19,6 +19,14 @@
         {{ item.label }}
       </a>
       }
+      @if (auth.isAdmin()) {
+      @for (item of adminNavItems; track item.path) {
+      <a [routerLink]="item.path" routerLinkActive="nav__link--active" class="nav__link nav__link--admin"
+        (click)="closeMenu()">
+        {{ item.label }}
+      </a>
+      }
+      }
     </nav>
 
     <!-- Desktop Actions -->
@@ -74,6 +82,15 @@
         {{ item.label }}
         <span class="arrow">→</span>
       </a>
+      }
+      @if (auth.isAdmin()) {
+      @for (item of adminNavItems; track item.path) {
+      <a [routerLink]="item.path" routerLinkActive="active" class="nav__drawer-link nav__drawer-link--admin"
+        (click)="closeMenu()">
+        {{ item.label }}
+        <span class="arrow">→</span>
+      </a>
+      }
       }
     </nav>
 

@@ -9,7 +9,11 @@ import { environment } from '../../../environments/environment';
 export interface User {
   _id: string; firstName: string; lastName: string;
   email: string; phone?: string; role: string;
-  isVerified: boolean; profilePicture?: string;
+  isVerified: boolean; profilePicture?: ProfilePic;
+}
+export interface ProfilePic {
+  url: any,
+  public_id: String
 }
 export interface AuthResponse {
   success: boolean; message: string;

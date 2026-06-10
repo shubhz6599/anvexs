@@ -1,135 +1,226 @@
-  <section class="blog-hero section">
-      <div class="wrap">
-        <p class="eyebrow reveal">Insights & Engineering</p>
-        <h1 class="display-xl reveal d1" style="max-width:760px">
-          THE <span class="g-text">ANVEXS</span><br>INTELLIGENCE FEED
-        </h1>
-        <p class="body-lg reveal d2" style="max-width:500px;margin-top:20px">
-          Deep dives, technical breakdowns, and strategic thinking from engineers building at the frontier.
-        </p>
-      </div>
-    </section>
+<section class="blog-hero section">
+  <div class="wrap">
+    <p class="eyebrow reveal">Intelligence · Wisdom · Game</p>
+    <h1 class="display-xl reveal d1" style="max-width:820px">
+      THE <span class="g-text">THINKING</span><br>MACHINE
+    </h1>
+    <p class="body-lg reveal d2" style="max-width:520px; margin-top:20px">
+      Solve the puzzle. Unlock the truth. Voices from the frontier on technology's promise — and its cost.
+    </p>
+    <div class="hero-stats reveal d3">
+      <div class="hstat"><span class="hstat-num">12</span><span class="hstat-label">Wisdom Cards</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span class="hstat-num">6</span><span class="hstat-label">Topics</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span class="hstat-num">∞</span><span class="hstat-label">Perspectives</span></div>
+    </div>
+  </div>
+</section>
 
-    <!-- FEATURED + SIDEBAR -->
-    <section class="section" style="padding-top:0">
-      <div class="wrap">
-        <div class="blog-featured">
-          <!-- Featured card -->
-          <div class="bcard bcard--hero reveal d1">
-            <div class="bcard-art" style="background:linear-gradient(135deg,#040610,#080d20)">
-              <span class="bcard-emoji">🤖</span>
-              <div class="bcard-art-overlay"></div>
-            </div>
-            <div class="bcard-body">
-              <div class="bcard-meta">
-                <span class="bcat">AI/ML</span>
-                <span class="bdot">·</span>
-                <span>12 min read</span>
-                <span class="bdot">·</span>
-                <span>June 2025</span>
-              </div>
-              <h2 class="bcard-title" style="font-size:clamp(1.3rem,2.5vw,1.8rem)">
-                RAG in 2025: Why 90% of Enterprise AI Deployments Still Fail
-              </h2>
-              <p class="bcard-excerpt">
-                We've built 30+ RAG systems. Here's the brutal truth about what breaks them in production — and how we fixed it at a 40,000-employee scale deployment.
-              </p>
-              <div class="bcard-cta">Read the deep dive →</div>
-            </div>
-          </div>
+<!-- PUZZLE ARENA -->
+<section class="section puzzle-section">
+  <div class="wrap">
+    <div class="puzzle-arena">
 
-          <!-- Sidebar -->
-          <div class="blog-sidebar">
-            @for (a of sideArticles; track a.id) {
-              <div class="bcard bcard--sm reveal d2">
-                <div class="bcard-art bcard-art--sm" [style.background]="a.bg">
-                  <span class="bcard-emoji" style="font-size:2.2rem">{{ a.emoji }}</span>
-                  <div class="bcard-art-overlay"></div>
-                </div>
-                <div class="bcard-body bcard-body--sm">
-                  <div class="bcard-meta">
-                    <span class="bcat">{{ a.cat }}</span>
-                    <span class="bdot">·</span>
-                    <span>{{ a.time }}</span>
-                  </div>
-                  <h3 class="bcard-title bcard-title--sm">{{ a.title }}</h3>
-                  <div class="bcard-cta bcard-cta--sm">Read →</div>
-                </div>
-              </div>
-            }
+      <!-- Left: Puzzle Board -->
+      <div class="puzzle-panel reveal d1">
+        <div class="puzzle-header">
+          <div class="puzzle-meta">
+            <span class="puzzle-label">WORD UNSCRAMBLE</span>
+            <span class="puzzle-badge">{{ currentCard().topic }}</span>
           </div>
+          <div class="puzzle-progress-bar">
+            <div class="puzzle-progress-fill" [style.width.%]="progressPct()"></div>
+          </div>
+          <p class="puzzle-hint">{{ hintText() }}</p>
         </div>
-      </div>
-    </section>
 
-    <!-- ALL ARTICLES -->
-    <section class="section" style="background:var(--bg-2);border-top:1px solid var(--border)">
-      <div class="wrap">
-        <p class="eyebrow reveal">Latest Articles</p>
-        <div class="blog-grid">
-          @for (a of articles; track a.id; let i = $index) {
-            <div class="bcard reveal" [class]="'d' + ((i % 3) + 1)">
-              <div class="bcard-art bcard-art--md" [style.background]="a.bg">
-                <span class="bcard-emoji">{{ a.emoji }}</span>
-                <div class="bcard-art-overlay"></div>
-              </div>
-              <div class="bcard-body">
-                <div class="bcard-meta">
-                  <span class="bcat">{{ a.cat }}</span>
-                  <span class="bdot">·</span>
-                  <span>{{ a.time }}</span>
-                  <span class="bdot">·</span>
-                  <span>{{ a.date }}</span>
-                </div>
-                <h3 class="bcard-title bcard-title--md">{{ a.title }}</h3>
-                <p class="bcard-excerpt bcard-excerpt--sm">{{ a.excerpt }}</p>
-                <div class="bcard-cta">Read →</div>
-              </div>
+        <!-- Scrambled tiles -->
+        <div class="puzzle-board">
+          @for (tile of scrambledTiles(); track tile.index) {
+            <div
+              class="puzzle-tile"
+              [class.used]="tile.used"
+              (click)="onTileClick(tile.index)">
+              {{ tile.letter }}
             </div>
           }
         </div>
-      </div>
-    </section>
 
-    <!-- NEWSLETTER -->
-    <section class="section">
-      <div class="wrap">
-        <div class="nl-card reveal">
-          <div class="nl-left">
-            <p class="eyebrow">Stay sharp</p>
-            <h2 class="display-lg" style="margin-bottom:12px">
-              THE ANVEXS<br><span class="g-text">INTELLIGENCE BRIEF</span>
-            </h2>
-            <p class="body-md">
-              Weekly technical breakdowns and industry insights. No fluff. No spam. Unsubscribe anytime.
-            </p>
-          </div>
-          <div class="nl-right">
-            @if (!nlSent()) {
-              <div class="nl-form">
-                <input class="form-input nl-input"
-                  [class.is-invalid]="nlError()"
-                  type="email" [(ngModel)]="nlEmail"
-                  placeholder="your@email.com"
-                  [disabled]="nlBusy()" />
-                <button class="btn btn-primary" (click)="subscribe()" [disabled]="nlBusy()">
-                  @if (nlBusy()) { <span class="nl-spin"></span> } Subscribe
-                </button>
-              </div>
-              @if (nlError()) {
-                <p class="nl-error">{{ nlError() }}</p>
-              }
-              <p class="nl-note">Every Tuesday · No spam ever · Unsubscribe anytime</p>
-            } @else {
-              <div class="nl-thanks">
-                <span class="nl-check">✓</span>
-                <div>
-                  <strong>You're subscribed!</strong>
-                  <p>First issue arrives this Tuesday. Keep an eye on {{ nlEmail }}</p>
-                </div>
+        <!-- Answer slots -->
+        <div class="puzzle-input-row">
+          <div class="puzzle-answer-slots" [class.shake]="shaking()">
+            @for (slot of answerSlots(); track $index) {
+              <div
+                class="answer-slot"
+                [class.filled]="slot !== ''"
+                (click)="onSlotClick($index)">
+                {{ slot }}
               </div>
             }
           </div>
         </div>
+
+        <div class="puzzle-controls">
+          <button class="btn btn-ghost btn-sm" (click)="reshuffleTiles()">↺ Reshuffle</button>
+          <button class="btn btn-ghost btn-sm" (click)="giveHint()">💡 Hint</button>
+          <button class="btn btn-primary btn-sm" (click)="checkAnswer()">Check →</button>
+        </div>
+
+        <div class="puzzle-feedback" [class.puzzle-feedback--success]="feedbackType() === 'success'" [class.puzzle-feedback--error]="feedbackType() === 'error'">
+          {{ feedbackMsg() }}
+        </div>
+
+        <div class="puzzle-nav">
+          <button class="pnav-btn" (click)="prevPuzzle()">← Prev</button>
+          <span class="pnav-counter">{{ currentIndex() + 1 }} / {{ totalCards }}</span>
+          <button class="pnav-btn" (click)="nextPuzzle()">Next →</button>
+        </div>
       </div>
-    </section>
+
+      <!-- Right: Quote Card -->
+      <div class="quote-panel reveal d2">
+
+        @if (!currentCard().unlocked) {
+          <div class="quote-lock">
+            <div class="lock-icon">🔒</div>
+            <p class="lock-text">Solve the puzzle to unlock this insight</p>
+            <div class="lock-preview">"{{ currentCard().quote | slice:0:65 }}…"</div>
+          </div>
+        } @else {
+          <div class="quote-reveal">
+            <div class="quote-category">{{ currentCard().category }}</div>
+            <blockquote class="quote-text">"{{ currentCard().quote }}"</blockquote>
+            <div class="quote-attribution">
+              <div class="quote-avatar">{{ currentCard().avatar }}</div>
+              <div class="quote-who">
+                <div class="quote-name">{{ currentCard().name }}</div>
+                <div class="quote-title">{{ currentCard().title }}</div>
+              </div>
+            </div>
+            <div class="quote-reflection">{{ currentCard().reflection }}</div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:16px" (click)="nextPuzzle()">Next Puzzle →</button>
+          </div>
+        }
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- UNLOCKED WISDOM FEED -->
+<section class="section wisdom-section" style="background:var(--bg-2); border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="wisdom-header">
+      <p class="eyebrow">Unlocked Insights</p>
+      <h2 class="display-md">YOUR <span class="g-text">WISDOM VAULT</span></h2>
+      <p class="body-sm" style="color:var(--text-3); margin-top:8px">Solve puzzles above to fill this feed</p>
+    </div>
+
+    @if (unlockedCards().length === 0) {
+      <div class="wisdom-empty">
+        <div class="wisdom-empty-icon">🧩</div>
+        <p>No insights unlocked yet. Start solving above.</p>
+      </div>
+    } @else {
+      <div class="wisdom-grid">
+        @for (card of unlockedCards(); track card.id) {
+          <div class="wcard">
+            <div class="wcard-cat">{{ card.category }}</div>
+            <blockquote class="wcard-quote">"{{ card.quote }}"</blockquote>
+            <div class="wcard-attr">
+              <span class="wcard-avatar">{{ card.avatar }}</span>
+              <div>
+                <div class="wcard-name">{{ card.name }}</div>
+                <div class="wcard-role">{{ card.title }}</div>
+              </div>
+            </div>
+            <div class="wcard-reflection">{{ card.reflection }}</div>
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</section>
+
+<!-- TOPIC CARDS -->
+<section class="section topics-section">
+  <div class="wrap">
+    <p class="eyebrow">Explore by Theme</p>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <span class="topic-icon">🤖</span>
+        <div class="topic-name">AI & Humanity</div>
+        <div class="topic-desc">When algorithms decide human fates</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">📱</span>
+        <div class="topic-name">Digital Addiction</div>
+        <div class="topic-desc">Designed to hijack your attention</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🔐</span>
+        <div class="topic-name">Privacy & Power</div>
+        <div class="topic-desc">Data is the new oil — and the new weapon</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🚀</span>
+        <div class="topic-name">Future of Work</div>
+        <div class="topic-desc">Automation erases and creates simultaneously</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🌍</span>
+        <div class="topic-name">Climate & Tech</div>
+        <div class="topic-desc">The servers that power us are burning us</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">⚖️</span>
+        <div class="topic-name">Ethics & Bias</div>
+        <div class="topic-desc">Code written by humans carries human flaws</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section">
+  <div class="wrap">
+    <div class="nl-card reveal">
+      <div class="nl-left">
+        <p class="eyebrow">Stay sharp</p>
+        <h2 class="display-lg" style="margin-bottom:12px">
+          THE ANVEXS<br><span class="g-text">INTELLIGENCE BRIEF</span>
+        </h2>
+        <p class="body-md">Weekly technical breakdowns and industry insights. No fluff. No spam. Unsubscribe anytime.</p>
+      </div>
+      <div class="nl-right">
+        @if (!nlSent()) {
+          <div class="nl-form">
+            <input class="form-input nl-input"
+              [class.is-invalid]="nlError()"
+              type="email" [(ngModel)]="nlEmail"
+              placeholder="your@email.com"
+              [disabled]="nlBusy()" />
+            <button class="btn btn-primary" (click)="subscribe()" [disabled]="nlBusy()">
+              @if (nlBusy()) { <span class="nl-spin"></span> } Subscribe
+            </button>
+          </div>
+          @if (nlError()) {
+            <p class="nl-error">{{ nlError() }}</p>
+          }
+          <p class="nl-note">Every Tuesday · No spam ever · Unsubscribe anytime</p>
+        } @else {
+          <div class="nl-thanks">
+            <span class="nl-check">✓</span>
+            <div>
+              <strong>You're subscribed!</strong>
+              <p>First issue arrives this Tuesday. Keep an eye on {{ nlEmail }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
