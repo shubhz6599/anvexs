@@ -4,8 +4,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { ChatbotService } from '../../../core/services/api.service';
+
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -24,7 +24,7 @@ interface ChatMessage {
 export class Chatbot implements AfterViewChecked {
   @ViewChild('messagesEnd') messagesEnd!: ElementRef;
 
-  private http = inject(HttpClient);
+  private chatbotService = inject(ChatbotService);
 
   isOpen = signal(false);
   isLoading = signal(false);
@@ -41,6 +41,7 @@ export class Chatbot implements AfterViewChecked {
 
   toggleChat() {
     this.isOpen.update(v => !v);
+
   }
 
   setInput(value: string) {
@@ -61,17 +62,15 @@ export class Chatbot implements AfterViewChecked {
     this.shouldScroll = true;
 
     try {
-      const history = this.messages().map(m => ({ role: m.role, content: m.content }));
-      // Remove the last user message we just added from history for the API call
-      // (it's sent as the current message)
-      const response = await this.http.post<{ reply: string }>(
-        `${environment.apiUrl}/api/chat`,
-        { messages: history }
-      ).toPromise();
+      const response = await this.chatbotService.askQuestion(text);
 
       this.messages.update(msgs => [
         ...msgs,
-        { role: 'assistant', content: response?.reply || 'Sorry, I couldn\'t get a response.', timestamp: new Date() }
+        {
+          role: 'assistant',
+          content: response.answer || 'Sorry, I could not generate a response.',
+          timestamp: new Date()
+        }
       ]);
     } catch (error) {
       this.messages.update(msgs => [
@@ -105,7 +104,7 @@ export class Chatbot implements AfterViewChecked {
   private scrollToBottom() {
     try {
       this.messagesEnd?.nativeElement?.scrollIntoView({ behavior: 'smooth' });
-    } catch {}
+    } catch { }
   }
 
   formatTime(date: Date): string {

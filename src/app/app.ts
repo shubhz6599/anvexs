@@ -7,11 +7,12 @@ import { LoaderComponent } from './shared/components/loader/loader';
 import { ApiLoader } from './shared/components/api-loader/api-loader';
 import { Toast } from './shared/components/toast/toast';
 import { SeoService } from './core/services/seo.service';
+import { Chatbot } from "./shared/components/chatbot/chatbot";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent, LoaderComponent, ApiLoader, Toast],
+  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent, LoaderComponent, ApiLoader, Toast, Chatbot],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

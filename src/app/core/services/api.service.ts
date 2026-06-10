@@ -5,7 +5,7 @@ import { NotificationService } from './notification.service';
 import { tap, finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InitialService {
@@ -150,6 +150,27 @@ export class NewsletterService {
     return this.http.post(
       `${this.api}/newsletters`,
       formData
+    );
+  }
+}
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ChatbotService {
+  private http = inject(HttpClient);
+
+  askQuestion(question: string) {
+    return firstValueFrom(
+      this.http.post<{
+        success: boolean;
+        answer: string;
+        type: string;
+      }>(
+        `${environment.apiUrl}/auth/chat`,
+        { question }
+      )
     );
   }
 }
