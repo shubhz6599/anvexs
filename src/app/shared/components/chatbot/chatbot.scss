@@ -17,18 +17,14 @@
   display: grid;
   place-items: center;
   color: #fff;
-
-  /* gradient matching the logo */
   background: linear-gradient(135deg, #0af 0%, #8b5cf6 100%);
   box-shadow:
     0 0 0 0 rgba(0, 170, 255, .5),
     0 8px 32px rgba(0, 170, 255, .35);
-
   transition:
     transform .3s cubic-bezier(.34, 1.56, .64, 1),
     box-shadow .3s;
 
-  /* outer ring */
   &::before {
     content: '';
     position: absolute;
@@ -44,26 +40,16 @@
       0 0 0 0 rgba(0, 170, 255, .3),
       0 12px 40px rgba(139, 92, 246, .5);
   }
+}
 
-  @media (max-width: 480px) {
-
-    .chatbot__fab {
-      position: fixed;
-      right: 16px;
-      bottom: max(16px, env(safe-area-inset-bottom));
-      z-index: 99999;
-    }
-
-    .chatbot__window {
-      position: fixed;
-      right: 8px;
-      left: 8px;
-      bottom: 80px;
-      top: auto;
-      width: auto;
-      max-height: 70vh;
-      z-index: 99998;
-    }
+/* ✅ Media query OUTSIDE the selector */
+@media (max-width: 480px) {
+  .chatbot__fab {
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: 50px;
+    height: 50px;
+    z-index: 99999;
   }
 }
 
