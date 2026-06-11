@@ -8,6 +8,7 @@ import { ApiLoader } from './shared/components/api-loader/api-loader';
 import { Toast } from './shared/components/toast/toast';
 import { SeoService } from './core/services/seo.service';
 import { Chatbot } from "./shared/components/chatbot/chatbot";
+import { InitialService } from './core/services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +20,12 @@ import { Chatbot } from "./shared/components/chatbot/chatbot";
 export class App implements OnInit {
   private seo        = inject(SeoService);
   private platformId = inject(PLATFORM_ID);
+  private apiInitiate = inject(InitialService);
 
   showLoader = signal(isPlatformBrowser(this.platformId));
 
   ngOnInit(): void {
+    this.triggerBackend()
     // Init SEO auto-updates on route changes
     this.seo.init();
 
@@ -59,6 +62,12 @@ export class App implements OnInit {
     }
   }
 
+  triggerBackend(){
+    this.apiInitiate.getHealth().subscribe((res)=>{
+      console.log(res);
+
+    })
+  }
   onLoadComplete(): void {
     this.showLoader.set(false);
   }
