@@ -70,7 +70,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       }
     });
-    console.log(this.auth.user());
 
   }
 

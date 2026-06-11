@@ -64,8 +64,6 @@ export class App implements OnInit {
 
   triggerBackend(){
     this.apiInitiate.getHealth().subscribe((res)=>{
-      console.log(res);
-
     })
   }
   onLoadComplete(): void {
