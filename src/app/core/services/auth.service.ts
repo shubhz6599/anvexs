@@ -102,4 +102,10 @@ export class AuthService {
     this._token.set(null); this._refresh.set(null); this._user.set(null);
     this.wipe(); this.router.navigate(['/']);
   }
+  googleLogin(token: string) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/auth/google`,
+      { token }
+    );
+  }
 }

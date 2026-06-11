@@ -11,365 +11,454 @@
 
     <!-- Tab switcher -->
     @if (tab() !== 'otp') {
-      <div class="auth-tabs">
-        <button class="auth-tab" [class.active]="tab() === 'login'" (click)="setTab('login')">Sign In</button>
-        <button class="auth-tab" [class.active]="tab() === 'register'" (click)="setTab('register')">Sign Up</button>
-        <div class="tab-indicator" [style.left]="tab() === 'login' ? '4px' : 'calc(50% + 4px)'"></div>
-      </div>
+    <div class="auth-tabs">
+      <button class="auth-tab" [class.active]="tab() === 'login'" (click)="setTab('login')">Sign In</button>
+      <button class="auth-tab" [class.active]="tab() === 'register'" (click)="setTab('register')">Sign Up</button>
+      <div class="tab-indicator" [style.left]="tab() === 'login' ? '4px' : 'calc(50% + 4px)'"></div>
+    </div>
     }
 
     <!-- Error banner -->
     @if (error()) {
-      <div class="auth-error">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        {{ error() }}
-      </div>
+    <div class="auth-error">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      {{ error() }}
+    </div>
     }
 
     <!-- ── LOGIN ──────────────────────────── -->
     @if (tab() === 'login') {
-      <form class="auth-form" (ngSubmit)="login()">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" [class.form-input--error]="errs()['email']"
-                 type="email" [(ngModel)]="loginF.email" name="email"
-                 placeholder="you@company.com" autocomplete="email" />
-          @if (errs()['email']) { <span class="form-error">{{ errs()['email'] }}</span> }
+    <form class="auth-form" (ngSubmit)="login()">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" [class.form-input--error]="errs()['email']" type="email" [(ngModel)]="loginF.email"
+          name="email" placeholder="you@company.com" autocomplete="email" />
+        @if (errs()['email']) { <span class="form-error">{{ errs()['email'] }}</span> }
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          Password
+          <button type="button" class="link-btn forgot-link" (click)="openForgotModal()">Forgot password?</button>
+        </label>
+        <div class="input-eye-wrap">
+          <input class="form-input" [class.form-input--error]="errs()['password']"
+            [type]="showPwd() ? 'text' : 'password'" [(ngModel)]="loginF.password" name="password"
+            placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="eye-btn" (click)="showPwd.update(v=>!v)" tabindex="-1">
+            @if (showPwd()) {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+            } @else {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            }
+          </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">
-            Password
-            <button type="button" class="link-btn forgot-link" (click)="openForgotModal()">Forgot password?</button>
-          </label>
-          <div class="input-eye-wrap">
-            <input class="form-input" [class.form-input--error]="errs()['password']"
-                   [type]="showPwd() ? 'text' : 'password'"
-                   [(ngModel)]="loginF.password" name="password"
-                   placeholder="••••••••" autocomplete="current-password" />
-            <button type="button" class="eye-btn" (click)="showPwd.update(v=>!v)" tabindex="-1">
-              @if (showPwd()) {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-              } @else {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              }
-            </button>
-          </div>
-          @if (errs()['password']) { <span class="form-error">{{ errs()['password'] }}</span> }
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
-          @if (busy()) { <span class="btn-spinner"></span> }
-          {{ busy() ? 'Signing in…' : 'Sign In' }}
-        </button>
-      </form>
+        @if (errs()['password']) { <span class="form-error">{{ errs()['password'] }}</span> }
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
+        @if (busy()) { <span class="btn-spinner"></span> }
+        {{ busy() ? 'Signing in…' : 'Sign In' }}
+      </button>
+    </form>
+    <button type="button" class="google-btn" (click)="loginWithGoogle()">
 
-      @if (isLoggedIn) {
-        <p class="auth-fine" style="margin-top:16px">
-          Logged in as {{ currentUser?.firstName }}.
-          <button class="link-btn" (click)="openChangeModal()">Change password?</button>
-        </p>
-      }
+      <span class="google-btn__icon">
+        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+      </span>
+
+      <span class="google-btn__text">
+        Continue with Google
+      </span>
+
+      <span class="google-btn__arrow">
+        →
+      </span>
+
+    </button>
+    @if (isLoggedIn) {
+    <p class="auth-fine" style="margin-top:16px">
+      Logged in as {{ currentUser?.firstName }}.
+      <button class="link-btn" (click)="openChangeModal()">Change password?</button>
+    </p>
+    }
     }
 
     <!-- ── REGISTER ───────────────────────── -->
     @if (tab() === 'register') {
-      <form class="auth-form" (ngSubmit)="register()">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">First Name</label>
-            <input class="form-input" [class.form-input--error]="errs()['firstName']"
-                   [(ngModel)]="regF.firstName" name="firstName"
-                   placeholder="John" autocomplete="given-name" />
-            @if (errs()['firstName']) { <span class="form-error">{{ errs()['firstName'] }}</span> }
-          </div>
-          <div class="form-group">
-            <label class="form-label">Last Name</label>
-            <input class="form-input" [(ngModel)]="regF.lastName" name="lastName"
-                   placeholder="Doe" autocomplete="family-name" />
-          </div>
+    <form class="auth-form" (ngSubmit)="register()">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" [class.form-input--error]="errs()['firstName']" [(ngModel)]="regF.firstName"
+            name="firstName" placeholder="John" autocomplete="given-name" />
+          @if (errs()['firstName']) { <span class="form-error">{{ errs()['firstName'] }}</span> }
         </div>
         <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" [class.form-input--error]="errs()['email']"
-                 type="email" [(ngModel)]="regF.email" name="email"
-                 placeholder="you@company.com" autocomplete="email" />
-          @if (errs()['email']) { <span class="form-error">{{ errs()['email'] }}</span> }
+          <label class="form-label">Last Name</label>
+          <input class="form-input" [(ngModel)]="regF.lastName" name="lastName" placeholder="Doe"
+            autocomplete="family-name" />
         </div>
-        <div class="form-group">
-          <label class="form-label">Password <span class="form-hint">min 8 chars</span></label>
-          <div class="input-eye-wrap">
-            <input class="form-input" [class.form-input--error]="errs()['password']"
-                   [type]="showPwd() ? 'text' : 'password'"
-                   [(ngModel)]="regF.password" name="password"
-                   placeholder="••••••••" autocomplete="new-password" />
-            <button type="button" class="eye-btn" (click)="showPwd.update(v=>!v)" tabindex="-1">
-              @if (showPwd()) {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-              } @else {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              }
-            </button>
-          </div>
-          @if (errs()['password']) { <span class="form-error">{{ errs()['password'] }}</span> }
-          @if (regF.password) {
-            <div class="pw-bar-wrap">
-              <div class="pw-bar" [style.width]="pwStrength(regF.password) + '%'" [class]="'pw-bar--' + pwLevel(regF.password)"></div>
-            </div>
-            <span class="pw-label" [class]="'pw-label--' + pwLevel(regF.password)">{{ pwLabel(regF.password) }}</span>
-          }
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" [class.form-input--error]="errs()['email']" type="email" [(ngModel)]="regF.email"
+          name="email" placeholder="you@company.com" autocomplete="email" />
+        @if (errs()['email']) { <span class="form-error">{{ errs()['email'] }}</span> }
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password <span class="form-hint">min 8 chars</span></label>
+        <div class="input-eye-wrap">
+          <input class="form-input" [class.form-input--error]="errs()['password']"
+            [type]="showPwd() ? 'text' : 'password'" [(ngModel)]="regF.password" name="password" placeholder="••••••••"
+            autocomplete="new-password" />
+          <button type="button" class="eye-btn" (click)="showPwd.update(v=>!v)" tabindex="-1">
+            @if (showPwd()) {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+            } @else {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            }
+          </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Phone <span class="form-hint">optional</span></label>
-          <input class="form-input" [(ngModel)]="regF.phone" name="phone"
-                 placeholder="+91 98765 43210" autocomplete="tel" />
+        @if (errs()['password']) { <span class="form-error">{{ errs()['password'] }}</span> }
+        @if (regF.password) {
+        <div class="pw-bar-wrap">
+          <div class="pw-bar" [style.width]="pwStrength(regF.password) + '%'"
+            [class]="'pw-bar--' + pwLevel(regF.password)"></div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
-          @if (busy()) { <span class="btn-spinner"></span> }
-          {{ busy() ? 'Creating account…' : 'Create Account' }}
-        </button>
-        <p class="auth-fine">By registering you agree to our Terms &amp; Privacy Policy.</p>
-      </form>
+        <span class="pw-label" [class]="'pw-label--' + pwLevel(regF.password)">{{ pwLabel(regF.password) }}</span>
+        }
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone <span class="form-hint">optional</span></label>
+        <input class="form-input" [(ngModel)]="regF.phone" name="phone" placeholder="+91 98765 43210"
+          autocomplete="tel" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
+        @if (busy()) { <span class="btn-spinner"></span> }
+        {{ busy() ? 'Creating account…' : 'Create Account' }}
+      </button>
+      <p class="auth-fine">By registering you agree to our Terms &amp; Privacy Policy.</p>
+      <button type="button" class="google-btn" (click)="loginWithGoogle()">
+
+        <span class="google-btn__icon">
+          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+        </span>
+
+        <span class="google-btn__text">
+          Continue with Google
+        </span>
+
+        <span class="google-btn__arrow">
+          →
+        </span>
+
+      </button>
+
+
+    </form>
     }
 
     <!-- ── OTP VERIFY ─────────────────────── -->
     @if (tab() === 'otp') {
-      <div class="otp-screen">
-        <div class="otp-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        </div>
-        <h2 class="otp-title">Verify your email</h2>
-        <p class="otp-desc">We sent a 6-digit code to<br><strong>{{ otpEmail }}</strong></p>
-        <form class="auth-form" (ngSubmit)="verifyOTP()">
-          <div class="form-group">
-            <label class="form-label" style="text-align:center;display:block">Enter verification code</label>
-            <input class="form-input otp-input" [class.form-input--error]="errs()['otp']"
-                   [(ngModel)]="otpCode" name="otp"
-                   placeholder="0  0  0  0  0  0" maxlength="6"
-                   inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" />
-            @if (errs()['otp']) { <span class="form-error" style="text-align:center;display:block">{{ errs()['otp'] }}</span> }
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
-            @if (busy()) { <span class="btn-spinner"></span> }
-            {{ busy() ? 'Verifying…' : 'Verify & Continue' }}
-          </button>
-        </form>
-        <p class="auth-fine" style="margin-top:16px">
-          Didn't receive it?
-          <button class="link-btn" (click)="resendOTP()" [disabled]="resendCooldown() > 0">
-            @if (resendCooldown() > 0) { Resend in {{ resendCooldown() }}s } @else { Resend code }
-          </button>
-        </p>
-        <p class="auth-fine">
-          <button class="link-btn" (click)="setTab('register')">← Use a different email</button>
-        </p>
+    <div class="otp-screen">
+      <div class="otp-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
       </div>
+      <h2 class="otp-title">Verify your email</h2>
+      <p class="otp-desc">We sent a 6-digit code to<br><strong>{{ otpEmail }}</strong></p>
+      <form class="auth-form" (ngSubmit)="verifyOTP()">
+        <div class="form-group">
+          <label class="form-label" style="text-align:center;display:block">Enter verification code</label>
+          <input class="form-input otp-input" [class.form-input--error]="errs()['otp']" [(ngModel)]="otpCode" name="otp"
+            placeholder="0  0  0  0  0  0" maxlength="6" inputmode="numeric" pattern="[0-9]*"
+            autocomplete="one-time-code" />
+          @if (errs()['otp']) { <span class="form-error" style="text-align:center;display:block">{{ errs()['otp']
+            }}</span> }
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" [disabled]="busy()">
+          @if (busy()) { <span class="btn-spinner"></span> }
+          {{ busy() ? 'Verifying…' : 'Verify & Continue' }}
+        </button>
+      </form>
+      <p class="auth-fine" style="margin-top:16px">
+        Didn't receive it?
+        <button class="link-btn" (click)="resendOTP()" [disabled]="resendCooldown() > 0">
+          @if (resendCooldown() > 0) { Resend in {{ resendCooldown() }}s } @else { Resend code }
+        </button>
+      </p>
+      <p class="auth-fine">
+        <button class="link-btn" (click)="setTab('register')">← Use a different email</button>
+      </p>
+    </div>
     }
   </div>
 </div>
 
 <!-- ════════════════════════════════════════════
-  FORGOT PASSWORD POPUP
-  Step 1: Enter email → send OTP
-  Step 2: New pass + Confirm pass + OTP code
-════════════════════════════════════════════ -->
+    FORGOT PASSWORD POPUP
+    Step 1: Enter email → send OTP
+    Step 2: New pass + Confirm pass + OTP code
+  ════════════════════════════════════════════ -->
 @if (showForgotModal()) {
-  <div class="modal-bg" (click)="closeForgotModal()">
-    <div class="modal-box" (click)="$event.stopPropagation()">
-      <div class="modal-hd">
-        <div class="modal-hd-left">
-          <div class="modal-icon modal-icon--blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <div>
-            <h3 class="modal-title">Forgot Password</h3>
-            <p class="modal-sub">
-              @if (forgotStep() === 'email') { Enter your email to receive a reset code }
-              @else { Enter your new password and the code we sent }
-            </p>
-          </div>
+<div class="modal-bg" (click)="closeForgotModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-hd">
+      <div class="modal-hd-left">
+        <div class="modal-icon modal-icon--blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
         </div>
-        <button class="modal-close" (click)="closeForgotModal()" aria-label="Close">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <div>
+          <h3 class="modal-title">Forgot Password</h3>
+          <p class="modal-sub">
+            @if (forgotStep() === 'email') { Enter your email to receive a reset code }
+            @else { Enter your new password and the code we sent }
+          </p>
+        </div>
+      </div>
+      <button class="modal-close" (click)="closeForgotModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Step progress -->
+    <div class="step-bar">
+      <div class="step-dot" [class.step-dot--active]="forgotStep() === 'email' || forgotStep() === 'reset'">1</div>
+      <div class="step-line" [class.step-line--active]="forgotStep() === 'reset'"></div>
+      <div class="step-dot" [class.step-dot--active]="forgotStep() === 'reset'">2</div>
+    </div>
+
+    @if (forgotError()) {
+    <div class="modal-error">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      {{ forgotError() }}
+    </div>
+    }
+
+    <!-- Step 1: Email -->
+    @if (forgotStep() === 'email') {
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Registered email address</label>
+        <input class="form-input" type="email" [(ngModel)]="forgotEmail" placeholder="you@company.com"
+          autocomplete="email" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeForgotModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="sendForgotOTP()" [disabled]="forgotBusy()">
+          @if (forgotBusy()) { <span class="btn-spinner btn-spinner--sm"></span> }
+          {{ forgotBusy() ? 'Sending…' : 'Send Reset Code' }}
         </button>
       </div>
+    </div>
+    }
 
-      <!-- Step progress -->
-      <div class="step-bar">
-        <div class="step-dot" [class.step-dot--active]="forgotStep() === 'email' || forgotStep() === 'reset'">1</div>
-        <div class="step-line" [class.step-line--active]="forgotStep() === 'reset'"></div>
-        <div class="step-dot" [class.step-dot--active]="forgotStep() === 'reset'">2</div>
+    <!-- Step 2: New password + OTP -->
+    @if (forgotStep() === 'reset') {
+    <div class="modal-body">
+      <p class="modal-email-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+          <polyline points="22,6 12,13 2,6" />
+        </svg>
+        Code sent to {{ forgotEmail }}
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">New Password <span class="form-hint">min 8 chars</span></label>
+        <div class="input-eye-wrap">
+          <input class="form-input"
+            [class.form-input--mismatch]="forgotConfirmPass && forgotNewPass !== forgotConfirmPass"
+            [type]="forgotShowPwd() ? 'text' : 'password'" [(ngModel)]="forgotNewPass"
+            placeholder="Enter new password" />
+          <button type="button" class="eye-btn" (click)="forgotShowPwd.update(v=>!v)" tabindex="-1">
+            @if (forgotShowPwd()) {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+            } @else {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            }
+          </button>
+        </div>
+        @if (forgotNewPass) {
+        <div class="pw-bar-wrap">
+          <div class="pw-bar" [style.width]="pwStrength(forgotNewPass)+'%'" [class]="'pw-bar--'+pwLevel(forgotNewPass)">
+          </div>
+        </div>
+        <span class="pw-label" [class]="'pw-label--'+pwLevel(forgotNewPass)">{{ pwLabel(forgotNewPass) }}</span>
+        }
       </div>
 
-      @if (forgotError()) {
-        <div class="modal-error">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          {{ forgotError() }}
-        </div>
-      }
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <input class="form-input"
+          [class.form-input--mismatch]="forgotConfirmPass && forgotNewPass !== forgotConfirmPass"
+          [class.form-input--match]="forgotConfirmPass && forgotNewPass === forgotConfirmPass && forgotConfirmPass.length > 0"
+          [type]="forgotShowPwd() ? 'text' : 'password'" [(ngModel)]="forgotConfirmPass"
+          placeholder="Re-enter new password" />
+        @if (forgotConfirmPass && forgotNewPass !== forgotConfirmPass) {
+        <span class="form-error form-error--live">Passwords do not match</span>
+        }
+        @if (forgotConfirmPass && forgotNewPass === forgotConfirmPass && forgotConfirmPass.length > 0) {
+        <span class="form-success-msg">✓ Passwords match</span>
+        }
+      </div>
 
-      <!-- Step 1: Email -->
-      @if (forgotStep() === 'email') {
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label">Registered email address</label>
-            <input class="form-input" type="email" [(ngModel)]="forgotEmail"
-                   placeholder="you@company.com" autocomplete="email" />
-          </div>
-          <div class="modal-actions">
-            <button class="btn btn-ghost" (click)="closeForgotModal()">Cancel</button>
-            <button class="btn btn-primary" (click)="sendForgotOTP()" [disabled]="forgotBusy()">
-              @if (forgotBusy()) { <span class="btn-spinner btn-spinner--sm"></span> }
-              {{ forgotBusy() ? 'Sending…' : 'Send Reset Code' }}
-            </button>
-          </div>
-        </div>
-      }
+      <div class="form-group">
+        <label class="form-label">Reset Code <span class="form-hint">from your email</span></label>
+        <input class="form-input otp-input-sm" [(ngModel)]="forgotOtp" placeholder="0  0  0  0  0  0" maxlength="6"
+          inputmode="numeric" autocomplete="one-time-code" />
+      </div>
 
-      <!-- Step 2: New password + OTP -->
-      @if (forgotStep() === 'reset') {
-        <div class="modal-body">
-          <p class="modal-email-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Code sent to {{ forgotEmail }}
-          </p>
-
-          <div class="form-group">
-            <label class="form-label">New Password <span class="form-hint">min 8 chars</span></label>
-            <div class="input-eye-wrap">
-              <input class="form-input" [class.form-input--mismatch]="forgotConfirmPass && forgotNewPass !== forgotConfirmPass"
-                     [type]="forgotShowPwd() ? 'text' : 'password'"
-                     [(ngModel)]="forgotNewPass" placeholder="Enter new password" />
-              <button type="button" class="eye-btn" (click)="forgotShowPwd.update(v=>!v)" tabindex="-1">
-                @if (forgotShowPwd()) {
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                } @else {
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                }
-              </button>
-            </div>
-            @if (forgotNewPass) {
-              <div class="pw-bar-wrap"><div class="pw-bar" [style.width]="pwStrength(forgotNewPass)+'%'" [class]="'pw-bar--'+pwLevel(forgotNewPass)"></div></div>
-              <span class="pw-label" [class]="'pw-label--'+pwLevel(forgotNewPass)">{{ pwLabel(forgotNewPass) }}</span>
-            }
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Confirm New Password</label>
-            <input class="form-input"
-                   [class.form-input--mismatch]="forgotConfirmPass && forgotNewPass !== forgotConfirmPass"
-                   [class.form-input--match]="forgotConfirmPass && forgotNewPass === forgotConfirmPass && forgotConfirmPass.length > 0"
-                   [type]="forgotShowPwd() ? 'text' : 'password'"
-                   [(ngModel)]="forgotConfirmPass" placeholder="Re-enter new password" />
-            @if (forgotConfirmPass && forgotNewPass !== forgotConfirmPass) {
-              <span class="form-error form-error--live">Passwords do not match</span>
-            }
-            @if (forgotConfirmPass && forgotNewPass === forgotConfirmPass && forgotConfirmPass.length > 0) {
-              <span class="form-success-msg">✓ Passwords match</span>
-            }
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Reset Code <span class="form-hint">from your email</span></label>
-            <input class="form-input otp-input-sm"
-                   [(ngModel)]="forgotOtp" placeholder="0  0  0  0  0  0"
-                   maxlength="6" inputmode="numeric" autocomplete="one-time-code" />
-          </div>
-
-          <div class="modal-actions">
-            <button class="btn btn-ghost btn-sm" (click)="forgotStep.set('email')">← Back</button>
-            <button class="btn btn-primary" (click)="submitReset()" [disabled]="forgotBusy()">
-              @if (forgotBusy()) { <span class="btn-spinner btn-spinner--sm"></span> }
-              {{ forgotBusy() ? 'Resetting…' : 'Reset Password' }}
-            </button>
-          </div>
-        </div>
-      }
+      <div class="modal-actions">
+        <button class="btn btn-ghost btn-sm" (click)="forgotStep.set('email')">← Back</button>
+        <button class="btn btn-primary" (click)="submitReset()" [disabled]="forgotBusy()">
+          @if (forgotBusy()) { <span class="btn-spinner btn-spinner--sm"></span> }
+          {{ forgotBusy() ? 'Resetting…' : 'Reset Password' }}
+        </button>
+      </div>
     </div>
+    }
   </div>
+</div>
 }
 
 <!-- ════════════════════════════════════════════
-  CHANGE PASSWORD POPUP (for logged-in users)
-  Old pass + New pass + Confirm new pass
-════════════════════════════════════════════ -->
+    CHANGE PASSWORD POPUP (for logged-in users)
+    Old pass + New pass + Confirm new pass
+  ════════════════════════════════════════════ -->
 @if (showChangeModal()) {
-  <div class="modal-bg" (click)="closeChangeModal()">
-    <div class="modal-box" (click)="$event.stopPropagation()">
-      <div class="modal-hd">
-        <div class="modal-hd-left">
-          <div class="modal-icon modal-icon--purple">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <div>
-            <h3 class="modal-title">Change Password</h3>
-            <p class="modal-sub">Update your account password</p>
-          </div>
+<div class="modal-bg" (click)="closeChangeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-hd">
+      <div class="modal-hd-left">
+        <div class="modal-icon modal-icon--purple">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
         </div>
-        <button class="modal-close" (click)="closeChangeModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <div>
+          <h3 class="modal-title">Change Password</h3>
+          <p class="modal-sub">Update your account password</p>
+        </div>
       </div>
+      <button class="modal-close" (click)="closeChangeModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
 
-      @if (changeError()) {
-        <div class="modal-error">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          {{ changeError() }}
-        </div>
-      }
+    @if (changeError()) {
+    <div class="modal-error">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      {{ changeError() }}
+    </div>
+    }
 
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Current Password</label>
-          <div class="input-eye-wrap">
-            <input class="form-input"
-                   [type]="changeShowPwd() ? 'text' : 'password'"
-                   [(ngModel)]="changeCurrentPass" placeholder="Enter current password" autocomplete="current-password" />
-            <button type="button" class="eye-btn" (click)="changeShowPwd.update(v=>!v)" tabindex="-1">
-              @if (changeShowPwd()) {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-              } @else {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              }
-            </button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">New Password <span class="form-hint">min 8 chars</span></label>
-          <div class="input-eye-wrap">
-            <input class="form-input"
-                   [class.form-input--mismatch]="changeConfirmPass && changeNewPass !== changeConfirmPass"
-                   [type]="changeShowPwd() ? 'text' : 'password'"
-                   [(ngModel)]="changeNewPass" placeholder="Enter new password" autocomplete="new-password" />
-          </div>
-          @if (changeNewPass) {
-            <div class="pw-bar-wrap"><div class="pw-bar" [style.width]="pwStrength(changeNewPass)+'%'" [class]="'pw-bar--'+pwLevel(changeNewPass)"></div></div>
-            <span class="pw-label" [class]="'pw-label--'+pwLevel(changeNewPass)">{{ pwLabel(changeNewPass) }}</span>
-          }
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Confirm New Password</label>
-          <input class="form-input"
-                 [class.form-input--mismatch]="changeConfirmPass && changeNewPass !== changeConfirmPass"
-                 [class.form-input--match]="changeConfirmPass && changeNewPass === changeConfirmPass && changeConfirmPass.length > 0"
-                 [type]="changeShowPwd() ? 'text' : 'password'"
-                 [(ngModel)]="changeConfirmPass" placeholder="Re-enter new password" />
-          @if (changeConfirmPass && changeNewPass !== changeConfirmPass) {
-            <span class="form-error form-error--live">Passwords do not match</span>
-          }
-          @if (changeConfirmPass && changeNewPass === changeConfirmPass && changeConfirmPass.length > 0) {
-            <span class="form-success-msg">✓ Passwords match</span>
-          }
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn btn-ghost" (click)="closeChangeModal()">Cancel</button>
-          <button class="btn btn-primary" (click)="submitChange()" [disabled]="changeBusy()">
-            @if (changeBusy()) { <span class="btn-spinner btn-spinner--sm"></span> }
-            {{ changeBusy() ? 'Updating…' : 'Update Password' }}
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Current Password</label>
+        <div class="input-eye-wrap">
+          <input class="form-input" [type]="changeShowPwd() ? 'text' : 'password'" [(ngModel)]="changeCurrentPass"
+            placeholder="Enter current password" autocomplete="current-password" />
+          <button type="button" class="eye-btn" (click)="changeShowPwd.update(v=>!v)" tabindex="-1">
+            @if (changeShowPwd()) {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+            } @else {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            }
           </button>
         </div>
       </div>
+
+      <div class="form-group">
+        <label class="form-label">New Password <span class="form-hint">min 8 chars</span></label>
+        <div class="input-eye-wrap">
+          <input class="form-input"
+            [class.form-input--mismatch]="changeConfirmPass && changeNewPass !== changeConfirmPass"
+            [type]="changeShowPwd() ? 'text' : 'password'" [(ngModel)]="changeNewPass" placeholder="Enter new password"
+            autocomplete="new-password" />
+        </div>
+        @if (changeNewPass) {
+        <div class="pw-bar-wrap">
+          <div class="pw-bar" [style.width]="pwStrength(changeNewPass)+'%'" [class]="'pw-bar--'+pwLevel(changeNewPass)">
+          </div>
+        </div>
+        <span class="pw-label" [class]="'pw-label--'+pwLevel(changeNewPass)">{{ pwLabel(changeNewPass) }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <input class="form-input"
+          [class.form-input--mismatch]="changeConfirmPass && changeNewPass !== changeConfirmPass"
+          [class.form-input--match]="changeConfirmPass && changeNewPass === changeConfirmPass && changeConfirmPass.length > 0"
+          [type]="changeShowPwd() ? 'text' : 'password'" [(ngModel)]="changeConfirmPass"
+          placeholder="Re-enter new password" />
+        @if (changeConfirmPass && changeNewPass !== changeConfirmPass) {
+        <span class="form-error form-error--live">Passwords do not match</span>
+        }
+        @if (changeConfirmPass && changeNewPass === changeConfirmPass && changeConfirmPass.length > 0) {
+        <span class="form-success-msg">✓ Passwords match</span>
+        }
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeChangeModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="submitChange()" [disabled]="changeBusy()">
+          @if (changeBusy()) { <span class="btn-spinner btn-spinner--sm"></span> }
+          {{ changeBusy() ? 'Updating…' : 'Update Password' }}
+        </button>
+      </div>
     </div>
   </div>
+</div>
 }

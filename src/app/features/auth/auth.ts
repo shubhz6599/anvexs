@@ -4,7 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
+import {
 
+  PLATFORM_ID
+} from '@angular/core';
+
+import {
+  isPlatformBrowser
+} from '@angular/common';
+import { environment } from '../../../environments/environment';
+
+declare const google: any;
 type Tab = 'login' | 'register' | 'otp';
 
 @Component({
@@ -15,44 +25,44 @@ type Tab = 'login' | 'register' | 'otp';
   styleUrl: './auth.scss',
 })
 export class Auth {
-  private auth   = inject(AuthService);
+  private auth = inject(AuthService);
   private router = inject(Router);
   private notify = inject(NotificationService);
 
-  tab     = signal<Tab>('login');
-  busy    = signal(false);
-  error   = signal('');
-  errs    = signal<Record<string, string>>({});
+  tab = signal<Tab>('login');
+  busy = signal(false);
+  error = signal('');
+  errs = signal<Record<string, string>>({});
   showPwd = signal(false);
 
   otpEmail = '';
-  otpCode  = '';
+  otpCode = '';
   resendCooldown = signal(0);
   private cooldownTimer?: ReturnType<typeof setInterval>;
 
   loginF = { email: '', password: '' };
-  regF   = { firstName: '', lastName: '', email: '', password: '', phone: '' };
+  regF = { firstName: '', lastName: '', email: '', password: '', phone: '' };
 
   // ── Forgot Password popup ─────────────────
-  showForgotModal   = signal(false);
-  forgotStep        = signal<'email' | 'reset'>('email');
-  forgotBusy        = signal(false);
-  forgotError       = signal('');
-  forgotEmail       = '';
-  forgotNewPass     = '';
+  showForgotModal = signal(false);
+  forgotStep = signal<'email' | 'reset'>('email');
+  forgotBusy = signal(false);
+  forgotError = signal('');
+  forgotEmail = '';
+  forgotNewPass = '';
   forgotConfirmPass = '';
-  forgotOtp         = '';
-  forgotShowPwd     = signal(false);
+  forgotOtp = '';
+  forgotShowPwd = signal(false);
 
   // ── Change Password popup (for logged-in users) ──
-  showChangeModal   = signal(false);
-  changeBusy        = signal(false);
-  changeError       = signal('');
+  showChangeModal = signal(false);
+  changeBusy = signal(false);
+  changeError = signal('');
   changeCurrentPass = '';
-  changeNewPass     = '';
+  changeNewPass = '';
   changeConfirmPass = '';
-  changeShowPwd     = signal(false);
-
+  changeShowPwd = signal(false);
+  platformId = inject(PLATFORM_ID);
   // ─── Tab switching ────────────────────────
   setTab(t: Tab) { this.tab.set(t); this.error.set(''); this.errs.set({}); this.showPwd.set(false); }
 
@@ -62,26 +72,26 @@ export class Auth {
   // ─── Validation ───────────────────────────
   private validateLogin() {
     const e: Record<string, string> = {};
-    if (!this.loginF.email.includes('@'))       e['email']    = 'Enter a valid email';
-    if (this.loginF.password.length < 1)        e['password'] = 'Password is required';
+    if (!this.loginF.email.includes('@')) e['email'] = 'Enter a valid email';
+    if (this.loginF.password.length < 1) e['password'] = 'Password is required';
     return e;
   }
   private validateReg() {
     const e: Record<string, string> = {};
-    if (this.regF.firstName.trim().length < 2)  e['firstName'] = 'At least 2 characters';
-    if (!this.regF.email.includes('@'))          e['email']     = 'Enter a valid email';
-    if (this.regF.password.length < 8)          e['password']  = 'Minimum 8 characters';
+    if (this.regF.firstName.trim().length < 2) e['firstName'] = 'At least 2 characters';
+    if (!this.regF.email.includes('@')) e['email'] = 'Enter a valid email';
+    if (this.regF.password.length < 8) e['password'] = 'Minimum 8 characters';
     return e;
   }
 
   // ─── Password strength ────────────────────
   pwStrength(p: string): number {
     let s = 0;
-    if (p.length >= 8)             s += 25;
-    if (p.length >= 12)            s += 15;
-    if (/[A-Z]/.test(p))           s += 20;
-    if (/[0-9]/.test(p))           s += 20;
-    if (/[^A-Za-z0-9]/.test(p))    s += 20;
+    if (p.length >= 8) s += 25;
+    if (p.length >= 12) s += 15;
+    if (/[A-Z]/.test(p)) s += 20;
+    if (/[0-9]/.test(p)) s += 20;
+    if (/[^A-Za-z0-9]/.test(p)) s += 20;
     return Math.min(s, 100);
   }
   pwLevel(p: string): string {
@@ -216,8 +226,8 @@ export class Auth {
 
   submitReset() {
     this.forgotError.set('');
-    if (this.forgotOtp.length !== 6)           { this.forgotError.set('Enter the 6-digit reset code'); return; }
-    if (this.forgotNewPass.length < 8)          { this.forgotError.set('Password must be at least 8 characters'); return; }
+    if (this.forgotOtp.length !== 6) { this.forgotError.set('Enter the 6-digit reset code'); return; }
+    if (this.forgotNewPass.length < 8) { this.forgotError.set('Password must be at least 8 characters'); return; }
     if (this.forgotNewPass !== this.forgotConfirmPass) { this.forgotError.set('Passwords do not match'); return; }
 
     this.forgotBusy.set(true);
@@ -248,10 +258,10 @@ export class Auth {
 
   submitChange() {
     this.changeError.set('');
-    if (!this.changeCurrentPass)                     { this.changeError.set('Enter your current password'); return; }
-    if (this.changeNewPass.length < 8)               { this.changeError.set('New password must be at least 8 characters'); return; }
-    if (this.changeNewPass !== this.changeConfirmPass){ this.changeError.set('Passwords do not match'); return; }
-    if (this.changeCurrentPass === this.changeNewPass){ this.changeError.set('New password must be different'); return; }
+    if (!this.changeCurrentPass) { this.changeError.set('Enter your current password'); return; }
+    if (this.changeNewPass.length < 8) { this.changeError.set('New password must be at least 8 characters'); return; }
+    if (this.changeNewPass !== this.changeConfirmPass) { this.changeError.set('Passwords do not match'); return; }
+    if (this.changeCurrentPass === this.changeNewPass) { this.changeError.set('New password must be different'); return; }
 
     this.changeBusy.set(true);
     this.auth.changePassword(this.changeCurrentPass, this.changeNewPass).subscribe({
@@ -261,5 +271,45 @@ export class Auth {
       },
       error: err => { this.changeError.set(err.error?.message || 'Failed to change password'); this.changeBusy.set(false); }
     });
+  }
+
+  loginWithGoogle() {
+
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    console.log(environment.googleClientId);
+    google.accounts.id.initialize({
+      client_id: environment.googleClientId,
+
+      callback: (response: any) => {
+
+        this.auth.googleLogin(
+          response.credential
+        ).subscribe({
+
+          next: (res) => {
+
+            this.auth.setAuth(res);
+
+            this.notify.success(
+              'Welcome to Anvexs!'
+            );
+
+            this.router.navigate(['/']);
+          },
+
+          error: (err) => {
+
+            this.error.set(
+              err.error?.message ||
+              'Google login failed'
+            );
+          }
+        });
+      }
+    });
+
+    google.accounts.id.prompt();
   }
 }
