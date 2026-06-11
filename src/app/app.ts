@@ -37,7 +37,7 @@ export class App implements OnInit {
         '@type': 'ContactPoint',
         telephone: '+91-9359932573',
         contactType: 'customer service',
-        email: 'info@anvexs.com',
+        email: 'support@anvexs.com',
         areaServed: 'IN',
         availableLanguage: 'English',
       },
