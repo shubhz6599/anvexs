@@ -46,10 +46,24 @@
   }
 
   @media (max-width: 480px) {
-    top: 72%;
-    right: 1.25rem;
-    width: 52px;
-    height: 52px;
+
+    .chatbot__fab {
+      position: fixed;
+      right: 16px;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 99999;
+    }
+
+    .chatbot__window {
+      position: fixed;
+      right: 8px;
+      left: 8px;
+      bottom: 80px;
+      top: auto;
+      width: auto;
+      max-height: 70vh;
+      z-index: 99998;
+    }
   }
 }
 
@@ -119,7 +133,7 @@
     width: calc(100vw - 1.5rem);
     right: .75rem;
     // bottom: 5rem;
-    top:13px;
+    top: 13px;
     max-height: 76dvh;
     border-radius: 16px;
   }
@@ -509,4 +523,3 @@
     font-weight: 600;
   }
 }
-
