@@ -9,21 +9,25 @@ import { Toast } from './shared/components/toast/toast';
 import { SeoService } from './core/services/seo.service';
 import { Chatbot } from "./shared/components/chatbot/chatbot";
 import { InitialService } from './core/services/api.service';
+import { Network } from './core/services/network';
+import { Offline } from './shared/components/offline/offline';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent, LoaderComponent, ApiLoader, Toast, Chatbot],
+  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent, LoaderComponent, ApiLoader, Toast, Chatbot,Offline],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
-  private seo        = inject(SeoService);
+  private seo = inject(SeoService);
   private platformId = inject(PLATFORM_ID);
   private apiInitiate = inject(InitialService);
+  private networkService = inject(Network);
 
+  online$ = this.networkService.online$;
   showLoader = signal(isPlatformBrowser(this.platformId));
-
+  isOffline = !navigator.onLine;
   ngOnInit(): void {
     this.triggerBackend()
     // Init SEO auto-updates on route changes
@@ -62,8 +66,8 @@ export class App implements OnInit {
     }
   }
 
-  triggerBackend(){
-    this.apiInitiate.getHealth().subscribe((res)=>{
+  triggerBackend() {
+    this.apiInitiate.getHealth().subscribe((res) => {
     })
   }
   onLoadComplete(): void {

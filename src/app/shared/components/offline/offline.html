@@ -1,0 +1,31 @@
+<div class="offline-page">
+  <div class="offline-content">
+
+    <div class="offline-icon">
+      <i class="fas fa-wifi"></i>
+    </div>
+
+    <h1 class="display-lg">You're Offline</h1>
+
+    <p class="body-md">
+      It looks like your internet connection has been lost.
+      Please check your network and try again.
+    </p>
+
+    <div class="offline-status">
+      <span></span>
+      Connection Lost
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:36px">
+      <button class="btn btn-primary btn-lg" (click)="retryConnection()">
+        Try Again
+      </button>
+
+      <a routerLink="/" class="btn btn-ghost btn-lg">
+        Go Home
+      </a>
+    </div>
+
+  </div>
+</div>
